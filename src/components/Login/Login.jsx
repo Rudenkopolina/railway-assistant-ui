@@ -9,6 +9,10 @@ class Login extends React.Component {
     password: ''
   }
 
+  handleChange = (event, title) => {
+    this.setState({ [title]: event.target.value })
+  }
+
   render() {
     return (
       <div>
@@ -19,13 +23,21 @@ class Login extends React.Component {
             </Header>
             <Form size='large'>
               <Segment>
-                <Form.Input fluid icon='user' iconPosition='left' placeholder='Login' />
+                <Form.Input
+                  fluid icon='user'
+                  iconPosition='left'
+                  placeholder='Login'
+                  value={this.state.login}
+                  onChange={(e) => this.handleChange(e, 'login')}
+                />
                 <Form.Input
                   fluid
                   icon='lock'
                   iconPosition='left'
                   placeholder='Password'
                   type='password'
+                  value={this.state.password}
+                  onChange={(e) => this.handleChange(e, 'password')}
                 />
                 <Button color='teal' fluid size='large'>
                   Login
