@@ -65,14 +65,13 @@
   margin-bottom: 3px;
 }
 
-.table-number {}
+.table-number {
+  margin-right: 10px;
+}
 
 .table-content {
   width: 100%;
-  text-overflow: ellipsis;
-  overflow: hidden;
-  white-space: nowrap;
-  padding: 0 20px;
+  padding: 15px 20px;
   margin: 0 10px;
 }
 
@@ -93,7 +92,7 @@
   font-weight: 500;
   padding: 8px 21px;
   text-decoration: none;
-  margin: 0 20px;
+  margin: 0 10px;
 }
 
 .table-button:hover {
@@ -118,18 +117,18 @@
 }
 
 .no-button {
-  width: 71px;
+  width: 100px;
   height: 39px;
   margin: 0 20px;
 }
 
 .table-textarea {
-  border: none;
-  padding: 10px 20px;
+  border: 1px dotted blue;
+  padding: 15px 20px;
   width: 100% !important;
   outline: none;
   margin: 0 10px;
-  height: 40px;
+  resize: none !important;
 }
 
 .notification-success {
@@ -142,4 +141,9 @@
     background-color: #fff !important;
     color: rgb(126, 38, 38) !important;
     margin: 10px;
+}
+
+.audio-icon {
+  color: #3167ff;
+  margin: 10px 20px !important;
 }
