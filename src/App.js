@@ -1,5 +1,5 @@
 import React from 'react';
-import Answers from './components/Answers';
+import Answers from './components/Answers/Answers';
 import LogIn from './components/Login/Login';
 import './App.css';
 import { BrowserRouter as Router, Route, Redirect } from "react-router-dom";
@@ -11,6 +11,7 @@ function App() {
           <Redirect to="/login"/>
         )}/>
         <Route exact path="/login" component={LogIn} />
+        <Route exact path="/answers" component={Answers} />
       </Router>
   );
 }
