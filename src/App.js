@@ -1,6 +1,7 @@
 import React from 'react';
 import Answers from './components/Answers/Answers';
 import LogIn from './components/Login/Login';
+import Intents from './components/Intents/Intent-logs';
 import './App.css';
 import { BrowserRouter as Router, Route, Redirect } from "react-router-dom";
 
@@ -10,8 +11,9 @@ function App() {
         <Route exact path="/" render={() => (
           <Redirect to="/login"/>
         )}/>
-        <Route exact path="/login" component={LogIn} />
-        <Route exact path="/answers" component={Answers} />
+        <Route path="/login" component={LogIn} />
+        <Route path="/answers" component={Answers} />
+        <Route path="/intents" component={Intents} />
       </Router>
   );
 }
