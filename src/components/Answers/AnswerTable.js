@@ -100,7 +100,7 @@ class AnswerTable extends React.Component {
 
   getAudioSrc = id => {
     const token = Cookies.get('authCode');
-    return `${URL}/api/answers/audios/${id}/${token}`
+    return `${URL}/api/answers/responses/${id}/audio/${token}`
   }
 
   render() {
@@ -113,6 +113,14 @@ class AnswerTable extends React.Component {
         </div>
       )}
       <NotificationContainer />
+      <div className="table-title-row">
+        <div className="table-title-content">
+          Текстовый ответ
+        </div>
+        <div className="table-title-content">
+          Голосовой ответ
+        </div>
+      </div>
         {this.state.data.map((answer, index) => (
           <div className="table-row"  key={index}>
             <div className="table-number">{answer.id}</div>
@@ -154,8 +162,8 @@ class AnswerTable extends React.Component {
                   onClick={() => this.onPlayAudio(answer.id)}
                 />
               }
-              <audio preload='none' id={`audio-${answer.id}`} onEnded={() => this.onStopAudio(answer.audio.id)}>
-                <source src={this.getAudioSrc(answer.audio.id)} type="audio/ogg" />
+              <audio preload='none' id={`audio-${answer.id}`} onEnded={() => this.onStopAudio(answer.id)}>
+                <source src={this.getAudioSrc(answer.id)} type="audio/ogg" />
               </audio>
             </div>
             <div className="table-action">
