@@ -34,7 +34,7 @@
   color: #363f56;
 }
 
-.table-container {
+.answer-table-container {
   padding: 30px 20px;
 }
 
@@ -62,7 +62,7 @@
   background-color: #fff;
   font-size: 16px;
   padding: 20px;
-  margin-bottom: 3px;
+  margin-bottom: 10px;
 }
 
 .table-number {
@@ -114,6 +114,16 @@
 .save-button:hover {
   background-color: #3167ff;
   border-color: #3167ff;
+}
+
+.blue-button {
+  border: 2px solid #5385fe;
+  color: #5385fe;
+}
+
+.blue-button:hover {
+  background-color: #5385fe;
+  color: #fff;
 }
 
 .no-button {

@@ -1,4 +1,5 @@
 import React from 'react';
+import Cookies from 'js-cookie';
 import './Login.css';
 import axios from 'axios';
 
@@ -7,6 +8,10 @@ class Login extends React.Component {
     login: '',
     password: ''
   };
+
+  componentWillMount() {
+    Cookies.remove('authCode');
+  }
 
   handleChange = (event, title) => {
     this.setState({ [title]: event.target.value });
@@ -20,7 +25,9 @@ class Login extends React.Component {
       baseURL: `http://172.16.6.253:1000/api/auth/`,
     })
     .then(res => {
-      console.log(res);
+      Cookies.remove('authCode', res.data.token);
+      Cookies.set('authCode', res.data.token);
+      this.props.history.push('/responses');
   });
 }
 

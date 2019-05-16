@@ -4,19 +4,11 @@ import { Icon } from 'semantic-ui-react'
 import TextArea from 'react-textarea-autosize';
 import 'react-notifications/lib/notifications.css';
 import Spinner from './spinner.js';
-import axios from 'axios';
 import cx from 'classnames';
 import './Answer.css';
+import { axiosInstance, URL } from '../../helpers/axios'
+import Cookies from 'js-cookie';
 
-
-const axiosInstance = axios.create({ baseURL: 'http://172.16.6.253:1000' });
-const config = {
-  headers: {
-    'Access-Control-Allow-Origin': 'http://127.0.0.1:3000',
-    'content-type': 'application/json',
-    'Authorization': 'Bearer a5f291eb66c594a1bee2202070db2f40'
-  }
-}
 
 class AnswerTable extends React.Component {
   state = {
@@ -28,8 +20,11 @@ class AnswerTable extends React.Component {
   }
 
   componentWillMount() {
-    axiosInstance.get(`/api/answers/responses/`, config)
-    .then(res => this.setState({ data: res.data.responses, prevData: [...res.data.responses], isLoading: false }))
+    axiosInstance.get(`/api/answers/responses/`)
+    .then(res => {
+      const prevData = JSON.parse(JSON.stringify(res.data.responses));
+      this.setState({ data: res.data.responses, prevData, isLoading: false })
+    })
     .catch(err => NotificationManager.error('Something go wrong. Reload page, please.', 'Sorry :('))
   }
 
@@ -41,15 +36,23 @@ class AnswerTable extends React.Component {
   }
 
   onUpdateAnswer = (id, index) => {
-    const { title } = this.props;
-    const data = this.state.data[index];
-    axiosInstance.post(`/api/answers/${title}`, config, { data })
+    const { prevData, data } = this.state;
+    const newData = {}
+    console.log(data, prevData);
+    if (prevData[index].text.transcription !== data[index].text.transcription) {
+      newData.textTranscription = this.state.data[index].text.transcription;
+    }
+    if (prevData[index].audio.transcription !== data[index].audio.transcription) {
+      newData.audioTranscription = this.state.data[index].audio.transcription;
+    }
+    console.log(data);
+    axiosInstance.post(`/api/answers/responses/${id}`, { ...newData })
     .then(res => {
-      this.setState({ prevData: [...this.state.data], editDataId: null })
+      const prevData = JSON.parse(JSON.stringify(this.state.data));
+      this.setState({ prevData, editDataId: null })
       NotificationManager.success('Answer has been updated!');
     })
     .catch(err => {
-      this.setState({ prevData: [...this.state.data], editDataId: null })
       NotificationManager.error('Something go wrong, try again.', 'Sorry :(');
     });
   }
@@ -58,7 +61,7 @@ class AnswerTable extends React.Component {
     const { editDataId, data, prevData } = this.state;
     if (editDataId === id) {
       const newData = data;
-      newData[index] = prevData[index];
+      newData[index] = {...prevData[index]};
       this.setState({ editDataId: null, data: newData });
     } else {
       this.setState({ editDataId: id });
@@ -88,10 +91,22 @@ class AnswerTable extends React.Component {
     this.setState({ playedId: null });
   }
 
+  isAnswerChange = index => {
+    const { prevData, data } = this.state;
+    const isTextChenge = prevData[index].text.transcription !== data[index].text.transcription;
+    const isAudioChange = prevData[index].audio.transcription !== data[index].audio.transcription;
+    return isTextChenge || isAudioChange;
+  }
+
+  getAudioSrc = id => {
+    const token = Cookies.get('authCode');
+    return `${URL}/api/answers/audios/${id}/${token}`
+  }
+
   render() {
     const { prevData, data, isLoading, editDataId } = this.state;
     return (
-      <div className={cx('table-container', { 'loading': isLoading })}>
+      <div className={cx('answer-table-container', { 'loading': isLoading })}>
       {isLoading && (
         <div className="table-spinner">
           <Spinner />
@@ -125,27 +140,26 @@ class AnswerTable extends React.Component {
                 </div>
               )}
               <div className="table-action">
-              {this.state.playedId === answer.audio.id ?
+              {this.state.playedId === answer.id ?
                 <Icon
                   size='large'
                   name="pause"
                   className="audio-icon"
-                  onClick={() => this.onStopAudio(answer.audio.id)}
+                  onClick={() => this.onStopAudio(answer.id)}
                 /> :
                 <Icon
                   size='large'
                   name="play circle outline"
                   className="audio-icon"
-                  onClick={() => this.onPlayAudio(answer.audio.id)}
+                  onClick={() => this.onPlayAudio(answer.id)}
                 />
               }
-              <audio preload='none' id={`audio-${answer.audio.id}`} onended={() => this.onStopAudio(answer.audio.id)}>
-                <source src='http://172.16.6.253:1000/api/answers/audios/1/66ba5c5cee3804470cd47854836ff4ea' type="audio/ogg" />
+              <audio preload='none' id={`audio-${answer.id}`} onEnded={() => this.onStopAudio(answer.audio.id)}>
+                <source src={this.getAudioSrc(answer.audio.id)} type="audio/ogg" />
               </audio>
             </div>
             <div className="table-action">
-            {(prevData[index].text.transcription !== data[index].text.transcription ||
-               prevData[index].audio.transcription !== data[index].audio.transcription) ? (
+            {this.isAnswerChange(index) ? (
               <div
                 className="table-button save-button"
                 onClick={()=> this.onUpdateAnswer(answer.id, index)}
@@ -157,13 +171,21 @@ class AnswerTable extends React.Component {
             )}
             </div>
             <div className="table-action">
+            {(editDataId === answer.id ||
+              prevData[index].transcription !== data[index].transcription) ?
+              <div
+                className="table-button blue-button"
+                onClick={() => this.editDataAnswer(answer.id, index)}
+              >
+                Отменить
+              </div> :
               <div
                 className="table-button"
                 onClick={() => this.editDataAnswer(answer.id, index)}
               >
-                {(editDataId === answer.id ||
-                  prevData[index].transcription !== data[index].transcription) ? 'Отменить' : 'Изменить'}
+                Изменить
               </div>
+            }
             </div>
           </div>
         ))}
