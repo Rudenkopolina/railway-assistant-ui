@@ -91,6 +91,11 @@
 
 }
 
+.table-dropdown {
+  border: 2px solid #cbd0d7 !important;
+  border-radius: 20px !important;
+}
+
 .table-button {
   min-width: 82px;
   border: 2px solid #cbd0d7;

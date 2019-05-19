@@ -2,7 +2,7 @@ import React from 'react';
 import cx from 'classnames';
 import './Answer.css';
 import AnswerTable from './AnswerTable';
-
+import HistoryTable from './HistoryTable';
 
 class Answer extends React.Component {
   state = {
@@ -11,6 +11,16 @@ class Answer extends React.Component {
 
   changeTab = tab => {
     this.setState({ activeTab: tab});
+  }
+
+  getContent = () => {
+    const { activeTab } =this.state;
+    switch (activeTab) {
+      case 'history':
+        return <AnswerTable />
+      default:
+        return <HistoryTable />
+    }
   }
 
   render() {
@@ -24,10 +34,14 @@ class Answer extends React.Component {
           >
             Ответы Ассистента
           </div>
+          <div
+            className={cx('answer-menu-item', { 'answer-menu-item-active': activeTab === 'history' })}
+            onClick={() => this.changeTab('history')}
+          >
+            История
+          </div>
         </div>
-        {activeTab === 'responses' &&
-          <AnswerTable />
-        }
+        {this.getContent()}
       </div>
     );
   }
