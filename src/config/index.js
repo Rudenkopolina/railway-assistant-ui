@@ -5,6 +5,6 @@ const envConf = require('./' + ENV);
 export const config = merge({
   env: ENV,
   server: {
-    api: 'localhost:5000', //'http://172.16.6.253:1000'
+    api: 'http://172.16.6.253:1000'
   }
 }, envConf.config);

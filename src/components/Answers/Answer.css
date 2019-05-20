@@ -61,7 +61,14 @@
   font-size: 16px;
   font-weight: 500;
   padding: 5px;
+}
+
+.answer-title-row {
   margin: 0 320px 0 65px;
+}
+
+.history-title-row {
+  margin: 0 130px 0 45px;
 }
 
 .table-title-content {

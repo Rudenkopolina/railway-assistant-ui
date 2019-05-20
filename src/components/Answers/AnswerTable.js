@@ -38,14 +38,12 @@ class AnswerTable extends React.Component {
   onUpdateAnswer = (id, index) => {
     const { prevData, data } = this.state;
     const newData = {}
-    console.log(data, prevData);
     if (prevData[index].text.transcription !== data[index].text.transcription) {
       newData.textTranscription = this.state.data[index].text.transcription;
     }
     if (prevData[index].audio.transcription !== data[index].audio.transcription) {
       newData.audioTranscription = this.state.data[index].audio.transcription;
     }
-    console.log(data);
     axiosInstance.post(`/api/answers/responses/${id}`, { ...newData })
     .then(res => {
       const prevData = JSON.parse(JSON.stringify(this.state.data));
@@ -113,7 +111,7 @@ class AnswerTable extends React.Component {
         </div>
       )}
       <NotificationContainer />
-      <div className="table-title-row">
+      <div className="table-title-row answer-title-row">
         <div className="table-title-content">
           Текстовый ответ
         </div>

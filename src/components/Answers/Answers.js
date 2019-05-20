@@ -17,9 +17,9 @@ class Answer extends React.Component {
     const { activeTab } =this.state;
     switch (activeTab) {
       case 'history':
-        return <AnswerTable />
-      default:
         return <HistoryTable />
+      default:
+        return <AnswerTable />
     }
   }
 
