@@ -8,8 +8,6 @@ import cx from 'classnames';
 import './Answer.css';
 import { axiosInstance, URL } from '../../helpers/axios'
 import Cookies from 'js-cookie';
-
-
 class AnswerTable extends React.Component {
   state = {
     data: [],
@@ -48,6 +46,8 @@ class AnswerTable extends React.Component {
     .then(res => {
       const prevData = JSON.parse(JSON.stringify(this.state.data));
       this.setState({ prevData, editDataId: null })
+      const audio = document.getElementById(`audio-${id}`)
+      audio.load();
       NotificationManager.success('Answer has been updated!');
     })
     .catch(err => {
