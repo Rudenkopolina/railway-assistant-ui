@@ -1,6 +1,6 @@
 import React from 'react';
 import {NotificationContainer, NotificationManager} from 'react-notifications';
-import { Icon } from 'semantic-ui-react'
+import { Icon, Popup } from 'semantic-ui-react'
 import TextArea from 'react-textarea-autosize';
 import 'react-notifications/lib/notifications.css';
 import Spinner from './spinner.js';
@@ -8,6 +8,9 @@ import cx from 'classnames';
 import './Answer.css';
 import { axiosInstance, URL } from '../../helpers/axios'
 import Cookies from 'js-cookie';
+
+const hint = "Для передачи слов-омографов используйте + перед ударной гласной. Например, гот+ов.Чтобы отметить паузу между словами, используйте -.";
+
 class AnswerTable extends React.Component {
   state = {
     data: [],
@@ -18,19 +21,27 @@ class AnswerTable extends React.Component {
   }
 
   componentWillMount() {
-    axiosInstance.get(`/api/answers/responses/`)
+    this.getData();
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    const { editDataId } = this.state;
+    if (prevProps.title !== this.props.title) {
+      this.getData();
+    }
+    if (prevState.editDataId !== editDataId && editDataId !== null) {
+      document.getElementById(`text-${editDataId}`).focus();
+    }
+  }
+
+  getData = () => {
+    const { title } = this.props;
+    axiosInstance.get(`/api/answers/${title}_responses/`)
     .then(res => {
       const prevData = JSON.parse(JSON.stringify(res.data.responses));
       this.setState({ data: res.data.responses, prevData, isLoading: false })
     })
     .catch(err => NotificationManager.error('Something go wrong. Reload page, please.', 'Sorry :('))
-  }
-
-  componentDidUpdate(prevProps, prevState) {
-    const { editDataId } = this.state;
-    if (prevState.editDataId !== editDataId && editDataId !== null) {
-      document.getElementById(`text-${editDataId}`).focus();
-    }
   }
 
   onUpdateAnswer = (id, index) => {
@@ -117,11 +128,19 @@ class AnswerTable extends React.Component {
         </div>
         <div className="table-title-content">
           Голосовой ответ
+          <Popup
+            content={hint}
+            position="right center"
+            trigger={<Icon name='question circle outline' className="hint-icon"/>}
+          />
         </div>
       </div>
         {this.state.data.map((answer, index) => (
           <div className="table-row"  key={index}>
-            <div className="table-number">{answer.id}</div>
+            <div className="table-number">{index + 1}</div>
+            <div className="table-intent">
+              {answer.description}
+            </div>
               {editDataId === answer.id ? (
                 <TextArea
                   id={`text-${answer.id}`}
