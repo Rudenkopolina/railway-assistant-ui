@@ -1,5 +1,5 @@
 import React from 'react';
-import { Modal, Input, Label, Icon } from 'semantic-ui-react'
+import { Modal, Input, Icon } from 'semantic-ui-react'
 import TextArea from 'react-textarea-autosize';
 import './NewIntentModal.css';
 
@@ -10,7 +10,14 @@ class NewIntentModal extends React.Component {
       description: '',
       text: '',
       audio: '',
-      keys: ['']
+      keys: []
+    },
+    selectedKey: null,
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    if (prevState.data.keys.length < this.state.data.keys.length) {
+      document.getElementById(`key-${this.state.data.keys.length - 1}`).focus();
     }
   }
 
@@ -26,21 +33,39 @@ class NewIntentModal extends React.Component {
 
   onAddKey = () => {
     const { data } = this.state;
-    const keys = this.state.data.keys;
+    const keys = [ ...this.state.data.keys];
     keys.push('');
     this.setState({ data: {...data, keys} });
   }
 
   onChangeKey = (e, index) => {
     const { data } = this.state;
-    const keys = this.state.data.keys;
+    const keys = [ ...this.state.data.keys];
     keys[index] = e.target.value;
+    this.setState({ data: {...data, keys} });
+  }
+
+  onSelectKey = index => {
+    this.setState({ selectedKey: index })
+  }
+
+  onDeselectKey = () => {
+    this.setState({ selectedKey: null })
+  }
+
+  removeKey = index => {
+    const { data } = this.state;
+    const keys = [ ...this.state.data.keys];
+    keys.splice(index, 1);;
     this.setState({ data: {...data, keys} });
   }
 
   getContent = () => (
     <div className="modal-wrapper">
-      <div className="modal-header">Добавить справочный ответ</div>
+      <div className="modal-header">
+        Добавить справочный ответ
+        <Icon name='close' onClick={this.onTrigerModal} />
+      </div>
       <div className="modal-content">
         <div className="modal-formfield">
           <div className="modal-formfield-title">Описание</div>
@@ -55,21 +80,36 @@ class NewIntentModal extends React.Component {
           <div className="modal-formfield-title">Ключевые слова</div>
           <div className="modal-keys-formfield">
             {this.state.data.keys.map((key, index) => (
-              <input
-                onChange={(e) => this.onChangeKey(e, index)}
-                className="key-input"
-                value={key}
-                placeholder="Ключесове слово"
-              />
+              <div
+                className="key-wrapper"
+                onMouseEnter={() => this.onSelectKey(index)}
+                onMouseLeave={this.onDeselectKey}
+              >
+                {this.state.selectedKey === index &&
+                  <Icon
+                    name='close'
+                    className="close-key-icon"
+                    onClick={() => this.removeKey(index)}
+                  />
+                }
+                <input
+                  key={index}
+                  id={`key-${index}`}
+                  onChange={(e) => this.onChangeKey(e, index)}
+                  className="key-input"
+                  value={key}
+                  placeholder="Ключесове слово"
+                />
+              </div>
             ))}
-            <Label
+            <button
               onClick={this.onAddKey}
               className="add-label"
               size="Large"
             >
               <Icon name='plus' />
               Add
-            </Label>
+            </button>
           </div>
         </div>
         <div className="modal-formfield">
