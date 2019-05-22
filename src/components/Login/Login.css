@@ -27,7 +27,7 @@ p {
 form{
   margin-top: 150px;
 }
-.input {
+.login-input {
   border: 1px solid white;
   background-color: #193fef;
   color: white;
@@ -37,7 +37,7 @@ form{
   margin: 5px;
 }
 
-.input::placeholder {
+.login-input::placeholder {
   text-align: center;
   color: white;
   font-size: 14px;

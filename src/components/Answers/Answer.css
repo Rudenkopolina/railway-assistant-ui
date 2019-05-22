@@ -12,10 +12,15 @@
   min-height: 100vh;
 }
 
-.answer-menu {
+.answer-header {
   display: flex;
   margin: 0 20px;
   border-bottom: 2px solid #ececf0;
+  justify-content: space-between;
+}
+
+.answer-menu {
+  display: flex;
 }
 
 .answer-menu-item {
