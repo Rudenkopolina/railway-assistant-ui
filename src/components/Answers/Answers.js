@@ -20,9 +20,9 @@ class Answer extends React.Component {
       case 'history':
         return <HistoryTable />
       case 'common':
-        return <AnswerTable title='common'/>
+        return <AnswerTable title='common' key='common' />
       case 'reference':
-        return <AnswerTable title='reference'/>
+        return <AnswerTable title='reference' key='reference' />
       default:
         return <AnswerTable title/>
     }
