@@ -5,7 +5,7 @@ import 'react-notifications/lib/notifications.css';
 import Spinner from './spinner.js';
 import cx from 'classnames';
 import './Answer.css';
-import { axiosInstance } from '../../helpers/axios'
+// import { axiosInstance } from '../../helpers/axios'
 import moment from 'moment';
 
 
@@ -18,16 +18,16 @@ class HistoryTable extends React.Component {
   }
 
   componentWillMount() {
-    axiosInstance.get(`/api/text/intents`)
-    .then(res => this.setState({ intents: res.data.intents }))
-    .catch(err => NotificationManager.error('Something go wrong. Reload page, please.', 'Sorry :('));
-
-    axiosInstance.get(`/api/logs/intents`)
-    .then(res => {
-      const prevData = JSON.parse(JSON.stringify(res.data.logs));
-      this.setState({ data: res.data.logs, prevData, isLoading: false })
-    })
-    .catch(err => NotificationManager.error('Something go wrong. Reload page, please.', 'Sorry :('))
+    // axiosInstance.get(`/api/text/intents`)
+    // .then(res => this.setState({ intents: res.data.intents }))
+    // .catch(err => NotificationManager.error('Something go wrong. Reload page, please.', 'Sorry :('));
+    //
+    // axiosInstance.get(`/api/logs/intents`)
+    // .then(res => {
+    //   const prevData = JSON.parse(JSON.stringify(res.data.logs));
+    //   this.setState({ data: res.data.logs, prevData, isLoading: false })
+    // })
+    // .catch(err => NotificationManager.error('Something go wrong. Reload page, please.', 'Sorry :('))
   }
 
   onUpdateLog = (id) => {}

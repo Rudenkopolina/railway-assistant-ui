@@ -6,8 +6,6 @@ import 'react-notifications/lib/notifications.css';
 import Spinner from './spinner.js';
 import cx from 'classnames';
 import './Answer.css';
-import { axiosInstance, URL } from '../../helpers/axios'
-import Cookies from 'js-cookie';
 
 const hint = "Для передачи слов-омографов используйте + перед ударной гласной. Например, гот+ов.Чтобы отметить паузу между словами, используйте -.";
 
@@ -35,35 +33,35 @@ class AnswerTable extends React.Component {
   }
 
   getData = () => {
-    const { title } = this.props;
-    axiosInstance.get(`/api/answers/${title}_responses/`)
-    .then(res => {
-      const prevData = JSON.parse(JSON.stringify(res.data.responses));
-      this.setState({ data: res.data.responses, prevData, isLoading: false })
-    })
-    .catch(err => NotificationManager.error('Something go wrong. Reload page, please.', 'Sorry :('))
+    // const { title } = this.props;
+    // axiosInstance.get(`/api/answers/${title}_responses/`)
+    // .then(res => {
+    //   const prevData = JSON.parse(JSON.stringify(res.data.responses));
+    //   this.setState({ data: res.data.responses, prevData, isLoading: false })
+    // })
+    // .catch(err => NotificationManager.error('Something go wrong. Reload page, please.', 'Sorry :('))
   }
 
   onUpdateAnswer = (id, index) => {
-    const { prevData, data } = this.state;
-    const newData = {}
-    if (prevData[index].text.transcription !== data[index].text.transcription) {
-      newData.textTranscription = this.state.data[index].text.transcription;
-    }
-    if (prevData[index].audio.transcription !== data[index].audio.transcription) {
-      newData.audioTranscription = this.state.data[index].audio.transcription;
-    }
-    axiosInstance.post(`/api/answers/responses/${id}`, { ...newData })
-    .then(res => {
-      const prevData = JSON.parse(JSON.stringify(this.state.data));
-      this.setState({ prevData, editDataId: null })
-      const audio = document.getElementById(`audio-${id}`)
-      audio.load();
-      NotificationManager.success('Answer has been updated!');
-    })
-    .catch(err => {
-      NotificationManager.error('Something go wrong, try again.', 'Sorry :(');
-    });
+    // const { prevData, data } = this.state;
+    // const newData = {}
+    // if (prevData[index].text.transcription !== data[index].text.transcription) {
+    //   newData.textTranscription = this.state.data[index].text.transcription;
+    // }
+    // if (prevData[index].audio.transcription !== data[index].audio.transcription) {
+    //   newData.audioTranscription = this.state.data[index].audio.transcription;
+    // }
+    // axiosInstance.post(`/api/answers/responses/${id}`, { ...newData })
+    // .then(res => {
+    //   const prevData = JSON.parse(JSON.stringify(this.state.data));
+    //   this.setState({ prevData, editDataId: null })
+    //   const audio = document.getElementById(`audio-${id}`)
+    //   audio.load();
+    //   NotificationManager.success('Answer has been updated!');
+    // })
+    // .catch(err => {
+    //   NotificationManager.error('Something go wrong, try again.', 'Sorry :(');
+    // });
   }
 
   editDataAnswer = (id, index) => {
@@ -108,8 +106,8 @@ class AnswerTable extends React.Component {
   }
 
   getAudioSrc = id => {
-    const token = Cookies.get('authCode');
-    return `${URL}/api/answers/responses/${id}/audio/${token}`
+    // const token = Cookies.get('authCode');
+    // return `${URL}/api/answers/responses/${id}/audio/${token}`
   }
 
   render() {

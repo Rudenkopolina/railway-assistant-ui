@@ -1,10 +1,12 @@
-const { merge } = require('lodash');
-const ENV = process && process.env.NODE_ENV || 'development';
-const envConf = require('./' + ENV);
+const baseUrl = process && process.env.REACT_APP_BASE_API_URL || 'http://172.16.6.253:1000';
 
-export const config = merge({
-  env: ENV,
-  server: {
-    api: 'http://172.16.6.253:1000'
-  }
-}, envConf.config);
+module.exports = {
+	urls: {
+		auth: {
+			login: '/api/auth',
+			currentUser: '/api/me',
+			signUp: '/api/signup'
+		}
+	},
+	baseUrl
+};
