@@ -39,13 +39,13 @@ class Login extends React.Component {
           <form onSubmit={this.handleSubmit}>
             <input
               placeholder='Введите логин'
-              className='input'
+              className='login-input'
               value={this.state.login}
               onChange={e => this.handleChange(e, 'login')}
             />
             <input
               placeholder='Введите пароль'
-              className='input'
+              className='login-input'
               type='password'
               value={this.state.password}
               onChange={e => this.handleChange(e, 'password')}
