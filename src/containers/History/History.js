@@ -2,14 +2,13 @@ import React from 'react';
 import {NotificationContainer, NotificationManager} from 'react-notifications';
 import { Dropdown } from 'semantic-ui-react'
 import 'react-notifications/lib/notifications.css';
-import Spinner from './spinner.js';
+import Spinner from '../../components/Spinner';
 import cx from 'classnames';
 import './Answer.css';
-// import { axiosInstance } from '../../helpers/axios'
 import moment from 'moment';
 
 
-class HistoryTable extends React.Component {
+class History extends React.Component {
   state = {
     data: [],
     prevData: [],
@@ -55,7 +54,7 @@ class HistoryTable extends React.Component {
     const { data, isLoading } = this.state;
     const titles = ['Дата', 'Сессия', 'Запрос', 'Ответ', 'Распознанное намерение']
     return (
-      <div className={cx('answer-table-container', { 'loading': isLoading })}>
+      <div className={cx('answer-table-container container', { 'loading': isLoading })}>
       {isLoading && (
         <div className="table-spinner">
           <Spinner />
@@ -114,4 +113,4 @@ class HistoryTable extends React.Component {
   }
 }
 
-export default HistoryTable;
+export default History;

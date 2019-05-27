@@ -24,14 +24,13 @@ export function getCurrentUser() {
 
     try {
       const response = await request(urls.auth.currentUser, { method: 'GET'} );
-console.log('-------', response);
+
       dispatch({
         type: GET_CURRENT_USER_SUCCESS,
         user: response.user
       });
 
     } catch (err) {
-      console.log('err', err);
       dispatch({
         type: GET_CURRENT_USER_FAIL
       });
@@ -47,7 +46,6 @@ export function login(email, password) {
     try {
       const response = await request(urls.auth.login, { method: 'POST',  headers: { "Authorization":'Basic ' + new Buffer.from(email + ':' + password).toString('base64')} });
       auth.setToken(response.token);
-console.log(response);
       dispatch(getCurrentUser());
     } catch (err) {
       dispatch({

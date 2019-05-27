@@ -1,9 +1,8 @@
 import React from 'react';
 import cx from 'classnames';
 import './Answer.css';
-import AnswerTable from './AnswerTable';
-import HistoryTable from './HistoryTable';
-import NewIntentModal from '../NewIntentModal/NewIntentModal'
+import AnswerTable from '../../components/AnswerTable/AnswerTable';
+import NewIntentModal from '../../components/NewIntentModal/NewIntentModal'
 
 class Answer extends React.Component {
   state = {
@@ -17,8 +16,6 @@ class Answer extends React.Component {
   getContent = () => {
     const { activeTab } =this.state;
     switch (activeTab) {
-      case 'history':
-        return <HistoryTable />
       case 'common':
         return <AnswerTable title='common' key='common' />
       case 'reference':
@@ -35,13 +32,14 @@ class Answer extends React.Component {
       {name: 'Справка', key: 'reference'}
     ]
     return (
-      <div className="answers-container">
+      <div className="container">
         <div className="answer-header">
           <div className="answer-menu">
             {titles.map(title =>
               <div
-              className={cx('answer-menu-item', { 'answer-menu-item-active': activeTab === title.key })}
-              onClick={() => this.changeTab(title.key)}
+                key={title.key}
+                className={cx('answer-menu-item', { 'answer-menu-item-active': activeTab === title.key })}
+                onClick={() => this.changeTab(title.key)}
               >
               {title.name}
               </div>

@@ -1,67 +1,95 @@
 import React from 'react';
+import { connect } from 'react-redux';
+import { withRouter } from 'react-router-dom';
+import cx from 'classnames';
 import {NotificationContainer, NotificationManager} from 'react-notifications';
 import { Icon, Popup } from 'semantic-ui-react'
 import TextArea from 'react-textarea-autosize';
 import 'react-notifications/lib/notifications.css';
-import Spinner from './spinner.js';
-import cx from 'classnames';
+import Spinner from '../Spinner';
 import './Answer.css';
 
+import {
+  getCommonResponses,
+  getReferenceResponses,
+  changeResponse
+} from '../../redux/actions/responses';
+
+import { urls } from '../../config';
 const hint = "Для передачи слов-омографов используйте + перед ударной гласной. Например, гот+ов.Чтобы отметить паузу между словами, используйте -.";
 
 class AnswerTable extends React.Component {
   state = {
     data: [],
     prevData: [],
-    isLoading: true,
     playedId: null,
     editDataId: null
   }
 
   componentWillMount() {
-    this.getData();
+    const { title, data } = this.props;
+    if (data[title].length !== 0) {
+      this.setData();
+    }
+    switch (title) {
+      case 'common':
+        this.props.getCommonResponses()
+        .catch(err => {
+          NotificationManager.error('Something go wrong, try again.', 'Sorry :(');
+        });
+        break;
+      case 'reference':
+        this.props.getReferenceResponses()
+        .catch(err => {
+          NotificationManager.error('Something go wrong, try again.', 'Sorry :(');
+        });
+        break;
+      default:
+    }
   }
 
   componentDidUpdate(prevProps, prevState) {
     const { editDataId } = this.state;
-    if (prevProps.title !== this.props.title) {
-      this.getData();
+    const { title } = this.props;
+    if (prevProps.title !== title ||
+    this.props.data[title].length !== prevProps.data[title].length) {
+      this.setData();
     }
     if (prevState.editDataId !== editDataId && editDataId !== null) {
       document.getElementById(`text-${editDataId}`).focus();
     }
   }
 
-  getData = () => {
-    // const { title } = this.props;
-    // axiosInstance.get(`/api/answers/${title}_responses/`)
-    // .then(res => {
-    //   const prevData = JSON.parse(JSON.stringify(res.data.responses));
-    //   this.setState({ data: res.data.responses, prevData, isLoading: false })
-    // })
-    // .catch(err => NotificationManager.error('Something go wrong. Reload page, please.', 'Sorry :('))
+  setData = () => {
+  const { title } = this.props;
+    const prevData = JSON.parse(JSON.stringify(this.props.data[title]));
+    this.setState({
+      data: this.props.data[title],
+      prevData,
+    })
   }
 
   onUpdateAnswer = (id, index) => {
-    // const { prevData, data } = this.state;
-    // const newData = {}
-    // if (prevData[index].text.transcription !== data[index].text.transcription) {
-    //   newData.textTranscription = this.state.data[index].text.transcription;
-    // }
-    // if (prevData[index].audio.transcription !== data[index].audio.transcription) {
-    //   newData.audioTranscription = this.state.data[index].audio.transcription;
-    // }
-    // axiosInstance.post(`/api/answers/responses/${id}`, { ...newData })
-    // .then(res => {
-    //   const prevData = JSON.parse(JSON.stringify(this.state.data));
-    //   this.setState({ prevData, editDataId: null })
-    //   const audio = document.getElementById(`audio-${id}`)
-    //   audio.load();
-    //   NotificationManager.success('Answer has been updated!');
-    // })
-    // .catch(err => {
-    //   NotificationManager.error('Something go wrong, try again.', 'Sorry :(');
-    // });
+    const { prevData, data } = this.state;
+    const { title, changeResponse } = this.props;
+    const newData = {}
+    if (prevData[index].text.transcription !== data[index].text.transcription) {
+      newData.textTranscription = this.state.data[index].text.transcription;
+    }
+    if (prevData[index].audio.transcription !== data[index].audio.transcription) {
+      newData.audioTranscription = this.state.data[index].audio.transcription;
+    }
+    changeResponse(newData, id, title)
+    .then(() => {
+      const prevData = JSON.parse(JSON.stringify(this.state.data));
+      this.setState({ prevData, editDataId: null })
+      const audio = document.getElementById(`audio-${id}`)
+      audio.load();
+      NotificationManager.success('Answer has been updated!');
+    })
+    .catch(err => {
+      NotificationManager.error('Something go wrong, try again.', 'Sorry :(');
+    });
   }
 
   editDataAnswer = (id, index) => {
@@ -106,12 +134,13 @@ class AnswerTable extends React.Component {
   }
 
   getAudioSrc = id => {
-    // const token = Cookies.get('authCode');
-    // return `${URL}/api/answers/responses/${id}/audio/${token}`
+    const { title } = this.props;
+    return urls.responses.audioUrl(title, id);
   }
 
   render() {
-    const { prevData, data, isLoading, editDataId } = this.state;
+    const { editDataId, data, prevData } = this.state;
+    const { isLoading } = this.props;
     return (
       <div className={cx('answer-table-container', { 'loading': isLoading })}>
       {isLoading && (
@@ -133,7 +162,7 @@ class AnswerTable extends React.Component {
           />
         </div>
       </div>
-        {this.state.data.map((answer, index) => (
+        {data.map((answer, index) => (
           <div className="table-row"  key={index}>
             <div className="table-number">{index + 1}</div>
             <div className="table-intent">
@@ -217,4 +246,19 @@ class AnswerTable extends React.Component {
   }
 }
 
-export default AnswerTable;
+const mapStateToProps = ({ responses }) => ({
+  data: {
+    common: responses.commonResponses,
+    reference: responses.referenceResponses
+  },
+  isLoading: responses.pending
+});
+
+const mapDispatchToProps = dispatch => ({
+	getCommonResponses: () => dispatch(getCommonResponses()),
+	getReferenceResponses: () => dispatch(getReferenceResponses()),
+  changeResponse: (data, id, title) => dispatch(changeResponse(data, id, title))
+
+});
+
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(AnswerTable));

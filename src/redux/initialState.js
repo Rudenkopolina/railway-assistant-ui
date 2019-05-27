@@ -4,8 +4,14 @@ export const auth = {
   finished: false
 };
 
+export const responses = {
+  commonResponses: [],
+  referenceResponses: [],
+  pending: false,
+  faild: false
+};
+
 export default {
-  auth
-//  notifications: [],
-  //resources: {}
+  auth,
+  responses,
 };

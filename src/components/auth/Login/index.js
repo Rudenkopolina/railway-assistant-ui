@@ -1,7 +1,7 @@
 import React from 'react';
 import './Login.css';
 import { connect } from 'react-redux';
-import { withRouter, Redirect } from 'react-router-dom';
+import { withRouter } from 'react-router-dom';
 
 import { login } from '../../../redux/actions/auth';
 import UrlRestoringService from '../../../services/url_restoring_service';

@@ -71,7 +71,6 @@ export default function request(
   }
 
   const token = auth.getToken();
-console.log('token', token);
   if (token) {
     options.headers = Object.assign(
       {

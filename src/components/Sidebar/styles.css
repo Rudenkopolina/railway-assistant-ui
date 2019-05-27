@@ -1,0 +1,24 @@
+.sidebar-wrapper {
+  display: flex;
+  flex-direction: column;
+  width: 60px;
+  position: fixed;
+  background-color: #fff;
+  height: 100vh;
+  box-shadow: 0px 0px 20px 0px #cbd0d799;
+  align-items: center;
+}
+
+.sidebar-icon {
+  color: #cbd0d7;
+  margin: 30px 10px !important;
+}
+
+.sidebar-active-item {
+  border-left: 4px solid #3c69e7;
+  margin-left: -2px;
+}
+
+.sidebar-active-icon {
+  color: #3c69e7;
+}

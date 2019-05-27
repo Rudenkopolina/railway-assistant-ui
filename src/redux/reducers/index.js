@@ -1,11 +1,9 @@
 import { combineReducers } from 'redux';
 
 import auth from './auth';
-// import resources from './resources';
-// import notifications from './notifications';
+import responses from './responses';
 
 export default combineReducers({
-  auth
-//   notifications,
-//   resources
+  auth,
+  responses,
 });

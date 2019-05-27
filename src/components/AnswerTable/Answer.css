@@ -7,9 +7,11 @@
   border: none !important;
 }
 
-.answers-container {
+.container {
   background-color: #f9f9fb;
   min-height: 100vh;
+  margin-left: 60px;
+  padding: 30px;
 }
 
 .answer-header {
