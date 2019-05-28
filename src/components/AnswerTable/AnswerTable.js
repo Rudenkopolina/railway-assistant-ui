@@ -97,6 +97,9 @@ class AnswerTable extends React.Component {
   onReferencesUpdateAnswer = (data, id, index) => {
     const { prevData } = this.state;
     const { title, changeResponse } = this.props;
+    const newData = this.state.data;
+    newData[index] = JSON.parse(JSON.stringify(data));
+    newData[index].id = id;
     if (prevData[index].textTranscription === data.textTranscription) {
       delete data.textTranscription;
     }
@@ -105,14 +108,14 @@ class AnswerTable extends React.Component {
     }
     changeResponse(data, id, title)
     .then(() => {
-
       const prevData = JSON.parse(JSON.stringify(this.state.data));
-      this.setState({ prevData, data: [...this.state.data, [index]: data ] })
       const audio = document.getElementById(`audio-${id}`)
       audio.load();
+      this.setState({ prevData, data: newData })
       NotificationManager.success('Answer has been updated!');
     })
     .catch(err => {
+      console.log(err);
       NotificationManager.error('Something go wrong, try again.', 'Sorry :(');
     });
   }
@@ -263,7 +266,6 @@ class AnswerTable extends React.Component {
             {this.renderButton(answer, index)}
             </div>
             <div className="table-action">
-            {console.log(prevData, data)}
             {(editDataId === answer.id ||
               prevData[index].audioTranscription !== data[index].audioTranscription ||
               prevData[index].textTranscription !== data[index].textTranscription)
