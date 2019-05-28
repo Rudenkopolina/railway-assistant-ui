@@ -42,7 +42,7 @@ class Sidebar extends React.Component {
 				<div className='sidebar-wrapper'>
 					<Link to="/" className={cx({ 'sidebar-active-item': title === 'home' })}>
 	          <Popup
-	            content={titles[title]}
+	            content={titles.home}
 	            position='right center'
 	            trigger={
 	              <Icon name='home' className={cx('sidebar-icon', { 'sidebar-active-icon': title === 'home' })} size='big' />
@@ -51,7 +51,7 @@ class Sidebar extends React.Component {
 					</Link>
 	        <Link to="/account" className={cx({ 'sidebar-active-item': title === 'account' })}>
 	          <Popup
-	            content={titles[title]}
+	            content={titles.account}
 	            position='right center'
 	            trigger={
 	              <Icon name='user outline' className={cx('sidebar-icon', { 'sidebar-active-icon': title === 'account' })} size='big' />
@@ -60,7 +60,7 @@ class Sidebar extends React.Component {
 	        </Link>
 	        <Link to="/answers" className={cx({ 'sidebar-active-item': title === 'answers' })}>
 	          <Popup
-	            content={titles[title]}
+	            content={titles.answers}
 	            position='right center'
 	            trigger={
 	              <Icon name='comments outline' className={cx('sidebar-icon', { 'sidebar-active-icon': title === 'answers' })} size='big' />
@@ -70,7 +70,7 @@ class Sidebar extends React.Component {
 					<Protected requiredRoles='ALLOWED_HISTORY_EDITING'>
 		        <Link to="/history" className={cx({ 'sidebar-active-item': title === 'history' })}>
 		          <Popup
-		            content={titles[title]}
+		            content={titles.history}
 		            position='right center'
 		            trigger={
 		              <Icon name='history' className={cx('sidebar-icon', { 'sidebar-active-icon': title === 'history' })} size='big' />
@@ -81,7 +81,7 @@ class Sidebar extends React.Component {
 					<Protected requiredRoles='ALLOWED_USERS_CREATION'>
 		        <Link to="/answers" className={cx({ 'sidebar-active-item': title === 'employees' })}>
 		          <Popup
-		            content={titles[title]}
+		            content={titles.employees}
 		            position='right center'
 		            trigger={
 		              <Icon name='group' className={cx('sidebar-icon', { 'sidebar-active-icon': title === 'employees' })} size='big' />
