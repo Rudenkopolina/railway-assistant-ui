@@ -243,4 +243,4 @@ class NewIntentModal extends React.Component {
 }
 
 
-export default (NewIntentModal);
+export default NewIntentModal;
