@@ -8,7 +8,10 @@ import {
   GET_REFERENCE_RESPONSES_FAIL,
   CHANGE_RESPONSE,
   CHANGE_RESPONSE_SUCCESS,
-  CHANGE_RESPONSE_FAIL
+  CHANGE_RESPONSE_FAIL,
+  CREATE_RESPONSE,
+  CREATE_RESPONSE_SUCCESS,
+  CREATE_RESPONSE_FAIL
 } from '../actions/responses';
 
 export default function (state = initialState, action) {
@@ -16,37 +19,40 @@ export default function (state = initialState, action) {
 	case GET_COMMON_RESPONSES:
 	case GET_REFERENCE_RESPONSES:
   case CHANGE_RESPONSE:
+  case CREATE_RESPONSE:
     return {
       ...state,
       pending: true,
+      faild: false
     };
 
   case CHANGE_RESPONSE_SUCCESS:
+  case CREATE_RESPONSE_SUCCESS:
     return {
       ...state,
-      faild: false,
       pending: false
     };
 
 	case GET_COMMON_RESPONSES_SUCCESS:
     return {
-      ...initialState,
-      faild: false,
+      ...state,
+      pending: false,
       commonResponses: action.responses
     };
 
   case GET_REFERENCE_RESPONSES_SUCCESS:
     return {
-      ...initialState,
-      faild: false,
+      ...state,
+      pending: false,
       referenceResponses: action.responses
     };
 
 	case GET_REFERENCE_RESPONSES_FAIL:
 	case GET_COMMON_RESPONSES_FAIL:
   case CHANGE_RESPONSE_FAIL:
+  case CREATE_RESPONSE_FAIL:
     return {
-      ...initialState,
+      ...state,
       faild: true
     };
 

@@ -12,6 +12,10 @@ export const CHANGE_RESPONSE = 'CHANGE_RESPONSE';
 export const CHANGE_RESPONSE_SUCCESS = 'CHANGE_RESPONSE_SUCCESS';
 export const CHANGE_RESPONSE_FAIL = 'CHANGE_RESPONSE_FAIL';
 
+export const CREATE_RESPONSE = 'CREATE_RESPONSE';
+export const CREATE_RESPONSE_SUCCESS = 'CREATE_RESPONSE_SUCCESS';
+export const CREATE_RESPONSE_FAIL = 'CREATE_RESPONSE_FAIL';
+
 
 export function getCommonResponses() {
   return async dispatch => {
@@ -73,6 +77,50 @@ export function changeResponse(data, id, title) {
     } catch (err) {
       dispatch({
         type: CHANGE_RESPONSE_FAIL
+      });
+    }
+  };
+}
+
+export function createResponse(data) {
+  return async dispatch => {
+    dispatch({
+      type: CREATE_RESPONSE
+    });
+
+    try {
+      await request(urls.responses.createReferenceResponse, { method: 'POST',  body: { ...data } });
+      const res = await request(urls.responses.referenceResponses);
+      dispatch({
+        type: GET_REFERENCE_RESPONSES_SUCCESS,
+        responses: res.responses
+      });
+
+    } catch (err) {
+      dispatch({
+        type: CREATE_RESPONSE_FAIL
+      });
+    }
+  };
+}
+
+export function deleteResponse(id) {
+  return async dispatch => {
+    dispatch({
+      type: CREATE_RESPONSE
+    });
+
+    try {
+      await request(urls.responses.deleteReferenceResponse(id), { method: 'DELETE' });
+      const res = await request(urls.responses.referenceResponses);
+      dispatch({
+        type: GET_REFERENCE_RESPONSES_SUCCESS,
+        responses: res.responses
+      });
+
+    } catch (err) {
+      dispatch({
+        type: CREATE_RESPONSE_FAIL
       });
     }
   };

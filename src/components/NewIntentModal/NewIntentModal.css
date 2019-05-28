@@ -17,8 +17,6 @@
 }
 
 .action-button:hover {
-  background-color: #cbd0d7;
-  color: #fff;
   background-color: #5385fe;
   color: #fff;
 }
@@ -26,6 +24,30 @@
 .action-button:active {
 	position: relative;
 	top: 1px;
+}
+
+.action-button-disabled
+{
+  min-width: 82px;
+  border: 2px solid #cbd0d7;
+  color: #cbd0d7;
+  text-transform: uppercase;
+  border-radius: 20px;
+  display: flex;
+  justify-content: center;
+  font-size: 12px;
+  font-weight: 500;
+  padding: 8px 21px;
+  text-decoration: none;
+  margin: 0 10px;
+  border: 2px solid #5385fe;
+  color: #5385fe;
+  background-color: #fff;
+  opacity: 0.4;
+}
+
+.modal-hint {
+  color: #ba0505 !important;
 }
 
 .grey-button {

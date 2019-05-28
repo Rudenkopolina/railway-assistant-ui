@@ -1,12 +1,22 @@
 import React from 'react';
 import cx from 'classnames';
+import { connect } from 'react-redux';
+import { withRouter } from 'react-router-dom';
 import './Answer.css';
 import AnswerTable from '../../components/AnswerTable/AnswerTable';
-import NewIntentModal from '../../components/NewIntentModal/NewIntentModal'
+import NewIntentModal from '../../components/NewIntentModal/NewIntentModal';
+import Protected from '../../components/common/protected/container'
+
+import { createResponse } from '../../redux/actions/responses';
+
+const titles = [
+  {name: 'Типовые фразы', key: 'common', requiredRoles: 'ALLOWED_ANSWERS_VIEWING'},
+  {name: 'Справка', key: 'reference', requiredRoles: 'ALLOWED_KNOWLEDGEBASE_VIEWING'}
+]
 
 class Answer extends React.Component {
   state = {
-    activeTab: 'common'
+    activeTab: this.props.user.permissions.ALLOWED_ANSWERS_VIEWING ? 'common' : 'reference'
   }
 
   changeTab = tab => {
@@ -17,36 +27,47 @@ class Answer extends React.Component {
     const { activeTab } =this.state;
     switch (activeTab) {
       case 'common':
-        return <AnswerTable title='common' key='common' />
+        return (
+          <Protected requiredRoles='ALLOWED_ANSWERS_VIEWING'>
+            <AnswerTable title='common' key='common' />
+          </Protected>
+        )
       case 'reference':
-        return <AnswerTable title='reference' key='reference' />
-      default:
-        return <AnswerTable title/>
+        return (
+          <Protected requiredRoles='ALLOWED_KNOWLEDGEBASE_VIEWING'>
+            <AnswerTable title='reference' key='reference' />
+          </Protected>
+        )
+      default: return;
     }
   }
 
   render() {
     const { activeTab } =this.state;
-    const titles = [
-      {name: 'Типовые фразы', key: 'common'},
-      {name: 'Справка', key: 'reference'}
-    ]
     return (
       <div className="container">
         <div className="answer-header">
           <div className="answer-menu">
             {titles.map(title =>
-              <div
-                key={title.key}
-                className={cx('answer-menu-item', { 'answer-menu-item-active': activeTab === title.key })}
-                onClick={() => this.changeTab(title.key)}
-              >
-              {title.name}
-              </div>
+              <Protected requiredRoles={title.requiredRoles} key={title.key}>
+                <div
+                  className={cx('answer-menu-item', { 'answer-menu-item-active': activeTab === title.key })}
+                  onClick={() => this.changeTab(title.key)}
+                >
+                {title.name}
+                </div>
+              </Protected>
             )}
           </div>
           <div className='answer-menu-item'>
-            <NewIntentModal />
+            <Protected requiredRoles='ALLOWED_KNOWLEDGEBASE_CREATION'>
+              <NewIntentModal
+                buttonText='Добавить справочный ответ'
+                className='action-button'
+                modalTitle='Добавить справочный ответ'
+                onSave={(data) => this.props.createResponse(data)}
+              />
+            </Protected>
           </div>
         </div>
         {this.getContent()}
@@ -55,4 +76,11 @@ class Answer extends React.Component {
   }
 }
 
-export default Answer;
+
+const mapStateToProps = ({ auth }) => (auth);
+
+const mapDispatchToProps = dispatch => ({
+	createResponse: (data) => dispatch(createResponse(data))
+});
+
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Answer));

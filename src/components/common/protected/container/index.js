@@ -54,7 +54,7 @@ class ProtectedContainerComponent extends Component {
       return true;
     }
 
-    return castArray(requiredRoles).includes(currentUser.role);
+    return currentUser.permissions[requiredRoles];
   }
 
   renderLoadingIndicator() {

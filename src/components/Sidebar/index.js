@@ -1,62 +1,104 @@
-import React from 'react';
+import React, { Fragment } from 'react';
+import { connect } from 'react-redux';
+import { withRouter } from 'react-router-dom';
 import {Link} from 'react-router-dom';
-import { Icon, Popup } from 'semantic-ui-react'
+import { Icon, Popup, Dropdown } from 'semantic-ui-react'
+import Protected from '../common/protected/container'
 import cx from 'classnames';
+import { logout } from '../../redux/actions/auth';
 import './styles.css'
 
+const titles = {
+		home: 'Домашняя старница',
+		account: 'Личный кабинет',
+		answers:	'Ответы',
+		history: 'История',
+		employees: 'Сотрудники'
+}
+
 class Sidebar extends React.Component {
+	logOut = () => {
+		this.props.logout();
+		sessionStorage.removeItem('jwtToken');
+	}
+
 	render() {
     const { title } = this.props;
 		return (
-			<div className='sidebar-wrapper'>
-				<Link to="/" className={cx({ 'sidebar-active-item': title === 'home' })}>
-          <Popup
-            content='Домашняя старница'
-            position='right center'
-            trigger={
-              <Icon name='home' className={cx('sidebar-icon', { 'sidebar-active-icon': title === 'home' })} size='big' />
-            }
-          />
-				</Link>
-        <Link to="/answers" className={cx({ 'sidebar-active-item': title === 'account' })}>
-          <Popup
-            content='Личный кабинет'
-            position='right center'
-            trigger={
-              <Icon name='user outline' className={cx('sidebar-icon', { 'sidebar-active-icon': title === 'account' })} size='big' />
-            }
-          />
-        </Link>
-        <Link to="/answers" className={cx({ 'sidebar-active-item': title === 'answers' })}>
-          <Popup
-            content='Ответы'
-            position='right center'
-            trigger={
-              <Icon name='comments outline' className={cx('sidebar-icon', { 'sidebar-active-icon': title === 'answers' })} size='big' />
-            }
-          />
-        </Link>
-        <Link to="/history" className={cx({ 'sidebar-active-item': title === 'history' })}>
-          <Popup
-            content='История'
-            position='right center'
-            trigger={
-              <Icon name='history' className={cx('sidebar-icon', { 'sidebar-active-icon': title === 'history' })} size='big' />
-            }
-          />
-        </Link>
-        <Link to="/answers" className={cx({ 'sidebar-active-item': title === 'employees' })}>
-          <Popup
-            content='Сотрудники'
-            position='right center'
-            trigger={
-              <Icon name='group' className={cx('sidebar-icon', { 'sidebar-active-icon': title === 'employees' })} size='big' />
-            }
-          />
-        </Link>
-			</div>
+			<Fragment>
+				<div className='header-wrapper'>
+					<div>
+						{titles[title]}
+					</div>
+					<div>
+						{this.props.user.username}
+						<Dropdown item icon='ellipsis horizontal' className='header-menu'>
+							<Dropdown.Menu direction='left' className='header-menu-item'>
+								<div className='header-menu-content' onClick={this.logOut}>Выйти</div>
+							</Dropdown.Menu>
+						</Dropdown>
+					</div>
+				</div>
+				<div className='sidebar-wrapper'>
+					<Link to="/" className={cx({ 'sidebar-active-item': title === 'home' })}>
+	          <Popup
+	            content={titles[title]}
+	            position='right center'
+	            trigger={
+	              <Icon name='home' className={cx('sidebar-icon', { 'sidebar-active-icon': title === 'home' })} size='big' />
+	            }
+	          />
+					</Link>
+	        <Link to="/account" className={cx({ 'sidebar-active-item': title === 'account' })}>
+	          <Popup
+	            content={titles[title]}
+	            position='right center'
+	            trigger={
+	              <Icon name='user outline' className={cx('sidebar-icon', { 'sidebar-active-icon': title === 'account' })} size='big' />
+	            }
+	          />
+	        </Link>
+	        <Link to="/answers" className={cx({ 'sidebar-active-item': title === 'answers' })}>
+	          <Popup
+	            content={titles[title]}
+	            position='right center'
+	            trigger={
+	              <Icon name='comments outline' className={cx('sidebar-icon', { 'sidebar-active-icon': title === 'answers' })} size='big' />
+	            }
+	          />
+	        </Link>
+					<Protected requiredRoles='ALLOWED_HISTORY_EDITING'>
+		        <Link to="/history" className={cx({ 'sidebar-active-item': title === 'history' })}>
+		          <Popup
+		            content={titles[title]}
+		            position='right center'
+		            trigger={
+		              <Icon name='history' className={cx('sidebar-icon', { 'sidebar-active-icon': title === 'history' })} size='big' />
+		            }
+		          />
+		        </Link>
+					</Protected>
+					<Protected requiredRoles='ALLOWED_USERS_CREATION'>
+		        <Link to="/answers" className={cx({ 'sidebar-active-item': title === 'employees' })}>
+		          <Popup
+		            content={titles[title]}
+		            position='right center'
+		            trigger={
+		              <Icon name='group' className={cx('sidebar-icon', { 'sidebar-active-icon': title === 'employees' })} size='big' />
+		            }
+		          />
+		        </Link>
+					</Protected>
+				</div>
+			</Fragment>
 		);
 	}
 }
 
-export default Sidebar;
+const mapStateToProps = ({ auth }) => (auth);
+
+const mapDispatchToProps = dispatch => ({
+	logout: () => dispatch(logout())
+});
+
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Sidebar));

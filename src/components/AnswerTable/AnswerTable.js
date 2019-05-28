@@ -3,16 +3,19 @@ import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import cx from 'classnames';
 import {NotificationContainer, NotificationManager} from 'react-notifications';
+import Protected from '../common/protected/container'
 import { Icon, Popup } from 'semantic-ui-react'
 import TextArea from 'react-textarea-autosize';
 import 'react-notifications/lib/notifications.css';
 import Spinner from '../Spinner';
+import NewIntentModal from '../NewIntentModal/NewIntentModal';
 import './Answer.css';
 
 import {
   getCommonResponses,
   getReferenceResponses,
-  changeResponse
+  changeResponse,
+  deleteResponse
 } from '../../redux/actions/responses';
 
 import { urls } from '../../config';
@@ -50,9 +53,8 @@ class AnswerTable extends React.Component {
 
   componentDidUpdate(prevProps, prevState) {
     const { editDataId } = this.state;
-    const { title } = this.props;
-    if (prevProps.title !== title ||
-    this.props.data[title].length !== prevProps.data[title].length) {
+    const { isLoading } = this.props;
+    if (prevProps.isLoading !== isLoading && isLoading === false) {
       this.setData();
     }
     if (prevState.editDataId !== editDataId && editDataId !== null) {
@@ -69,20 +71,43 @@ class AnswerTable extends React.Component {
     })
   }
 
-  onUpdateAnswer = (id, index) => {
+  onCommonUpdateAnswer = (id, index) => {
     const { prevData, data } = this.state;
     const { title, changeResponse } = this.props;
     const newData = {}
-    if (prevData[index].text.transcription !== data[index].text.transcription) {
-      newData.textTranscription = this.state.data[index].text.transcription;
+    if (prevData[index].textTranscription !== data[index].textTranscription) {
+      newData.textTranscription = this.state.data[index].textTranscription;
     }
-    if (prevData[index].audio.transcription !== data[index].audio.transcription) {
-      newData.audioTranscription = this.state.data[index].audio.transcription;
+    if (prevData[index].audioTranscription !== data[index].audioTranscription) {
+      newData.audioTranscription = this.state.data[index].audioTranscription;
     }
     changeResponse(newData, id, title)
     .then(() => {
       const prevData = JSON.parse(JSON.stringify(this.state.data));
       this.setState({ prevData, editDataId: null })
+      const audio = document.getElementById(`audio-${id}`)
+      audio.load();
+      NotificationManager.success('Answer has been updated!');
+    })
+    .catch(err => {
+      NotificationManager.error('Something go wrong, try again.', 'Sorry :(');
+    });
+  }
+
+  onReferencesUpdateAnswer = (data, id, index) => {
+    const { prevData } = this.state;
+    const { title, changeResponse } = this.props;
+    if (prevData[index].textTranscription === data.textTranscription) {
+      delete data.textTranscription;
+    }
+    if (prevData[index].audioTranscription === data.audioTranscription) {
+      delete data.audioTranscription;
+    }
+    changeResponse(data, id, title)
+    .then(() => {
+
+      const prevData = JSON.parse(JSON.stringify(this.state.data));
+      this.setState({ prevData, data: [...this.state.data, [index]: data ] })
       const audio = document.getElementById(`audio-${id}`)
       audio.load();
       NotificationManager.success('Answer has been updated!');
@@ -105,7 +130,7 @@ class AnswerTable extends React.Component {
 
   handleChangeAnswer = (event, index, title) => {
     const newData = this.state.data;
-    newData[index][title] = {...newData[index][title], transcription: event.target.value}
+    newData[index] = {...newData[index], [title]: event.target.value}
     this.setState({ data: newData })
   }
 
@@ -128,8 +153,8 @@ class AnswerTable extends React.Component {
 
   isAnswerChange = index => {
     const { prevData, data } = this.state;
-    const isTextChenge = prevData[index].text.transcription !== data[index].text.transcription;
-    const isAudioChange = prevData[index].audio.transcription !== data[index].audio.transcription;
+    const isTextChenge = prevData[index].textTranscription !== data[index].textTranscription;
+    const isAudioChange = prevData[index].audioTranscription !== data[index].audioTranscription;
     return isTextChenge || isAudioChange;
   }
 
@@ -138,9 +163,33 @@ class AnswerTable extends React.Component {
     return urls.responses.audioUrl(title, id);
   }
 
+  renderButton = (answer, index) => {
+    if (this.props.title === 'common') {
+      return this.isAnswerChange(index) ? (
+        <div
+          className="table-button save-button"
+          onClick={()=> this.onCommonUpdateAnswer(answer.id, index)}
+        >
+          Сохранить
+        </div>
+      ) : (
+        <div className="no-button" />
+      )
+    }
+    return (
+      <div
+        className="table-button"
+        onClick={()=> this.props.onDeleteAnswer(answer.id)}
+      >
+        Удалить
+      </div>
+    )
+  }
+
   render() {
     const { editDataId, data, prevData } = this.state;
-    const { isLoading } = this.props;
+    const { isLoading, title } = this.props;
+    const permision = title === 'common' ? 'ALLOWED_ANSWERS_EDITING' : 'ALLOWED_KNOWLEDGEBASE_EDITING'
     return (
       <div className={cx('answer-table-container', { 'loading': isLoading })}>
       {isLoading && (
@@ -166,29 +215,29 @@ class AnswerTable extends React.Component {
           <div className="table-row"  key={index}>
             <div className="table-number">{index + 1}</div>
             <div className="table-intent">
-              {answer.description}
+              {answer.responseDescription}
             </div>
               {editDataId === answer.id ? (
                 <TextArea
                   id={`text-${answer.id}`}
-                  value={answer.text.transcription}
+                  value={answer.textTranscription}
                   className="table-textarea"
-                  onChange={(e) => this.handleChangeAnswer(e, index, 'text')}
+                  onChange={(e) => this.handleChangeAnswer(e, index, 'textTranscription')}
                 />
               ) : (
                 <div className="table-content">
-                  {answer.text.transcription}
+                  {answer.textTranscription}
                 </div>
               )}
               {editDataId === answer.id ? (
                 <TextArea
-                  value={answer.audio.transcription}
+                  value={answer.audioTranscription}
                   className="table-textarea"
-                  onChange={(e) => this.handleChangeAnswer(e, index, 'audio')}
+                  onChange={(e) => this.handleChangeAnswer(e, index, 'audioTranscription')}
                 />
               ) : (
                 <div className="table-content">
-                  {answer.audio.transcription}
+                  {answer.audioTranscription}
                 </div>
               )}
               <div className="table-action">
@@ -211,32 +260,40 @@ class AnswerTable extends React.Component {
               </audio>
             </div>
             <div className="table-action">
-            {this.isAnswerChange(index) ? (
-              <div
-                className="table-button save-button"
-                onClick={()=> this.onUpdateAnswer(answer.id, index)}
-              >
-                Сохранить
-              </div>
-            ) : (
-              <div className="no-button" />
-            )}
+            {this.renderButton(answer, index)}
             </div>
             <div className="table-action">
+            {console.log(prevData, data)}
             {(editDataId === answer.id ||
-              prevData[index].transcription !== data[index].transcription) ?
+              prevData[index].audioTranscription !== data[index].audioTranscription ||
+              prevData[index].textTranscription !== data[index].textTranscription)
+               ?
               <div
                 className="table-button blue-button"
                 onClick={() => this.editDataAnswer(answer.id, index)}
               >
                 Отменить
               </div> :
-              <div
-                className="table-button"
-                onClick={() => this.editDataAnswer(answer.id, index)}
-              >
-                Изменить
-              </div>
+              <Protected requiredRoles={permision}>
+              {title === 'common' ? (
+                <div
+                  className="table-button"
+                  onClick={() => this.editDataAnswer(answer.id, index)}
+                >
+                  Изменить
+                </div>
+              ) : (
+                <NewIntentModal
+                  key={answer.id}
+                  buttonText='Изменить'
+                  className="table-button"
+                  modalTitle='Изменить справочный ответ'
+                  onSave={(data) => this.onReferencesUpdateAnswer(data, answer.id, index)}
+                  // data={answer}
+                  responseId={answer.id}
+                />
+              )}
+              </Protected>
             }
             </div>
           </div>
@@ -257,8 +314,8 @@ const mapStateToProps = ({ responses }) => ({
 const mapDispatchToProps = dispatch => ({
 	getCommonResponses: () => dispatch(getCommonResponses()),
 	getReferenceResponses: () => dispatch(getReferenceResponses()),
-  changeResponse: (data, id, title) => dispatch(changeResponse(data, id, title))
-
+  changeResponse: (data, id, title) => dispatch(changeResponse(data, id, title)),
+  onDeleteAnswer: id => dispatch(deleteResponse(id))
 });
 
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(AnswerTable));

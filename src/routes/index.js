@@ -7,6 +7,7 @@ import Login from '../components/auth/Login';
 import Home from '../containers/Home';
 import Answers from '../containers/Answers/Answers'
 import History from '../containers/History/History'
+import Account from '../containers/Account/Account'
 import Sidebar from '../components/Sidebar'
 
 function Routes() {
@@ -19,8 +20,14 @@ function Routes() {
 				saveUrlOnFail
 			/>
 			<ProtectedRoute
+				requiredRoles='ALLOWED_HISTORY_EDITING'
 				path={'/history'}
 				component={() => <Fragment><Sidebar title='history'/><History/></Fragment>}
+				saveUrlOnFail
+			/>
+			<ProtectedRoute
+				path={'/account'}
+				component={() => <Fragment><Sidebar title='account'/><Account/></Fragment>}
 				saveUrlOnFail
 			/>
 			<ProtectedRoute
