@@ -210,10 +210,10 @@ class AnswerTable extends React.Component {
     const filteredAnswers = filterStringLowerCase ?
           data.filter(title => title.responseDescription.toLowerCase().indexOf(filterStringLowerCase) > -1
           || title.textTranscription.toLowerCase().indexOf(filterStringLowerCase) > -1
-          || title.audioTranscription.toLowerCase().indexOf(filterStringLowerCase) > -1)
+          || title.audioTranscription.toLowerCase().indexOf(filterStringLowerCase) > -1
+          || title.examples.some(example => example.toLowerCase().indexOf(filterStringLowerCase) > -1))
           :
           data;
-
     return (
       <div className={cx('answer-table-container', { 'loading': isLoading })}>
       {isLoading && (
