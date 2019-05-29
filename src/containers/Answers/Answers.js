@@ -6,6 +6,7 @@ import './Answer.css';
 import AnswerTable from '../../components/AnswerTable/AnswerTable';
 import NewIntentModal from '../../components/NewIntentModal/NewIntentModal';
 import Protected from '../../components/common/protected/container'
+import Filter from './../../components/Filter';
 
 import { createResponse } from '../../redux/actions/responses';
 
@@ -16,26 +17,31 @@ const titles = [
 
 class Answer extends React.Component {
   state = {
-    activeTab: this.props.user.permissions.ALLOWED_ANSWERS_VIEWING ? 'common' : 'reference'
+    activeTab: this.props.user.permissions.ALLOWED_ANSWERS_VIEWING ? 'common' : 'reference',
+    filterString: '',
   }
+
+  onFilterChange = (filterString) => {
+    this.setState({ filterString });
+}
 
   changeTab = tab => {
     this.setState({ activeTab: tab});
   }
 
   getContent = () => {
-    const { activeTab } =this.state;
+    const { activeTab, filterString } =this.state;
     switch (activeTab) {
       case 'common':
         return (
           <Protected requiredRoles='ALLOWED_ANSWERS_VIEWING'>
-            <AnswerTable title='common' key='common' />
+            <AnswerTable title='common' key='common' filterString={filterString} />
           </Protected>
         )
       case 'reference':
         return (
           <Protected requiredRoles='ALLOWED_KNOWLEDGEBASE_VIEWING'>
-            <AnswerTable title='reference' key='reference' />
+            <AnswerTable title='reference' key='reference' filterString={filterString} />
           </Protected>
         )
       default: return;
@@ -43,9 +49,10 @@ class Answer extends React.Component {
   }
 
   render() {
-    const { activeTab } =this.state;
+    const { activeTab, filterString } =this.state;
     return (
       <div className="container">
+        <Filter filterString={filterString} onFilterChange={this.onFilterChange} />
         <div className="answer-header">
           <div className="answer-menu">
             {titles.map(title =>

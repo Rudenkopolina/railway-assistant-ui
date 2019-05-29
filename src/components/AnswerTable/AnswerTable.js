@@ -4,7 +4,7 @@ import { withRouter } from 'react-router-dom';
 import cx from 'classnames';
 import {NotificationContainer, NotificationManager} from 'react-notifications';
 import Protected from '../common/protected/container'
-import { Icon, Popup } from 'semantic-ui-react'
+import { Icon, Popup, Modal } from 'semantic-ui-react'
 import TextArea from 'react-textarea-autosize';
 import 'react-notifications/lib/notifications.css';
 import Spinner from '../Spinner';
@@ -28,6 +28,11 @@ class AnswerTable extends React.Component {
     playedId: null,
     editDataId: null,
     shownKeyWodrsId: []
+  }
+
+  deleteAnswer = (event, answer) => {
+    event.preventDefault();
+    this.props.onDeleteAnswer(answer);
   }
 
   componentWillMount() {
@@ -175,12 +180,14 @@ class AnswerTable extends React.Component {
       )
     }
     return (
-      <div
-        className="table-button"
-        onClick={()=> this.props.onDeleteAnswer(answer.id)}
-      >
-        Удалить
-      </div>
+      <Modal
+        closeIcon
+        trigger={<div className='table-button'>Удалить</div>}
+        closeOnEscape={true}
+        size={'mini'}
+        content='Это действие нельзя отменить. Вы уверены, что хотите удалить этот ответ?'
+        actions={['Отменить', { key: 'done', content: 'Удалить', onClick: (event) => this.deleteAnswer(event, answer.id) }]}
+      />
     )
   }
 
@@ -196,8 +203,17 @@ class AnswerTable extends React.Component {
 
   render() {
     const { editDataId, data, prevData, shownKeyWodrsId } = this.state;
-    const { isLoading, title } = this.props;
+    const { isLoading, title, filterString } = this.props;
     const permision = title === 'common' ? 'ALLOWED_ANSWERS_EDITING' : 'ALLOWED_KNOWLEDGEBASE_EDITING'
+    const filterStringLowerCase = filterString.toLowerCase();
+
+    const filteredAnswers = filterStringLowerCase ?
+          data.filter(title => title.responseDescription.toLowerCase().indexOf(filterStringLowerCase) > -1
+          || title.textTranscription.toLowerCase().indexOf(filterStringLowerCase) > -1
+          || title.audioTranscription.toLowerCase().indexOf(filterStringLowerCase) > -1
+          || title.examples.some(example => example.toLowerCase().indexOf(filterStringLowerCase) > -1))
+          :
+          data;
     return (
       <div className={cx('answer-table-container', { 'loading': isLoading })}>
       {isLoading && (
@@ -219,7 +235,7 @@ class AnswerTable extends React.Component {
           />
         </div>
       </div>
-        {data.map((answer, index) => (
+        {filteredAnswers.map((answer, index) => (
           <div className="table-row-wrapper"  key={index}>
             <div className="table-row">
               <div className="table-number">{index + 1}</div>
