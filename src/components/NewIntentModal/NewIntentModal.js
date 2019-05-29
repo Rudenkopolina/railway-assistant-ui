@@ -1,6 +1,8 @@
 import React from 'react';
 import { Modal, Input, Icon, Popup } from 'semantic-ui-react'
+import {NotificationContainer, NotificationManager} from 'react-notifications';
 import TextArea from 'react-textarea-autosize';
+import cx from 'classnames';
 import './NewIntentModal.css';
 
 import request from '../../services/request';
@@ -16,31 +18,20 @@ class NewIntentModal extends React.Component {
       examples: []
     },
     selectedKey: null,
+    unUniqueExamples: [],
   }
 
   componentWillMount() {
-    if (this.props.responseId) {
-      request(urls.responses.getReferenceResponse(this.props.responseId))
-      .then(res => {
-          this.setState({ data: {
-            responseDescription: res.value.responseDescription || '',
-            textTranscription: res.value.textTranscription || '',
-            audioTranscription: res.value.audioTranscription || '',
-            examples: res.value.examples || []
-          }
-        })
-      })
-    }
-  //   if (this.props.data) {
-  //     const { data } = this.props;
-  //     this.setState({ data: {
-  //       responseDescription: data.responseDescription || '',
-  //       textTranscription: data.textTranscription || '',
-  //       audioTranscription: data.audioTranscription || '',
-  //       examples: data.examples || []
-  //     }
-  //   })
-  // }
+    if (this.props.data) {
+      const { data } = this.props;
+      this.setState({ data: {
+        responseDescription: data.responseDescription || '',
+        textTranscription: data.textTranscription || '',
+        audioTranscription: data.audioTranscription || '',
+        examples: data.examples || []
+      }
+    })
+  }
 }
 
   componentDidUpdate(prevProps, prevState) {
@@ -83,10 +74,13 @@ class NewIntentModal extends React.Component {
   }
 
   removeKey = index => {
-    const { data } = this.state;
+    const { data, unUniqueExamples } = this.state;
     const examples = [ ...this.state.data.examples];
     examples.splice(index, 1);;
-    this.setState({ data: {...data, examples} });
+    this.setState({
+      data: {...data, examples},
+      unUniqueExamples: unUniqueExamples.filter(item => item !== index)
+    });
   }
 
   onSendData = () => {
@@ -115,11 +109,29 @@ class NewIntentModal extends React.Component {
       isDisabled = isDisabled && !!item.trim()
     })
     return !responseDescription || !textTranscription ||
-      !audioTranscription || !examples.length || !isDisabled;
+      !audioTranscription || !examples.length || !isDisabled ||
+      (this.state.unUniqueExamples.length !== 0);
+  }
+
+  checkExample = index => {
+    const { unUniqueExamples, data } = this.state;
+    const element = data.examples[index];
+    let idx = data.examples.indexOf(element);
+    const indices = [];
+    while (idx !== -1) {
+      indices.push(idx);
+      idx = data.examples.indexOf(element, idx + 1);
+    }
+    if ( indices.length > 1 || element === '') {
+      this.setState({ unUniqueExamples: [...unUniqueExamples, index] });
+    } else {
+      this.setState({ unUniqueExamples: unUniqueExamples.filter(item => item !== index) })
+    }
   }
 
   getContent = () => {
     const isDisabled = this.isDisabled();
+    const { data, unUniqueExamples } = this.state;
     return (
       <div className="modal-wrapper">
         <div className="modal-header">
@@ -131,7 +143,7 @@ class NewIntentModal extends React.Component {
             <div className="modal-formfield-title">Описание</div>
             <Input
               onChange={(e) => this.onHandlerFormField(e, 'responseDescription')}
-              value={this.state.data.responseDescription}
+              value={data.responseDescription}
               className="modal-field"
               placeholder='Справка о...'
             />
@@ -139,7 +151,7 @@ class NewIntentModal extends React.Component {
           <div className="modal-formfield">
             <div className="modal-formfield-title">Ключевые слова</div>
             <div className="modal-keys-formfield">
-              {this.state.data.examples.map((key, index) => (
+              {data.examples.map((key, index) => (
                 <div
                   className="key-wrapper"
                   onMouseEnter={() => this.onSelectKey(index)}
@@ -156,7 +168,8 @@ class NewIntentModal extends React.Component {
                   <input
                     id={`key-${index}`}
                     onChange={(e) => this.onChangeKey(e, index)}
-                    className="key-input"
+                    onBlur={() => this.checkExample(index)}
+                    className={cx('key-input', { 'key-input-wrong': unUniqueExamples.indexOf(index) !== -1 })}
                     value={key}
                     placeholder="Ключесове слово"
                   />
@@ -177,7 +190,7 @@ class NewIntentModal extends React.Component {
             <TextArea
               className="modal-formfield-textarea modal-field"
               placeholder='Текстовый ответ...'
-              value={this.state.data.textTranscription}
+              value={data.textTranscription}
               onChange={(e) => this.onHandlerFormField(e, 'textTranscription')}
             />
           </div>
@@ -186,7 +199,7 @@ class NewIntentModal extends React.Component {
             <TextArea
               className="modal-formfield-textarea modal-field"
               placeholder='Голосовой ответ...'
-              value={this.state.data.audioTranscription}
+              value={data.audioTranscription}
               onChange={(e) => this.onHandlerFormField(e, 'audioTranscription')}
             />
           </div>
@@ -218,6 +231,7 @@ class NewIntentModal extends React.Component {
             </div>
           )}
         </div>
+        <NotificationContainer />
       </div>
     )
   }

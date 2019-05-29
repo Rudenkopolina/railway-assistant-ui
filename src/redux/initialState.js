@@ -8,7 +8,7 @@ export const responses = {
   commonResponses: [],
   referenceResponses: [],
   pending: false,
-  faild: false
+  failed: false
 };
 
 export default {

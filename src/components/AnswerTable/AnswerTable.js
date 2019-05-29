@@ -26,7 +26,8 @@ class AnswerTable extends React.Component {
     data: [],
     prevData: [],
     playedId: null,
-    editDataId: null
+    editDataId: null,
+    shownKeyWodrsId: []
   }
 
   deleteAnswer = (event, answer) => {
@@ -41,16 +42,10 @@ class AnswerTable extends React.Component {
     }
     switch (title) {
       case 'common':
-        this.props.getCommonResponses()
-        .catch(err => {
-          NotificationManager.error('Something went wrong, try again.', 'Sorry :(');
-        });
+        this.props.getCommonResponses();
         break;
       case 'reference':
-        this.props.getReferenceResponses()
-        .catch(err => {
-          NotificationManager.error('Something went wrong, try again.', 'Sorry :(');
-        });
+        this.props.getReferenceResponses();
         break;
       default:
     }
@@ -196,10 +191,19 @@ class AnswerTable extends React.Component {
     )
   }
 
+  showKeyWords = id => {
+    this.setState({ shownKeyWodrsId: [...this.state.shownKeyWodrsId, id] });
+  }
+
+  hideKeyWords = id => {
+    this.setState({
+      shownKeyWodrsId: this.state.shownKeyWodrsId.filter(item => item !==id)
+    });
+  }
+
   render() {
-    const { editDataId, data, prevData } = this.state;
-    const { filterString } = this.props;
-    const { isLoading, title } = this.props;
+    const { editDataId, data, prevData, shownKeyWodrsId } = this.state;
+    const { isLoading, title, filterString } = this.props;
     const permision = title === 'common' ? 'ALLOWED_ANSWERS_EDITING' : 'ALLOWED_KNOWLEDGEBASE_EDITING'
     const filterStringLowerCase = filterString.toLowerCase();
 
@@ -232,91 +236,117 @@ class AnswerTable extends React.Component {
         </div>
       </div>
         {filteredAnswers.map((answer, index) => (
-          <div className="table-row"  key={index}>
-            <div className="table-number">{index + 1}</div>
-            <div className="table-intent">
-              {answer.responseDescription}
-            </div>
-              {editDataId === answer.id ? (
-                <TextArea
-                  id={`text-${answer.id}`}
-                  value={answer.textTranscription}
-                  className="table-textarea"
-                  onChange={(e) => this.handleChangeAnswer(e, index, 'textTranscription')}
-                />
-              ) : (
-                <div className="table-content">
-                  {answer.textTranscription}
-                </div>
-              )}
-              {editDataId === answer.id ? (
-                <TextArea
-                  value={answer.audioTranscription}
-                  className="table-textarea"
-                  onChange={(e) => this.handleChangeAnswer(e, index, 'audioTranscription')}
-                />
-              ) : (
-                <div className="table-content">
-                  {answer.audioTranscription}
-                </div>
-              )}
+          <div className="table-row-wrapper"  key={index}>
+            <div className="table-row">
+              <div className="table-number">{index + 1}</div>
+              <div className="table-intent">
+                {answer.responseDescription}
+              </div>
+                {editDataId === answer.id ? (
+                  <TextArea
+                    id={`text-${answer.id}`}
+                    value={answer.textTranscription}
+                    className="table-textarea"
+                    onChange={(e) => this.handleChangeAnswer(e, index, 'textTranscription')}
+                  />
+                ) : (
+                  <div className="table-content">
+                    {answer.textTranscription}
+                  </div>
+                )}
+                {editDataId === answer.id ? (
+                  <TextArea
+                    value={answer.audioTranscription}
+                    className="table-textarea"
+                    onChange={(e) => this.handleChangeAnswer(e, index, 'audioTranscription')}
+                  />
+                ) : (
+                  <div className="table-content">
+                    {answer.audioTranscription}
+                  </div>
+                )}
+                <div className="table-action">
+                {this.state.playedId === answer.id ?
+                  <Icon
+                    size='large'
+                    name="pause"
+                    className="audio-icon"
+                    onClick={() => this.onStopAudio(answer.id)}
+                  /> :
+                  <Icon
+                    size='large'
+                    name="play circle outline"
+                    className="audio-icon"
+                    onClick={() => this.onPlayAudio(answer.id)}
+                  />
+                }
+                <audio preload='none' id={`audio-${answer.id}`} onEnded={() => this.onStopAudio(answer.id)}>
+                  <source src={this.getAudioSrc(answer.id)} type="audio/ogg" />
+                </audio>
+              </div>
               <div className="table-action">
-              {this.state.playedId === answer.id ?
-                <Icon
-                  size='large'
-                  name="pause"
-                  className="audio-icon"
-                  onClick={() => this.onStopAudio(answer.id)}
-                /> :
-                <Icon
-                  size='large'
-                  name="play circle outline"
-                  className="audio-icon"
-                  onClick={() => this.onPlayAudio(answer.id)}
-                />
-              }
-              <audio preload='none' id={`audio-${answer.id}`} onEnded={() => this.onStopAudio(answer.id)}>
-                <source src={this.getAudioSrc(answer.id)} type="audio/ogg" />
-              </audio>
-            </div>
-            <div className="table-action">
-            {this.renderButton(answer, index)}
-            </div>
-            <div className="table-action">
-            {(editDataId === answer.id ||
-              prevData[index].audioTranscription !== data[index].audioTranscription ||
-              prevData[index].textTranscription !== data[index].textTranscription)
-               ?
-              <div
-                className="table-button blue-button"
-                onClick={() => this.editDataAnswer(answer.id, index)}
-              >
-                Отменить
-              </div> :
-              <Protected requiredRoles={permision}>
-              {title === 'common' ? (
+              {this.renderButton(answer, index)}
+              </div>
+              <div className="table-action">
+              {(editDataId === answer.id ||
+                prevData[index].audioTranscription !== data[index].audioTranscription ||
+                prevData[index].textTranscription !== data[index].textTranscription)
+                 ?
                 <div
-                  className="table-button"
+                  className="table-button blue-button"
                   onClick={() => this.editDataAnswer(answer.id, index)}
                 >
-                  Изменить
-                </div>
-              ) : (
-                <NewIntentModal
-                  key={answer.id}
-                  buttonText='Изменить'
-                  className="table-button"
-                  modalTitle='Изменить справочный ответ'
-                  onSave={(data) => this.onReferencesUpdateAnswer(data, answer.id, index)}
-                  // data={answer}
-                  responseId={answer.id}
-                />
-              )}
-              </Protected>
+                  Отменить
+                </div> :
+                <Protected requiredRoles={permision}>
+                {title === 'common' ? (
+                  <div
+                    className="table-button"
+                    onClick={() => this.editDataAnswer(answer.id, index)}
+                  >
+                    Изменить
+                  </div>
+                ) : (
+                  <NewIntentModal
+                    key={answer.id}
+                    buttonText='Изменить'
+                    className="table-button"
+                    modalTitle='Изменить справочный ответ'
+                    onSave={(data) => this.onReferencesUpdateAnswer(data, answer.id, index)}
+                    data={answer}
+                    responseId={answer.id}
+                  />
+                )}
+                </Protected>
+              }
+              </div>
+              </div>
+            {!!answer.examples.length && (
+              (shownKeyWodrsId.indexOf(answer.id) !== -1) ? (
+              <div
+                className='key-words-title'
+                onClick={() => this.hideKeyWords(answer.id)}
+              >
+                Скрыть ключевые слова
+              </div>
+            ) : (
+              <div
+                className='key-words-title'
+                onClick={() => this.showKeyWords(answer.id)}
+              >
+                Показать ключевые слова
+              </div>
+            ))
+          }
+            {(shownKeyWodrsId.indexOf(answer.id) !== -1) &&
+              <div className="key-words">
+              {answer.examples.map(item => (
+                <span className="key-word">{item}</span>
+              ))}
+              </div>
             }
-            </div>
           </div>
-        ))}
+          ))}
       </div>
     );
   }
