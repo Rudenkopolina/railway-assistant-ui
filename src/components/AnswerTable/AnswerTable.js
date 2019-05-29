@@ -198,8 +198,18 @@ class AnswerTable extends React.Component {
 
   render() {
     const { editDataId, data, prevData } = this.state;
+    const { filterString } = this.props;
     const { isLoading, title } = this.props;
     const permision = title === 'common' ? 'ALLOWED_ANSWERS_EDITING' : 'ALLOWED_KNOWLEDGEBASE_EDITING'
+    const filterStringLowerCase = filterString.toLowerCase();
+
+    const filteredAnswers = filterStringLowerCase ?
+          data.filter(title => title.responseDescription.toLowerCase().indexOf(filterStringLowerCase) > -1
+          || title.textTranscription.toLowerCase().indexOf(filterStringLowerCase) > -1
+          || title.audioTranscription.toLowerCase().indexOf(filterStringLowerCase) > -1)
+          :
+          data;
+
     return (
       <div className={cx('answer-table-container', { 'loading': isLoading })}>
       {isLoading && (
@@ -221,7 +231,7 @@ class AnswerTable extends React.Component {
           />
         </div>
       </div>
-        {data.map((answer, index) => (
+        {filteredAnswers.map((answer, index) => (
           <div className="table-row"  key={index}>
             <div className="table-number">{index + 1}</div>
             <div className="table-intent">
