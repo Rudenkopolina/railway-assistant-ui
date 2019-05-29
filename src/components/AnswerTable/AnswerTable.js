@@ -4,7 +4,7 @@ import { withRouter } from 'react-router-dom';
 import cx from 'classnames';
 import {NotificationContainer, NotificationManager} from 'react-notifications';
 import Protected from '../common/protected/container'
-import { Icon, Popup } from 'semantic-ui-react'
+import { Icon, Popup, Modal } from 'semantic-ui-react'
 import TextArea from 'react-textarea-autosize';
 import 'react-notifications/lib/notifications.css';
 import Spinner from '../Spinner';
@@ -29,6 +29,11 @@ class AnswerTable extends React.Component {
     editDataId: null
   }
 
+  deleteAnswer = (event, answer) => {
+    event.preventDefault();
+    this.props.onDeleteAnswer(answer);
+  }
+
   componentWillMount() {
     const { title, data } = this.props;
     if (data[title].length !== 0) {
@@ -38,13 +43,13 @@ class AnswerTable extends React.Component {
       case 'common':
         this.props.getCommonResponses()
         .catch(err => {
-          NotificationManager.error('Something go wrong, try again.', 'Sorry :(');
+          NotificationManager.error('Something went wrong, try again.', 'Sorry :(');
         });
         break;
       case 'reference':
         this.props.getReferenceResponses()
         .catch(err => {
-          NotificationManager.error('Something go wrong, try again.', 'Sorry :(');
+          NotificationManager.error('Something went wrong, try again.', 'Sorry :(');
         });
         break;
       default:
@@ -180,12 +185,14 @@ class AnswerTable extends React.Component {
       )
     }
     return (
-      <div
-        className="table-button"
-        onClick={()=> this.props.onDeleteAnswer(answer.id)}
-      >
-        Удалить
-      </div>
+      <Modal
+        closeIcon
+        trigger={<div className='table-button'>Удалить</div>}
+        closeOnEscape={true}
+        size={'mini'}
+        content='Это действие нельзя отменить. Вы уверены, что хотите удалить этот ответ?'
+        actions={['Отменить', { key: 'done', content: 'Удалить', onClick: (event) => this.deleteAnswer(event, answer.id) }]}
+      />
     )
   }
 
