@@ -3,13 +3,14 @@ import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import {Link} from 'react-router-dom';
 import { Icon, Popup, Dropdown } from 'semantic-ui-react'
+import {NotificationContainer, NotificationManager} from 'react-notifications';
 import Protected from '../common/protected/container'
 import cx from 'classnames';
 import { logout } from '../../redux/actions/auth';
 import './styles.css'
 
 const titles = {
-		home: 'Домашняя старница',
+		home: 'Домашняя страница',
 		account: 'Личный кабинет',
 		answers:	'Ответы',
 		history: 'История',
@@ -23,9 +24,13 @@ class Sidebar extends React.Component {
 	}
 
 	render() {
-    const { title } = this.props;
+    const { title, failed } = this.props;
+		if (failed) {
+			NotificationManager.error('Something go wrong, try again.', 'Sorry :(');
+		}
 		return (
 			<Fragment>
+				<NotificationContainer />
 				<div className='header-wrapper'>
 					<div>
 						{titles[title]}
@@ -95,7 +100,10 @@ class Sidebar extends React.Component {
 	}
 }
 
-const mapStateToProps = ({ auth }) => (auth);
+const mapStateToProps = ({ auth, responses }) => ({
+	...auth,
+	...responses
+});
 
 const mapDispatchToProps = dispatch => ({
 	logout: () => dispatch(logout())

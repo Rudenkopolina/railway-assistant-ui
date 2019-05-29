@@ -23,7 +23,7 @@ export default function (state = initialState, action) {
     return {
       ...state,
       pending: true,
-      faild: false
+      failed: false
     };
 
   case CHANGE_RESPONSE_SUCCESS:
@@ -53,7 +53,8 @@ export default function (state = initialState, action) {
   case CREATE_RESPONSE_FAIL:
     return {
       ...state,
-      faild: true
+      pending: false,
+      failed: true
     };
 
   default:

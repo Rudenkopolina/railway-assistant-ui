@@ -47,7 +47,7 @@
 }
 
 .modal-hint {
-  color: #ba0505 !important;
+  color: #900000 !important;
 }
 
 .grey-button {
@@ -113,6 +113,10 @@
   text-overflow: ellipsis;
   outline: none;
   color: #747474;
+}
+
+.key-input-wrong {
+  border-color: #900000;
 }
 
 .close-key-icon {
