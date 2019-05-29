@@ -9,6 +9,7 @@ import Answers from '../containers/Answers/Answers'
 import History from '../containers/History/History'
 import Account from '../containers/Account/Account'
 import Sidebar from '../components/Sidebar'
+import Layout from '../containers/Layout'
 
 function Routes() {
 	return (
@@ -30,6 +31,14 @@ function Routes() {
 				component={() => <Fragment><Sidebar title='account'/><Account/></Fragment>}
 				saveUrlOnFail
 			/>
+
+			<ProtectedRoute
+				path={'/test'}
+				component={() => <Layout><Answers/></Layout> }
+				saveUrlOnFail
+			/>
+
+
 			<ProtectedRoute
 				path={'/'}
 				component={() => <Fragment><Sidebar title='home'/><Home/></Fragment>}
