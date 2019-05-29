@@ -22,31 +22,16 @@ class NewIntentModal extends React.Component {
   }
 
   componentWillMount() {
-    if (this.props.responseId) {
-      request(urls.responses.getReferenceResponse(this.props.responseId))
-      .then(res => {
-          this.setState({ data: {
-            responseDescription: res.value.responseDescription || '',
-            textTranscription: res.value.textTranscription || '',
-            audioTranscription: res.value.audioTranscription || '',
-            examples: res.value.examples || []
-          }
-        })
-      })
-      .catch(err => {
-        NotificationManager.error('Something go wrong, try again.', 'Sorry :(');
-      })
-    }
-  //   if (this.props.data) {
-  //     const { data } = this.props;
-  //     this.setState({ data: {
-  //       responseDescription: data.responseDescription || '',
-  //       textTranscription: data.textTranscription || '',
-  //       audioTranscription: data.audioTranscription || '',
-  //       examples: data.examples || []
-  //     }
-  //   })
-  // }
+    if (this.props.data) {
+      const { data } = this.props;
+      this.setState({ data: {
+        responseDescription: data.responseDescription || '',
+        textTranscription: data.textTranscription || '',
+        audioTranscription: data.audioTranscription || '',
+        examples: data.examples || []
+      }
+    })
+  }
 }
 
   componentDidUpdate(prevProps, prevState) {

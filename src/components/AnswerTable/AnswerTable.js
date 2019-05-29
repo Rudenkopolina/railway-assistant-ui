@@ -297,7 +297,7 @@ class AnswerTable extends React.Component {
                     className="table-button"
                     modalTitle='Изменить справочный ответ'
                     onSave={(data) => this.onReferencesUpdateAnswer(data, answer.id, index)}
-                    // data={answer}
+                    data={answer}
                     responseId={answer.id}
                   />
                 )}
@@ -305,7 +305,8 @@ class AnswerTable extends React.Component {
               }
               </div>
               </div>
-            {(title === 'reference' && (shownKeyWodrsId.indexOf(answer.id) !== -1)) ? (
+            {title === 'reference' && (
+              (shownKeyWodrsId.indexOf(answer.id) !== -1) ? (
               <div
                 className='key-words-title'
                 onClick={() => this.hideKeyWords(answer.id)}
@@ -319,7 +320,7 @@ class AnswerTable extends React.Component {
               >
                 Показать ключевые слова
               </div>
-            )
+            ))
           }
             {(shownKeyWodrsId.indexOf(answer.id) !== -1) &&
               <div className="key-words">
