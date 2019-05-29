@@ -305,7 +305,7 @@ class AnswerTable extends React.Component {
               }
               </div>
               </div>
-            {answer.examples.length && (
+            {!!answer.examples.length && (
               (shownKeyWodrsId.indexOf(answer.id) !== -1) ? (
               <div
                 className='key-words-title'
