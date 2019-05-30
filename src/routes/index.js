@@ -32,6 +32,7 @@ function Routes() {
 				saveUrlOnFail
 			/>
 			<ProtectedRoute
+        requiredRoles='ALLOWED_USERS_EDITING'
 				path={'/users'}
 				component={() => <Fragment><Sidebar title='users'/><Users/></Fragment>}
 				saveUrlOnFail
