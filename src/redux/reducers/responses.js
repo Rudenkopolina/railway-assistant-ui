@@ -11,7 +11,10 @@ import {
   CHANGE_RESPONSE_FAIL,
   CREATE_RESPONSE,
   CREATE_RESPONSE_SUCCESS,
-  CREATE_RESPONSE_FAIL
+  CREATE_RESPONSE_FAIL,
+  DELETE_RESPONSE,
+  DELETE_RESPONSE_SUCCESS,
+  DELETE_RESPONSE_FAIL
 } from '../actions/responses';
 
 export default function (state = initialState, action) {
@@ -20,6 +23,7 @@ export default function (state = initialState, action) {
 	case GET_REFERENCE_RESPONSES:
   case CHANGE_RESPONSE:
   case CREATE_RESPONSE:
+  case DELETE_RESPONSE:
     return {
       ...state,
       pending: true,
@@ -27,10 +31,29 @@ export default function (state = initialState, action) {
     };
 
   case CHANGE_RESPONSE_SUCCESS:
+    const title = `${action.title}Responses`;
+    const changedResponses = state[title].map(item => (
+      item.id === action.response.id ? action.response : item
+    ))
+    return {
+      ...state,
+      pending: false,
+      [title]: changedResponses
+    };
+
   case CREATE_RESPONSE_SUCCESS:
     return {
       ...state,
-      pending: false
+      pending: false,
+      referenceResponses: [...state.referenceResponses, action.response]
+    };
+
+  case DELETE_RESPONSE_SUCCESS:
+  const newResponses = state.referenceResponses.filter(item => item.id !== action.deleteId);
+    return {
+      ...state,
+      pending: false,
+      referenceResponses: newResponses
     };
 
 	case GET_COMMON_RESPONSES_SUCCESS:
@@ -51,6 +74,7 @@ export default function (state = initialState, action) {
 	case GET_COMMON_RESPONSES_FAIL:
   case CHANGE_RESPONSE_FAIL:
   case CREATE_RESPONSE_FAIL:
+  case DELETE_RESPONSE_FAIL:
     return {
       ...state,
       pending: false,

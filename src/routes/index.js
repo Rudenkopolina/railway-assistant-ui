@@ -15,25 +15,22 @@ function Routes() {
 	return (
 		<Switch>
 			<Route exact path={'/login'} component={() => <Login register='/register'></Login>} />
-			<ProtectedRoute
-				path={'/answers'}
-				component={() => <Fragment><Sidebar title='answers'/><Answers/></Fragment>}
-				saveUrlOnFail
-			/>
+
 			<ProtectedRoute
 				requiredRoles='ALLOWED_HISTORY_EDITING'
 				path={'/history'}
-				component={() => <Fragment><Sidebar title='history'/><History/></Fragment>}
-				saveUrlOnFail
-			/>
-			<ProtectedRoute
-				path={'/account'}
-				component={() => <Fragment><Sidebar title='account'/><Account/></Fragment>}
+				component={() => <Layout><History/></Layout> }
 				saveUrlOnFail
 			/>
 
 			<ProtectedRoute
-				path={'/test'}
+				path={'/account'}
+				component={() => <Layout><Account/></Layout> }
+				saveUrlOnFail
+			/>
+
+			<ProtectedRoute
+				path={'/answers'}
 				component={() => <Layout><Answers/></Layout> }
 				saveUrlOnFail
 			/>
@@ -41,7 +38,7 @@ function Routes() {
 
 			<ProtectedRoute
 				path={'/'}
-				component={() => <Fragment><Sidebar title='home'/><Home/></Fragment>}
+				component={() => <Layout><Home/></Layout> }
 				saveUrlOnFail
 			/>
 		</Switch>

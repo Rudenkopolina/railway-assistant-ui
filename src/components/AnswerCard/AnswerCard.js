@@ -1,65 +1,15 @@
 import React, { Fragment } from 'react';
-import { withRouter } from 'react-router-dom';
 import { Icon } from 'semantic-ui-react'
 import 'react-notifications/lib/notifications.css';
 import NewIntentModal from '../NewIntentModal/NewIntentModal';
-import './Answer.css';
+import './styles.css';
 
 import { urls } from '../../config';
 
 class AnswerCard extends React.Component {
   state = {
-    isAudioPlaed: false,
     shownKeyWodrsId: []
   }
-
-  onPlayAudio = id => {
-    const { playedId } = this.state;
-    if (playedId) {
-      this.onStopAudio(playedId);
-    }
-    const audio = document.getElementById(`audio-${id}`)
-    audio.currentTime = 0;
-    audio.play();
-    this.setState({ playedId: id });
-    audio.onended = () => this.setState({ playedId: null });
-  }
-
-  onStopAudio = id => {
-    document.getElementById(`audio-${id}`).pause();
-    this.setState({ playedId: null });
-  }
-
-  // isAnswerChange = index => {
-  //   const { prevData, data } = this.state;
-  //   const isTextChenge = prevData[index].textTranscription !== data[index].textTranscription;
-  //   const isAudioChange = prevData[index].audioTranscription !== data[index].audioTranscription;
-  //   return isTextChenge || isAudioChange;
-  // }
-
-
-  // renderButton = (answer, index) => {
-  //   if (this.props.title === 'common') {
-  //     return this.isAnswerChange(index) ? (
-  //       <div
-  //         className="table-button save-button"
-  //         onClick={()=> this.onCommonUpdateAnswer(answer.id, index)}
-  //       >
-  //         Сохранить
-  //       </div>
-  //     ) : (
-  //       <div className="no-button" />
-  //     )
-  //   }
-  //   return (
-  //     <div
-  //       className="table-button"
-  //       onClick={()=> this.props.onDeleteAnswer(answer.id)}
-  //     >
-  //       Удалить
-  //     </div>
-  //   )
-  // }
 
   handlerKeyWords = id => {
   const { shownKeyWodrsId } = this.state;
@@ -78,8 +28,15 @@ class AnswerCard extends React.Component {
   }
 
   render() {
-    const { answer, index, isShowExamples } = this.props;
-    const { shownKeyWodrsId, isAudioPlaed } = this.state;
+    const {
+      answer,
+      index,
+      isShowExamples,
+      onDeleteAnswer,
+      playedId,
+      onUpdateAnswer
+    } = this.props;
+    const { shownKeyWodrsId } = this.state;
     return (
         <div className="table-row-wrapper">
           <div className="table-row">
@@ -94,25 +51,32 @@ class AnswerCard extends React.Component {
                 {answer.audioTranscription}
               </div>
               <div className="table-action">
-              {isAudioPlaed ?
+              {playedId === answer.id ?
                 <Icon
                   size='large'
                   name="pause"
                   className="audio-icon"
-                  onClick={() => this.onStopAudio(answer.id)}
+                  onClick={() => this.props.onStopAudio(answer.id)}
                 /> :
                 <Icon
                   size='large'
                   name="play circle outline"
                   className="audio-icon"
-                  onClick={() => this.onPlayAudio(answer.id)}
+                  onClick={() => this.props.onPlayAudio(answer.id)}
                 />
               }
-              <audio preload='none' id={`audio-${answer.id}`} onEnded={() => this.onStopAudio(answer.id)}>
+              <audio preload='none' id={`audio-${answer.id}`} onEnded={() => this.props.onStopAudio(answer.id)}>
                 <source src={this.getAudioSrc(answer.id)} type="audio/ogg" />
               </audio>
             </div>
             <div className="table-action">
+              {onDeleteAnswer &&
+              <div
+                className="table-button"
+                onClick={()=> onDeleteAnswer(answer.id)}
+              >
+                Удалить
+              </div>}
             </div>
             <div className="table-action">
               <NewIntentModal
@@ -120,7 +84,7 @@ class AnswerCard extends React.Component {
                 buttonText='Изменить'
                 className="table-button"
                 modalTitle='Изменить справочный ответ'
-                onSave={(data) => this.onReferencesUpdateAnswer(data, answer.id, index)}
+                onSave={(data) => onUpdateAnswer(data, answer.id, index)}
                 data={answer}
               />
             </div>
@@ -146,7 +110,7 @@ class AnswerCard extends React.Component {
           {(shownKeyWodrsId.indexOf(answer.id) !== -1) &&
             <div className="key-words">
             {answer.examples.map(item => (
-              <span className="key-word">{item}</span>
+              <span className="key-word" key={item}>{item}</span>
             ))}
             </div>
           }
@@ -155,4 +119,4 @@ class AnswerCard extends React.Component {
   }
 }
 
-export default withRouter(AnswerCard);
+export default AnswerCard;

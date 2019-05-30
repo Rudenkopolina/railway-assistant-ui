@@ -2,10 +2,10 @@ import React from 'react';
 import cx from 'classnames';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
-import './Answer.css';
 import AnswerTable from '../../components/AnswerTable/AnswerTable';
 import NewIntentModal from '../../components/NewIntentModal/NewIntentModal';
 import Protected from '../../components/common/protected/container'
+import './styles.css';
 
 import {
   getCommonResponses,
@@ -53,6 +53,7 @@ class Answer extends React.Component {
               title='common'
               key='common'
               data={this.props.data.common}
+              changeResponse={this.props.changeResponse}
             />
           </Protected>
         )
@@ -63,6 +64,8 @@ class Answer extends React.Component {
               title='reference'
               key='reference'
               data={this.props.data.reference}
+              onDeleteAnswer={this.props.onDeleteAnswer}
+              changeResponse={this.props.changeResponse}
             />
           </Protected>
         )
