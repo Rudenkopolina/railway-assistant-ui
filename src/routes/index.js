@@ -9,6 +9,7 @@ import Answers from '../containers/Answers/Answers'
 import History from '../containers/History/History'
 import Account from '../containers/Account/Account'
 import Sidebar from '../components/Sidebar'
+import Users from '../containers/Users/Users'
 
 function Routes() {
 	return (
@@ -28,6 +29,11 @@ function Routes() {
 			<ProtectedRoute
 				path={'/account'}
 				component={() => <Fragment><Sidebar title='account'/><Account/></Fragment>}
+				saveUrlOnFail
+			/>
+			<ProtectedRoute
+				path={'/users'}
+				component={() => <Fragment><Sidebar title='users'/><Users/></Fragment>}
 				saveUrlOnFail
 			/>
 			<ProtectedRoute

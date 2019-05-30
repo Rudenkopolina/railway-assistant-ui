@@ -30,7 +30,7 @@ class HomePage extends React.Component {
 						</div>
 					</Link>
 					<Protected requiredRoles='ALLOWED_USERS_CREATION'>
-						<Link to="/answers">
+						<Link to="/users">
 							<div className='card'>
 							<Icon name='group' className='home-icon' size='big'/>
 							Сотрудники
