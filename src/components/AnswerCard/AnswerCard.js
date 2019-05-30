@@ -1,5 +1,5 @@
 import React, { Fragment } from 'react';
-import { Icon } from 'semantic-ui-react'
+import { Icon, Modal } from 'semantic-ui-react'
 import 'react-notifications/lib/notifications.css';
 import NewIntentModal from '../NewIntentModal/NewIntentModal';
 import './styles.css';
@@ -10,6 +10,12 @@ class AnswerCard extends React.Component {
   state = {
     shownKeyWodrsId: []
   }
+
+  deleteAnswer = (event, answer) => {
+    event.preventDefault();
+    this.props.onDeleteAnswer(answer);
+  }
+
 
   handlerKeyWords = id => {
   const { shownKeyWodrsId } = this.state;
@@ -71,12 +77,15 @@ class AnswerCard extends React.Component {
             </div>
             <div className="table-action">
               {onDeleteAnswer &&
-              <div
-                className="table-button"
-                onClick={()=> onDeleteAnswer(answer.id)}
-              >
-                Удалить
-              </div>}
+                <Modal
+                  closeIcon
+                  trigger={<div className='table-button'>Удалить</div>}
+                  closeOnEscape={true}
+                  size={'mini'}
+                  content='Это действие нельзя отменить. Вы уверены, что хотите удалить этот ответ?'
+                  actions={['Отменить', { key: 'done', content: 'Удалить', onClick: (event) => this.deleteAnswer(event, answer.id) }]}
+                />
+              }
             </div>
             <div className="table-action">
               <NewIntentModal

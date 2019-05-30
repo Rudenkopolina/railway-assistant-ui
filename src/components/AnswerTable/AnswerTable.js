@@ -46,7 +46,16 @@ class AnswerTable extends React.Component {
   }
 
   render() {
-    const { data, title, onDeleteAnswer } = this.props;
+    const { data, title, onDeleteAnswer, filterString } = this.props;
+    const filterStringLowerCase = filterString.toLowerCase();
+
+    const filteredAnswers = filterStringLowerCase ?
+          data.filter(title => title.responseDescription.toLowerCase().indexOf(filterStringLowerCase) > -1
+          || title.textTranscription.toLowerCase().indexOf(filterStringLowerCase) > -1
+          || title.audioTranscription.toLowerCase().indexOf(filterStringLowerCase) > -1
+          || title.examples.some(example => example.toLowerCase().indexOf(filterStringLowerCase) > -1))
+          :
+          data;
     return (
       <div className='answer-table-container'>
       <div className="table-title-row answer-title-row">
@@ -62,7 +71,7 @@ class AnswerTable extends React.Component {
           />
         </div>
       </div>
-        {data.map((answer, index) => (
+        {filteredAnswers.map((answer, index) => (
           <AnswerCard
             key={answer.id}
             answer={answer}
@@ -80,5 +89,4 @@ class AnswerTable extends React.Component {
     );
   }
 }
-
 export default withRouter(AnswerTable);

@@ -6,7 +6,7 @@ import AnswerTable from '../../components/AnswerTable/AnswerTable';
 import NewIntentModal from '../../components/NewIntentModal/NewIntentModal';
 import Protected from '../../components/common/protected/container'
 import './styles.css';
-
+import Filter from './../../components/Filter';
 import {
   getCommonResponses,
   getReferenceResponses,
@@ -18,7 +18,8 @@ import {
 class Answer extends React.Component {
   state = {
     activeTab: '',
-    titles: []
+    titles: [],
+    filterString: '',
   }
 
   componentWillMount() {
@@ -39,12 +40,16 @@ class Answer extends React.Component {
     this.setState({ titles, activeTab: titles[0].key })
   }
 
+  onFilterChange = (filterString) => {
+    this.setState({ filterString });
+}
+
   changeTab = tab => {
     this.setState({ activeTab: tab});
   }
 
   getContent = () => {
-    const { activeTab } =this.state;
+    const { activeTab, filterString } =this.state;
     switch (activeTab) {
       case 'common':
         return (
@@ -54,6 +59,7 @@ class Answer extends React.Component {
               key='common'
               data={this.props.data.common}
               changeResponse={this.props.changeResponse}
+              filterString={filterString}
             />
           </Protected>
         )
@@ -66,6 +72,7 @@ class Answer extends React.Component {
               data={this.props.data.reference}
               onDeleteAnswer={this.props.onDeleteAnswer}
               changeResponse={this.props.changeResponse}
+              filterString={filterString}
             />
           </Protected>
         )
@@ -74,9 +81,10 @@ class Answer extends React.Component {
   }
 
   render() {
-    const { activeTab, titles } =this.state;
+    const { activeTab, titles, filterString } =this.state;
     return (
       <div className="container">
+        <Filter filterString={filterString} onFilterChange={this.onFilterChange} />
         <div className="answer-header">
           <div className="answer-menu">
             {titles.map(title =>
