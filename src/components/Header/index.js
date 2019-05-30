@@ -4,11 +4,11 @@ import { Dropdown } from 'semantic-ui-react'
 import './styles.css'
 
 const titles = {
-		'/test/home': 'Домашняя страница',
-		'/test/account': 'Личный кабинет',
-		'/test/answers':	'Ответы',
-		'/test/history': 'История',
-		'/test/employees': 'Сотрудники'
+		'/': 'Домашняя страница',
+		'/account': 'Личный кабинет',
+		'/answers':	'Ответы',
+		'/history': 'История',
+		'/employees': 'Сотрудники'
 }
 
 class Header extends React.Component {
