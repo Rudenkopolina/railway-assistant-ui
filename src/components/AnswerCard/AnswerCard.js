@@ -1,6 +1,6 @@
 import React, { Fragment } from 'react';
 import { Icon, Modal } from 'semantic-ui-react'
-import NewIntentModal from '../NewIntentModal/NewIntentModal';
+import IntentModal from '../IntentModal';
 import './styles.css';
 
 import { urls } from '../../config';
@@ -48,7 +48,7 @@ class AnswerCard extends React.Component {
         }
       </div>
       <div className="table-action">
-        <NewIntentModal
+        <IntentModal
           key={answer.id}
           buttonText='Изменить'
           className="table-button"

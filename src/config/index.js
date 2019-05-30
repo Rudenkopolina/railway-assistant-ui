@@ -1,4 +1,5 @@
 const baseUrl = process && process.env.REACT_APP_BASE_API_URL || 'http://172.16.6.253:1000';
+// import auth from '../../services/auth';
 
 module.exports = {
 	urls: {
