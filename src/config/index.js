@@ -19,6 +19,7 @@ module.exports = {
 			createReferenceResponse: '/api/answers/reference_responses',
 			getReferenceResponse: id => `/api/answers/reference_responses/${id}`,
 			deleteReferenceResponse: id => `/api/answers/reference_responses/${id}`,
+			compareKeyword: '/api/answers/keywords/checkUsage'
 		}
 	},
 	baseUrl

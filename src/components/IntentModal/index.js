@@ -5,9 +5,6 @@ import Keywords from './Keywords';
 import TextArea from 'react-textarea-autosize';
 import './styles.css';
 
-import request from '../../services/request';
-import { urls } from '../../config';
-
 class IntentModal extends React.Component {
     state = {
         isModalOpen: false,
