@@ -8,7 +8,7 @@ import { urls } from '../../config';
 
 class AnswerCard extends React.Component {
   state = {
-    shownKeyWodrsId: []
+    isKeywordsShown: false
   }
 
   deleteAnswer = (event, answer) => {
@@ -17,15 +17,9 @@ class AnswerCard extends React.Component {
   }
 
 
-  handlerKeyWords = id => {
-  const { shownKeyWodrsId } = this.state;
-    if (shownKeyWodrsId.indexOf(id) !== -1) {
-      this.setState({
-        shownKeyWodrsId: this.state.shownKeyWodrsId.filter(item => item !==id)
-      });
-    } else {
-      this.setState({ shownKeyWodrsId: [...this.state.shownKeyWodrsId, id] });
-    }
+  toggleKeywordsView = () => {
+  const { isKeywordsShown } = this.state;
+  this.setState({ isKeywordsShown: !isKeywordsShown})
   }
 
   getAudioSrc = id => {
@@ -33,16 +27,83 @@ class AnswerCard extends React.Component {
     return urls.responses.audioUrl(title, id);
   }
 
+  renderActions = () => {
+    const {
+      answer,
+      index,
+      onDeleteAnswer,
+      onUpdateAnswer
+    } = this.props;
+    return (
+    <div className='table-actions'>
+      <div className="table-action">
+        {onDeleteAnswer &&
+          <Modal
+            closeIcon
+            trigger={<div className='table-button'>Удалить</div>}
+            closeOnEscape={true}
+            size={'mini'}
+            content='Это действие нельзя отменить. Вы уверены, что хотите удалить этот ответ?'
+            actions={['Отменить', { key: 'done', content: 'Удалить', onClick: (event) => this.deleteAnswer(event, answer.id) }]}
+          />
+        }
+      </div>
+      <div className="table-action">
+        <NewIntentModal
+          key={answer.id}
+          buttonText='Изменить'
+          className="table-button"
+          modalTitle='Изменить справочный ответ'
+          onSave={(data) => onUpdateAnswer(data, answer.id, index)}
+          data={answer}
+        />
+      </div>
+    </div>
+    )
+  }
+
+renderKeywords = () => {
+  const {
+    answer,
+    isShowExamples,
+  } = this.props;
+  const { isKeywordsShown } = this.state;
+  if (isShowExamples) {
+    return (
+      <Fragment>
+        <div
+          className='key-words-title'
+          onClick={this.toggleKeywordsView}
+        >
+          {isKeywordsShown ? (
+            <Fragment>
+              <Icon name='angle up' />
+              Скрыть ключевые слова
+            </Fragment>
+          ) : (
+            <Fragment>
+              <Icon name='angle down' />
+              Показать ключевые слова
+            </Fragment>
+          )}
+        </div>
+        {isKeywordsShown &&
+          <div className="key-words">
+          {answer.examples.map(item => (
+            <span className="key-word" key={item}>{item}</span>
+          ))}
+          </div>
+        }
+    </Fragment>
+  )}
+}
+
   render() {
     const {
       answer,
       index,
-      isShowExamples,
-      onDeleteAnswer,
-      playedId,
-      onUpdateAnswer
+      playedId
     } = this.props;
-    const { shownKeyWodrsId } = this.state;
     return (
         <div className="table-row-wrapper">
           <div className="table-row">
@@ -75,54 +136,9 @@ class AnswerCard extends React.Component {
                 <source src={this.getAudioSrc(answer.id)} type="audio/ogg" />
               </audio>
             </div>
-            <div className="table-action">
-              {onDeleteAnswer &&
-                <Modal
-                  closeIcon
-                  trigger={<div className='table-button'>Удалить</div>}
-                  closeOnEscape={true}
-                  size={'mini'}
-                  content='Это действие нельзя отменить. Вы уверены, что хотите удалить этот ответ?'
-                  actions={['Отменить', { key: 'done', content: 'Удалить', onClick: (event) => this.deleteAnswer(event, answer.id) }]}
-                />
-              }
-            </div>
-            <div className="table-action">
-              <NewIntentModal
-                key={answer.id}
-                buttonText='Изменить'
-                className="table-button"
-                modalTitle='Изменить справочный ответ'
-                onSave={(data) => onUpdateAnswer(data, answer.id, index)}
-                data={answer}
-              />
-            </div>
+            {this.renderActions()}
           </div>
-          {isShowExamples && (
-            <div
-              className='key-words-title'
-              onClick={() => this.handlerKeyWords(answer.id)}
-            >
-            {(shownKeyWodrsId.indexOf(answer.id) !== -1) ? (
-              <Fragment>
-                <Icon name='angle up' />
-                Скрыть ключевые слова
-              </Fragment>
-            ) : (
-              <Fragment>
-                <Icon name='angle down' />
-                Показать ключевые слова
-              </Fragment>
-            )}
-            </div>
-          )}
-          {(shownKeyWodrsId.indexOf(answer.id) !== -1) &&
-            <div className="key-words">
-            {answer.examples.map(item => (
-              <span className="key-word" key={item}>{item}</span>
-            ))}
-            </div>
-          }
+          {this.renderKeywords()}
         </div>
     );
   }

@@ -1,6 +1,7 @@
 import React from 'react';
 import { withRouter } from 'react-router-dom';
 import { Dropdown } from 'semantic-ui-react'
+import  auth  from '../../services/auth';
 import './styles.css'
 
 const titles = {
@@ -14,7 +15,7 @@ const titles = {
 class Header extends React.Component {
 	logOut = () => {
 		this.props.logout();
-		sessionStorage.removeItem('jwtToken');
+		auth.clearToken('jwtToken');
 	}
 
 	render() {
