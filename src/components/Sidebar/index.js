@@ -14,7 +14,8 @@ const titles = {
 		account: 'Личный кабинет',
 		answers:	'Ответы',
 		history: 'История',
-		employees: 'Сотрудники'
+		employees: 'Сотрудники',
+	  users: 'Пользователи'
 }
 
 class Sidebar extends React.Component {
@@ -84,12 +85,12 @@ class Sidebar extends React.Component {
 		        </Link>
 					</Protected>
 					<Protected requiredRoles='ALLOWED_USERS_CREATION'>
-		        <Link to="/answers" className={cx({ 'sidebar-active-item': title === 'employees' })}>
+		        <Link to="/users" className={cx({ 'sidebar-active-item': title === 'users' })}>
 		          <Popup
 		            content={titles.employees}
 		            position='right center'
 		            trigger={
-		              <Icon name='group' className={cx('sidebar-icon', { 'sidebar-active-icon': title === 'employees' })} size='big' />
+		              <Icon name='group' className={cx('sidebar-icon', { 'sidebar-active-icon': title === 'users' })} size='big' />
 		            }
 		          />
 		        </Link>
