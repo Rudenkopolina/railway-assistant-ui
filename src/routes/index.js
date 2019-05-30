@@ -9,6 +9,7 @@ import Answers from '../containers/Answers/Answers'
 import History from '../containers/History/History'
 import Account from '../containers/Account/Account'
 import Layout from '../containers/Layout'
+import Users from '../containers/Users/Users'
 
 function Routes() {
 	return (
@@ -35,6 +36,12 @@ function Routes() {
 			/>
 
 
+			<ProtectedRoute
+        requiredRoles='ALLOWED_USERS_EDITING'
+				path={'/users'}
+				component={() => <Layout><Users/></Layout>}
+				saveUrlOnFail
+			/>
 			<ProtectedRoute
 				path={'/'}
 				component={() => <Layout><Home/></Layout> }
