@@ -13,28 +13,33 @@ class IntentModal extends React.Component {
             textTranscription: '',
             audioTranscription: '',
             examples: []
-        }
-    }
-
-    componentWillMount() {
-        if (this.props.data) {
-            const { data } = this.props;
-            this.setState({
-                data: {
-                    responseDescription: data.responseDescription || '',
-                    textTranscription: data.textTranscription || '',
-                    audioTranscription: data.audioTranscription || '',
-                    examples: data.examples || []
-                }
-            })
-        }
+        },
     }
 
     componentDidUpdate(prevProps, prevState) {
-        const { data, isModalOpen } = this.state;
-        if (prevState.data.examples.length < data.examples.length && isModalOpen) {
-            document.getElementById(`key-${this.state.data.examples.length - 1}`).focus();
+        const { isModalOpen } = this.state;
+        let data = {};
+        if (this.props.data) {
+          data = {
+            responseDescription: this.props.data.responseDescription || '',
+            textTranscription: this.props.data.textTranscription || '',
+            audioTranscription: this.props.data.audioTranscription || '',
+            examples: this.props.data.examples || []
+          }
+        } else {
+          data = {
+              responseDescription: '',
+              textTranscription: '',
+              audioTranscription: '',
+              examples: []
+          }
         }
+        if (isModalOpen !== prevState.isModalOpen) {
+          this.setState({ data })
+        }
+        // if (prevState.data.examples.length < data.examples.length && isModalOpen) {
+        //     document.getElementById(`key-${this.state.data.examples.length - 1}`).focus();
+        // }
     }
 
     onHandlerFormField = (e, title) => {
@@ -48,17 +53,9 @@ class IntentModal extends React.Component {
     }
 
     onSendData = () => {
-        const { isModalOpen, data } = this.state;
+        const { data } = this.state;
         this.props.onSave(data);
-        this.setState({
-            data: {
-                responseDescription: '',
-                textTranscription: '',
-                audioTranscription: '',
-                examples: []
-            },
-            isModalOpen: !isModalOpen
-        })
+        this.setState({ isModalOpen: false })
     }
 
     isDisabled = () => {

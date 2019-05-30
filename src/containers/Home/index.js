@@ -4,39 +4,28 @@ import { Icon } from 'semantic-ui-react';
 import Protected from '../../components/common/protected/container';
 import './styles.css'
 
+const pageList = [
+	{ key: '/account', value: 'Личный кабинет', icon: 'user outline', requiredRoles: ''},
+	{ key: '/answers', value: 'Ответы', icon: 'comments outline', requiredRoles: ['ALLOWED_ANSWERS_VIEWING', 'ALLOWED_KNOWLEDGEBASE_VIEWING']},
+	{ key: '/history', value: 'История', icon: 'history', requiredRoles: 'ALLOWED_HISTORY_EDITING'},
+	{ key: '/users', value: 'Сотрудники', icon: 'group', requiredRoles: 'ALLOWED_USERS_CREATION'}
+]
+
 class HomePage extends React.Component {
 	render() {
 		return (
 			<div className='home-wrapper container'>
 				<div className='cards-wrapper'>
-					<Link to="/answers">
-						<div className='card'>
-						<Icon name='comments outline' className='home-icon' size='big'/>
-						Ответы
-						</div>
-					</Link>
-					<Protected requiredRoles='ALLOWED_HISTORY_EDITING'>
-						<Link to="/history">
-							<div className='card'>
-							<Icon name='history' className='home-icon' size='big'/>
-							История
-							</div>
-						</Link>
-					</Protected>
-					<Link to="/account">
-						<div className='card'>
-						<Icon name='user outline' className='home-icon' size='big'/>
-						Личный кабинет
-						</div>
-					</Link>
-					<Protected requiredRoles='ALLOWED_USERS_CREATION'>
-						<Link to="/users">
-							<div className='card'>
-							<Icon name='group' className='home-icon' size='big'/>
-							Сотрудники
-							</div>
-						</Link>
-					</Protected>
+					{pageList.map(item =>
+						<Protected requiredRoles={item.requiredRoles} key={item.key}>
+							<Link to={item.key}>
+								<div className='card'>
+								<Icon name={item.icon} className='home-icon' size='big'/>
+									{item.value}
+								</div>
+							</Link>
+						</Protected>
+					)}
 				</div>
 			</div>
 		);

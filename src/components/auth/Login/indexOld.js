@@ -1,31 +1,18 @@
-import React, { Fragment } from 'react';
+import React from 'react';
+import './Login.css';
 import { connect } from 'react-redux';
-import { withRouter, Redirect } from 'react-router-dom';
-import { IconButton, Button, Paper, Divider } from '@material-ui/core';
-import CloseIcon from '@material-ui/icons/Close';
-import InputAdornment from '@material-ui/core/InputAdornment';
-import Email from '@material-ui/icons/Email';
-import TextField from '@material-ui/core/TextField';
-import Visibility from '@material-ui/icons/Visibility';
-import VisibilityOff from '@material-ui/icons/VisibilityOff';
-import Snackbar from '@material-ui/core/Snackbar';
+import { withRouter } from 'react-router-dom';
 
 import { login } from '../../../redux/actions/auth';
 import UrlRestoringService from '../../../services/url_restoring_service';
-import './styles.css';
-
 
 class Login extends React.Component {
+  state = {
+    email: '',
+    password: ''
+  };
 
-	state = {
-		email: '',
-		password: '',
-		showPassword: false,
-		openError: false,
-		messageError: 'Ошибка'
-	}
-
-	componentDidUpdate({ auth: prevAuth }) {
+  componentDidUpdate({ auth: prevAuth }) {
 		const { auth, history } = this.props;
 
 		if (prevAuth.pending && !auth.pending) {
@@ -37,123 +24,40 @@ class Login extends React.Component {
 		}
 	}
 
-	handleClickShowPassword = () => {
-		this.setState(state => ({ showPassword: !state.showPassword }));
-	};
+  handleChange = (event, title) => {
+    this.setState({ [title]: event.target.value });
+  };
 
-	handleChange = prop => event => {
-		this.setState({ [prop]: event.target.value });
-	};
+  handleSubmit = (event) => {
+    const { email, password } = this.state;
+    this.props.login(email, password);
+  }
 
-	goRegister = () => {
-		const { history, register } = this.props;
-		history.push(register);
-	}
-
-	loginUser = () => {
-		const { email, password } = this.state;
-		this.props.login(email, password);
-	}
-
-	handleCloseError = (event, reason) => {
-		if (reason === 'clickaway') {
-			return;
-		}
-
-		this.setState({ openError: false });
-	}
-
-	enterLogin = e => {
-		if (e.keyCode === 13) {
-			e.preventDefault();
-			this.loginUser();
-		}
-	}
-
-	render() {
-		const { auth, register } = this.props;
-
-		if (auth.user) {
-			return <Redirect to={UrlRestoringService.getUrl() || '/'} ></Redirect>;
-		}
-
-		return (
-			<div className='login-form'>
-				<Paper className='paper'>
-					<TextField
-						className='input-form'
-						id='input-with-icon-textfield'
-						label='Email'
-						variant='outlined'
-						onChange={this.handleChange('email')}
-						onKeyDown={this.enterLogin}
-						InputProps={{
-							startAdornment: (
-								<InputAdornment position='start'>
-									<Email color='primary' />
-								</InputAdornment>
-							),
-						}}
-					/>
-					<TextField
-						id='outlined-adornment-password'
-						className='input-form'
-						variant='outlined'
-						type={this.state.showPassword ? 'text' : 'password'}
-						label='Пароль'
-						value={this.state.password}
-						onChange={this.handleChange('password')}
-						onKeyDown={this.enterLogin}
-						InputProps={{
-							endAdornment: (
-								<InputAdornment position='end'>
-									<IconButton
-										color='primary'
-										aria-label='Toggle password visibility'
-										onClick={this.handleClickShowPassword}
-									>
-										{this.state.showPassword ? <VisibilityOff /> : <Visibility />}
-									</IconButton>
-								</InputAdornment>
-							),
-						}}
-					/>
-					<Button size='large' variant='contained' color='primary' className='button-form' onClick={this.loginUser}>
-						Войти
-          			</Button>
-				</Paper>
-				{register && 
-					<Fragment>
-						<Divider className='divider' />
-						<Button size='small' className='link-button' onClick={this.goRegister}>Зарегистрировать пользователя</Button>
-					</Fragment>
-				}
-				<Snackbar
-					anchorOrigin={{
-						vertical: 'bottom',
-						horizontal: 'center',
-					}}
-					open={this.state.openError}
-					autoHideDuration={60}
-					variant="error"
-					className='error-snachbar'
-					// className={classes.margin}
-					message={this.state.messageError}
-					action={[
-						<IconButton
-							key="close"
-							aria-label="Close"
-							color="inherit"
-							onClick={this.handleCloseError}
-						>
-							<CloseIcon />
-						</IconButton>,
-					]}
-				/>
-			</div>
-
-		);
-	}
+  render() {
+    return (
+      <div className='flex'>
+        <div className='login-container'>
+          <p className='header-text'>Пожалуйста, выполните вход</p>
+          <div >
+            <input
+              placeholder='Введите логин'
+              className='login-input'
+              value={this.state.email}
+              onChange={e => this.handleChange(e, 'email')}
+            />
+            <input
+              placeholder='Введите пароль'
+              className='login-input'
+              type='password'
+              value={this.state.password}
+              onChange={e => this.handleChange(e, 'password')}
+            />
+            <input type='button' value='Войти' onClick={this.handleSubmit}  className='login-button' />
+          </div>
+        </div>
+      </div>
+    );
+  }
 }
 
 const mapStateToProps = ({ auth }) => ({ auth });

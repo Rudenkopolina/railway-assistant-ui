@@ -1,0 +1,97 @@
+.table-row {
+  display: flex;
+  align-items: center;
+  /* background-color: #fff; */
+  font-size: 16px;
+  /* padding: 20px; */
+  /* margin-bottom: 10px; */
+}
+
+.table-number {
+  margin-right: 10px;
+}
+
+.table-content {
+  width: 100%;
+  padding: 15px 20px;
+  margin: 0 10px;
+}
+
+.table-intent {
+  color: rgb(30, 75, 202);
+  width: 500px;
+  font-weight: 500;
+  padding: 15px 20px;
+  margin: 0 10px;
+}
+
+.table-actions {
+  display: flex;
+}
+
+.table-action {
+  min-width: 120px;
+}
+
+.table-button {
+  min-width: 82px;
+  border: 2px solid #cbd0d7;
+  color: #cbd0d7;
+  text-transform: uppercase;
+  border-radius: 20px;
+  display: flex;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: 500;
+  padding: 8px 21px;
+  text-decoration: none;
+  margin: 0 10px;
+}
+
+.table-button:hover {
+  background-color: #cbd0d7;
+  color: #fff;
+}
+
+.table-button:active {
+	position: relative;
+	top: 1px;
+}
+
+.audio-icon {
+  color: #3167ff;
+  margin: 10px 20px !important;
+}
+
+.table-row-wrapper {
+  display: flex;
+  /* align-items: center; */
+  flex-direction: column;
+  background-color: #fff;
+  font-size: 16px;
+  padding: 20px;
+  margin-bottom: 10px;
+}
+
+.key-words-title {
+  font-size: 14px;
+  color: #a3a3a3;
+  cursor: pointer;
+  padding: 5px;
+}
+
+.key-words {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.key-word {
+  font-size: 14px;
+  padding: 3px;
+  margin: 4px 5px;
+  background-color: #ceebff52;
+  border-radius: 5px;
+  color: #1e4aca;
+  border: 1px solid #85b7d9;
+}
