@@ -2,8 +2,10 @@
   width: 100vw;
   height: 100vh;
   display: flex;
-  justify-content: center;
+  justify-content: space-around;
   align-items: center;
+  padding: 100px;
+  flex-direction: column;
 }
 
 .login-background-image {
@@ -18,7 +20,7 @@
 }
 
 .login-background {
-  background-color: #002ca8cc;
+  background-color: #092985de;
   position: absolute;
   width: 100vw;
   height: 100vh;
@@ -70,4 +72,10 @@
 
 .login-input {
   margin: 10px;
+}
+
+.login-title {
+  color: #fff;
+  font-size: 90px;
+  z-index: 100;
 }

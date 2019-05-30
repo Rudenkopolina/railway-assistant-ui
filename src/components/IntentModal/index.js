@@ -13,20 +13,29 @@ class IntentModal extends React.Component {
             textTranscription: '',
             audioTranscription: '',
             examples: []
-        }
+        },
     }
 
     componentDidUpdate(prevProps, prevState) {
-        const { data, isModalOpen } = this.state;
+        const { isModalOpen } = this.state;
+        let data = {};
+        if (this.props.data) {
+          data = {
+            responseDescription: this.props.data.responseDescription || '',
+            textTranscription: this.props.data.textTranscription || '',
+            audioTranscription: this.props.data.audioTranscription || '',
+            examples: this.props.data.examples || []
+          }
+        } else {
+          data = {
+              responseDescription: '',
+              textTranscription: '',
+              audioTranscription: '',
+              examples: []
+          }
+        }
         if (isModalOpen !== prevState.isModalOpen) {
-          this.setState({
-            data: {
-              responseDescription: this.props.data.responseDescription || '',
-              textTranscription: this.props.data.textTranscription || '',
-              audioTranscription: this.props.data.audioTranscription || '',
-              examples: this.props.data.examples || []
-            }
-          })
+          this.setState({ data })
         }
         // if (prevState.data.examples.length < data.examples.length && isModalOpen) {
         //     document.getElementById(`key-${this.state.data.examples.length - 1}`).focus();

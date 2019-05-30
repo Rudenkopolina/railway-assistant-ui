@@ -3,7 +3,7 @@ import cx from 'classnames';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import AnswerTable from '../../components/AnswerTable/AnswerTable';
-import NewIntentModal from '../../components/NewIntentModal/NewIntentModal';
+import IntentModal from '../../components/IntentModal';
 import Protected from '../../components/common/protected/container'
 import './styles.css';
 import Filter from './../../components/Filter';
@@ -99,7 +99,7 @@ class Answer extends React.Component {
           </div>
           <div className='answer-menu-item'>
             <Protected requiredRoles='ALLOWED_KNOWLEDGEBASE_CREATION'>
-              <NewIntentModal
+              <IntentModal
                 buttonText='Добавить справочный ответ'
                 className='action-button'
                 modalTitle='Добавить справочный ответ'

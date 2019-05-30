@@ -1,6 +1,5 @@
 import React from 'react';
-import './styles.css';
-import { Input } from 'semantic-ui-react'
+import './Login.css';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 
@@ -36,27 +35,25 @@ class Login extends React.Component {
 
   render() {
     return (
-      <div className='login-wrapper'>
-      <div className='login-background-image' />
-      <div className='login-background' />
+      <div className='flex'>
         <div className='login-container'>
-          <span className='login-header-text'>Пожалуйста, выполните вход</span>
-          <Input
-            placeholder='Введите логин'
-            className='login-input'
-            value={this.state.email}
-            onChange={e => this.handleChange(e, 'email')}
-          />
-          <Input
-            placeholder='Введите пароль'
-            className='login-input'
-            type='password'
-            value={this.state.password}
-            onChange={e => this.handleChange(e, 'password')}
-          />
-          <button onClick={this.handleSubmit}  className='login-button'>
-            Войти
-          </button>
+          <p className='header-text'>Пожалуйста, выполните вход</p>
+          <div >
+            <input
+              placeholder='Введите логин'
+              className='login-input'
+              value={this.state.email}
+              onChange={e => this.handleChange(e, 'email')}
+            />
+            <input
+              placeholder='Введите пароль'
+              className='login-input'
+              type='password'
+              value={this.state.password}
+              onChange={e => this.handleChange(e, 'password')}
+            />
+            <input type='button' value='Войти' onClick={this.handleSubmit}  className='login-button' />
+          </div>
         </div>
       </div>
     );
