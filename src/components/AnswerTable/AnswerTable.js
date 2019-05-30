@@ -1,7 +1,6 @@
 import React from 'react';
 import { withRouter } from 'react-router-dom';
 import { Icon, Popup } from 'semantic-ui-react'
-import 'react-notifications/lib/notifications.css';
 import AnswerCard from '../AnswerCard/AnswerCard';
 import './styles.css';
 

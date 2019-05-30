@@ -1,6 +1,5 @@
 import React, { Fragment } from 'react';
 import { Icon, Modal } from 'semantic-ui-react'
-import 'react-notifications/lib/notifications.css';
 import NewIntentModal from '../NewIntentModal/NewIntentModal';
 import './styles.css';
 

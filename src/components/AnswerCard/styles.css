@@ -25,6 +25,10 @@
   margin: 0 10px;
 }
 
+.table-actions {
+  display: flex;
+}
+
 .table-action {
   min-width: 120px;
 }
