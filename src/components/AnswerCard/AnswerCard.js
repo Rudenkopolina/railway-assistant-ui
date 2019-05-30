@@ -69,23 +69,23 @@ renderKeywords = () => {
   } = this.props;
   const { isKeywordsShown } = this.state;
   if (isShowExamples) {
+    let message;
+    let iconName;
+    if (isKeywordsShown) {
+      message = 'Скрыть ключевые слова';
+      iconName = 'angle up';
+    } else {
+      message = 'Показать ключевые слова';
+      iconName = 'angle down';
+    }
     return (
       <Fragment>
         <div
           className='key-words-title'
           onClick={this.toggleKeywordsView}
         >
-          {isKeywordsShown ? (
-            <Fragment>
-              <Icon name='angle up' />
-              Скрыть ключевые слова
-            </Fragment>
-          ) : (
-            <Fragment>
-              <Icon name='angle down' />
-              Показать ключевые слова
-            </Fragment>
-          )}
+        <Icon name={iconName} />
+        {message}
         </div>
         {isKeywordsShown &&
           <div className="key-words">

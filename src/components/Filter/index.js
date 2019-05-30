@@ -1,20 +1,19 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Input, Typography } from 'antd';
+import { Icon, Input } from 'semantic-ui-react';
+import './styles.css';
 
 class Filter extends Component {
-
     render() {
         const { filterString, onFilterChange } = this.props;
         return (
-            <div>
-            <Typography.Text style={{margin: '20px'}} >Поиск:</Typography.Text>
-            <Input.Search
-                placeholder="Введите слово..."
+            <div className='filter-wrapper'>
+              <Input
+                icon='search'
+                placeholder='Поиск...'
                 value={filterString}
                 onChange={({target}) => onFilterChange(target.value)}
-                style={{ width: 200 }}
-            />             
+              />
             </div>
         );
     }

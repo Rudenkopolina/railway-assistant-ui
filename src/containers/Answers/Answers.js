@@ -84,7 +84,6 @@ class Answer extends React.Component {
     const { activeTab, titles, filterString } =this.state;
     return (
       <div className="container">
-        <Filter filterString={filterString} onFilterChange={this.onFilterChange} />
         <div className="answer-header">
           <div className="answer-menu">
             {titles.map(title =>
@@ -96,6 +95,7 @@ class Answer extends React.Component {
                 {title.name}
               </div>
             )}
+            <Filter filterString={filterString} onFilterChange={this.onFilterChange} />
           </div>
           <div className='answer-menu-item'>
             <Protected requiredRoles='ALLOWED_KNOWLEDGEBASE_CREATION'>
