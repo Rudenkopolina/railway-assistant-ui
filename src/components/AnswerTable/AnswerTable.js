@@ -8,7 +8,8 @@ import { Icon, Popup, Modal } from 'semantic-ui-react'
 import TextArea from 'react-textarea-autosize';
 import 'react-notifications/lib/notifications.css';
 import Spinner from '../Spinner';
-import NewIntentModal from '../NewIntentModal/NewIntentModal';
+// import NewIntentModal from '../NewIntentModal/NewIntentModal';
+import IntentModal from '../IntentModal';
 import './Answer.css';
 
 import {
@@ -307,7 +308,7 @@ class AnswerTable extends React.Component {
                     Изменить
                   </div>
                 ) : (
-                  <NewIntentModal
+                  <IntentModal
                     key={answer.id}
                     buttonText='Изменить'
                     className="table-button"
