@@ -1,10 +1,10 @@
-.anticon {
-    font-size: 12px;
-    transform: scale(0.83333333) rotate(0deg);
-    vertical-align: -0.125em;
-    cursor: pointer;
-  }
-  
-  .icon-close {
-    margin-left: -25px;
-  }
+.anticon-close {
+  font-size: 10px;
+  vertical-align: -0.125em;
+  cursor: pointer;
+  margin-left: -25px;
+}
+
+svg :hover {
+  fill: rgba(0, 0, 0, 0.87);
+}

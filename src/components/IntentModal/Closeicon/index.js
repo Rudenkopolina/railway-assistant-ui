@@ -5,7 +5,7 @@ import './styles.css';
 class Closeicon extends React.Component {
     render() {
         return (
-            <i className='anticon icon-close' onClick={this.props.buttonClick}>
+            <i className='anticon-close' onClick={this.props.buttonClick}>
                 <svg
                     viewBox='64 64 896 896'
                     fill='rgba(0, 0, 0, 0.45)'
