@@ -5,23 +5,28 @@ import { urls } from '../../../config';
 import './styles.css';
 
 class Keywords extends React.Component {
-  state = {
-    keys: [],
-    inputVisible: false,
-    inputValue: '',
-    emptyError: false,
-    sameKeysError: false,
-    keyAlreadyUsed: {show: false, keyword: '', description:''}
-  };
-
-  componentWillMount() {
-    if (this.props.data) {
-      const { data } = this.props;
-      this.setState({
-        keys: data
-      });
-    }
+  constructor(props){
+    super(props);
+    this.state = {
+      keys: [],
+      inputVisible: false,
+      inputValue: '',
+      emptyError: false,
+      sameKeysError: false,
+      keyAlreadyUsed: {show: false, keyword: '', description:''}
+    };
   }
+
+  componentWillReceiveProps(nextProps) {
+    const { data } = nextProps;
+    this.setState({
+      keys: data
+    });
+  }
+
+  updateModal = (keys) => {
+		this.props.handleUpdateKeys(keys);
+	}
 
   saveInputRef = input => (this.input = input);
 
@@ -55,6 +60,7 @@ class Keywords extends React.Component {
       sameKeysError: !sameKeysError,
       keyAlreadyUsed: responseObject
     });
+    this.updateModal(keys)
   };
 
   onChangeKey = (e, index) => {
@@ -62,11 +68,13 @@ class Keywords extends React.Component {
     const newKeys = [...keys];
     newKeys[index] = e.target.value;
     this.setState({ keys: newKeys });
+    this.updateModal(keys)
   };
 
   removeKey = removedKey => {
     const keys = this.state.keys.filter(tag => tag !== removedKey);
     this.setState({ keys });
+    this.updateModal(keys)
   };
 
   checkExample = keyword => {

@@ -8,15 +8,24 @@ import './styles.css';
 const hint = "Для передачи слов-омографов используйте + перед ударной гласной. Например, гот+ов.Чтобы отметить паузу между словами, используйте -.";
 
 class IntentModal extends React.Component {
-    state = {
-        isModalOpen: false,
-        data: {
-            responseDescription: '',
-            textTranscription: '',
-            audioTranscription: '',
-            examples: []
-        },
+    constructor(props) {
+        super(props);
+        this.state = {
+            isModalOpen: false,
+            data: {
+                responseDescription: '',
+                textTranscription: '',
+                audioTranscription: '',
+                examples: []
+            }
+        }
     }
+
+    handleUpdateKeys = (keys) => {
+        this.setState({
+            data: {...this.state.data, examples: keys}
+        })
+	}
 
     componentDidUpdate(prevProps, prevState) {
         const { isModalOpen } = this.state;
@@ -109,7 +118,7 @@ class IntentModal extends React.Component {
                       <div className="modal-formfield">
                       <div className="modal-formfield-title">Ключевые слова</div>
                       <div className="modal-keys-formfield">
-                      <Keywords data={data.examples} />
+                      <Keywords data={data.examples} handleUpdateKeys={this.handleUpdateKeys} />
                       </div>
                       </div>
                     }
@@ -168,6 +177,7 @@ class IntentModal extends React.Component {
     }
 
     render() {
+        // console.log(this.state.data.examples)
         return (
             <Modal
                 trigger={
