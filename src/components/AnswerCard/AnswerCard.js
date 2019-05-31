@@ -2,8 +2,12 @@ import React, { Fragment } from 'react';
 import { Icon, Modal } from 'semantic-ui-react'
 import IntentModal from '../IntentModal';
 import './styles.css';
-
 import { urls } from '../../config';
+
+const titlesForModal = {
+  common: 'Изменить типовую фразу',
+  reference: 'Изменить справочный ответ'
+}
 
 class AnswerCard extends React.Component {
   state = {
@@ -31,7 +35,9 @@ class AnswerCard extends React.Component {
       answer,
       index,
       onDeleteAnswer,
-      onUpdateAnswer
+      onUpdateAnswer,
+      isShowExamples,
+      title
     } = this.props;
     return (
     <div className='table-actions'>
@@ -52,9 +58,11 @@ class AnswerCard extends React.Component {
           key={answer.id}
           buttonText='Изменить'
           className="table-button"
-          modalTitle='Изменить справочный ответ'
+          modalTitle={titlesForModal[title]}
           onSave={(data) => onUpdateAnswer(data, answer.id, index)}
           data={answer}
+          isShowExamples={isShowExamples}
+          isDescriptionChangeable={title === 'reference'}
         />
       </div>
     </div>
