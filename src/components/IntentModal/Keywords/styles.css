@@ -1,7 +1,7 @@
 .tag {
   color: #1890ff;
   background: #e6f7ff;
-  width: 80px;
+  width: 120px;
   margin-bottom: 8px;
   margin-right: 8px;
   padding: 0px 16px 0px 7px;
@@ -19,6 +19,7 @@
   cursor: pointer;
 }
 
-.icon-close {
-  margin-left: -25px;
+.error {
+  opacity: .85;
+  color: #f5222d;
 }

@@ -1,16 +1,17 @@
 import React from 'react';
-import { path } from './path';
 import request from '../../../services/request';
+import Closeicon from '../Closeicon';
 import { urls } from '../../../config';
-import { NotificationManager } from 'react-notifications';
 import './styles.css';
 
 class Keywords extends React.Component {
   state = {
     keys: [],
-    unUniqueExamples: [],
     inputVisible: false,
-    inputValue: ''
+    inputValue: '',
+    emptyError: false,
+    sameKeysError: false,
+    keyAlreadyUsedError: {show: false, keyword: '', description: ''}
   };
 
   componentWillMount() {
@@ -26,6 +27,10 @@ class Keywords extends React.Component {
     this.setState({ inputVisible: true }, () => this.input.focus());
   };
 
+  closeInput = () => {
+    this.setState({ inputVisible: false })
+  }
+
   saveInputRef = input => (this.input = input);
 
   handleInputChange = e => {
@@ -33,46 +38,54 @@ class Keywords extends React.Component {
   };
 
   onAddKey = () => {
-    const { inputValue } = this.state;
+    const { inputValue, keyAlreadyUsedError } = this.state;
     let { keys } = this.state;
+    const emptyError = !inputValue.length;
+    let sameKeysError;
+
     if (inputValue && keys.indexOf(inputValue) === -1) {
       keys = [...keys, inputValue];
-      this.setState({
-        keys,
-        inputVisible: false,
-        inputValue: ''
-      });
-    } else {
-      /// no error when focus
-      NotificationManager.error('Вы не можете вводить два одинаковых ключа');
     }
+    this.setState({
+      keys,
+      inputVisible: emptyError || sameKeysError || keyAlreadyUsedError.show,
+      inputValue: '',
+      emptyError,
+      sameKeysError
+    });
   };
 
-
   onChangeKey = (e, index) => {
-    const {keys} = this.state;
-    keys[index] = e.target.value
-    this.setState({ keys });
-  }
-
+    const { keys } = this.state;
+    const newKeys = [ ...keys ]
+    newKeys[index] = e.target.value;
+    this.setState({ keys: newKeys });
+  };
 
   removeKey = removedKey => {
     const keys = this.state.keys.filter(tag => tag !== removedKey);
     this.setState({ keys });
   };
 
-  checkExample = (keyword) => {
-    this.onAddKey();
-    // const { keys } = this.state;
-    request(urls.responses.compareKeyword, { method: 'POST', body: { keyword } })
-    .then(response => response.isUsed)
-    .catch(err => console.log(err))    
+  checkExample = keyword => {
+    this.onAddKey(keyword);
+    request(urls.responses.compareKeyword, {
+      method: 'POST',
+      body: { keyword }
+    })
+      .then(response => this.setState({keyAlreadyUsedError: {show: response.isUsed, keyword, description: response.responses[0].responseDescription}   }))
+      .catch(err => console.log(err));      
   };
 
   render() {
     const { keys } = this.state;
-    const { inputVisible, inputValue } = this.state;
-
+    const {
+      inputVisible,
+      inputValue,
+      sameKeysError,
+      keyAlreadyUsedError,
+      emptyError
+    } = this.state;
     return (
       <div>
         {keys.map((key, index) => (
@@ -83,46 +96,40 @@ class Keywords extends React.Component {
             <input
               className='tag'
               value={key}
-              onChange={(e) => this.onChangeKey(e, index)}
-              // onBlur={this.checkExample()}
+              onChange={e => this.onChangeKey(e, index)}
               onKeyPress={event => {
                 if (event.key === 'Enter') {
                   this.onAddKey();
                 }
               }}
             />
-            <i
-              className='anticon icon-close'
-              onClick={e => {
-                e.preventDefault();
-                this.removeKey(key);
-              }}
-            >
-              <svg
-                viewBox='64 64 896 896'
-                fill='rgba(0, 0, 0, 0.45)'
-                width='1em'
-                height='1em'
-              >
-                <path d={path} />
-              </svg>
-            </i>
+            <Closeicon buttonClick={e => {
+              e.preventDefault();
+              this.removeKey(key);
+            }} />
+
           </span>
         ))}
 
         {inputVisible && (
+          <span style={{ display: 'inline-block', marginBottom: '10px' }}>
           <input
             className='tag'
             ref={this.saveInputRef}
             value={inputValue}
             onChange={this.handleInputChange}
-            onBlur={()=> this.checkExample(inputValue)}
+            onBlur={() => this.checkExample(inputValue)}
             onKeyPress={event => {
               if (event.key === 'Enter') {
                 this.onAddKey();
               }
             }}
           />
+           <Closeicon buttonClick={e => {
+            e.preventDefault();
+            this.closeInput();
+            }} />
+          </span>
         )}
         <span
           key='add'
@@ -133,7 +140,6 @@ class Keywords extends React.Component {
             style={{ background: '#fff', borderStyle: 'dashed' }}
             onClick={this.showInput}
           >
-            {' '}
             <i className='anticon'>
               <svg
                 viewBox='64 64 896 896'
@@ -146,8 +152,11 @@ class Keywords extends React.Component {
               </svg>
             </i>
             Добавить
-          </button>{' '}
+          </button>
         </span>
+        {keyAlreadyUsedError.show && <div className='error'>Ключ <b>{keyAlreadyUsedError.keyword}</b> уже используется в намерении <b>{keyAlreadyUsedError.description}</b></div>}
+        {sameKeysError &&  <div className='error'>Нельзя добавлять одинаковые ключи</div>}
+        {emptyError && <div className='error'>Поле не должно быть пустым</div>}
       </div>
     );
   }
