@@ -4,6 +4,7 @@ import { Route, Switch } from 'react-router-dom';
 import ProtectedRoute from '../components/common/protected/route';
 
 import Login from '../components/auth/Login';
+import LoginNew from '../components/auth/Login/indexNew.js';
 import Home from '../containers/Home';
 import Answers from '../containers/Answers/Answers'
 import History from '../containers/History/History'
@@ -15,6 +16,7 @@ function Routes() {
 	return (
 		<Switch>
 			<Route exact path={'/login'} component={Login} />
+			<Route exact path={'/login2'} component={LoginNew} />
 
 			<ProtectedRoute
 				requiredRoles='ALLOWED_HISTORY_EDITING'
