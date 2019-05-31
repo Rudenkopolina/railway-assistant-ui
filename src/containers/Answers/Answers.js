@@ -2,23 +2,42 @@ import React from 'react';
 import cx from 'classnames';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
-import './Answer.css';
 import AnswerTable from '../../components/AnswerTable/AnswerTable';
-import NewIntentModal from '../../components/NewIntentModal/NewIntentModal';
+import IntentModal from '../../components/IntentModal';
 import Protected from '../../components/common/protected/container'
+import './styles.css';
 import Filter from './../../components/Filter';
-
-import { createResponse } from '../../redux/actions/responses';
-
-const titles = [
-  {name: 'Типовые фразы', key: 'common', requiredRoles: 'ALLOWED_ANSWERS_VIEWING'},
-  {name: 'Справка', key: 'reference', requiredRoles: 'ALLOWED_KNOWLEDGEBASE_VIEWING'}
-]
+import {
+  getCommonResponses,
+  getReferenceResponses,
+  changeResponse,
+  deleteResponse,
+  createResponse
+} from '../../redux/actions/responses';
 
 class Answer extends React.Component {
   state = {
-    activeTab: this.props.user.permissions.ALLOWED_ANSWERS_VIEWING ? 'common' : 'reference',
+    activeTab: '',
+    titles: [],
     filterString: '',
+  }
+
+  componentWillMount() {
+    const { user } = this.props.auth;
+    const titles = [];
+    if (user.permissions.ALLOWED_ANSWERS_VIEWING) {
+      titles.push(
+        {name: 'Типовые фразы', key: 'common', requiredRoles: 'ALLOWED_ANSWERS_VIEWING'}
+      )
+      this.props.getCommonResponses();
+    }
+    if (user.permissions.ALLOWED_KNOWLEDGEBASE_VIEWING) {
+      titles.push(
+        {name: 'Справка', key: 'reference', requiredRoles: 'ALLOWED_KNOWLEDGEBASE_VIEWING'}
+      )
+      this.props.getReferenceResponses();
+    }
+    this.setState({ titles, activeTab: titles[0].key })
   }
 
   onFilterChange = (filterString) => {
@@ -35,13 +54,26 @@ class Answer extends React.Component {
       case 'common':
         return (
           <Protected requiredRoles='ALLOWED_ANSWERS_VIEWING'>
-            <AnswerTable title='common' key='common' filterString={filterString} />
+            <AnswerTable
+              title='common'
+              key='common'
+              data={this.props.data.common}
+              changeResponse={this.props.changeResponse}
+              filterString={filterString}
+            />
           </Protected>
         )
       case 'reference':
         return (
           <Protected requiredRoles='ALLOWED_KNOWLEDGEBASE_VIEWING'>
-            <AnswerTable title='reference' key='reference' filterString={filterString} />
+            <AnswerTable
+              title='reference'
+              key='reference'
+              data={this.props.data.reference}
+              onDeleteAnswer={this.props.onDeleteAnswer}
+              changeResponse={this.props.changeResponse}
+              filterString={filterString}
+            />
           </Protected>
         )
       default: return;
@@ -49,26 +81,25 @@ class Answer extends React.Component {
   }
 
   render() {
-    const { activeTab, filterString } =this.state;
+    const { activeTab, titles, filterString } =this.state;
     return (
       <div className="container">
-        <Filter filterString={filterString} onFilterChange={this.onFilterChange} />
         <div className="answer-header">
           <div className="answer-menu">
             {titles.map(title =>
-              <Protected requiredRoles={title.requiredRoles} key={title.key}>
-                <div
-                  className={cx('answer-menu-item', { 'answer-menu-item-active': activeTab === title.key })}
-                  onClick={() => this.changeTab(title.key)}
-                >
+              <div
+                key={title.key}
+                className={cx('answer-menu-item', { 'answer-menu-item-active': activeTab === title.key })}
+                onClick={() => this.changeTab(title.key)}
+              >
                 {title.name}
-                </div>
-              </Protected>
+              </div>
             )}
+            <Filter filterString={filterString} onFilterChange={this.onFilterChange} />
           </div>
           <div className='answer-menu-item'>
             <Protected requiredRoles='ALLOWED_KNOWLEDGEBASE_CREATION'>
-              <NewIntentModal
+              <IntentModal
                 buttonText='Добавить справочный ответ'
                 className='action-button'
                 modalTitle='Добавить справочный ответ'
@@ -83,11 +114,20 @@ class Answer extends React.Component {
   }
 }
 
-
-const mapStateToProps = ({ auth }) => (auth);
+const mapStateToProps = ({ responses, auth }) => ({
+  auth,
+  data: {
+    common: responses.commonResponses,
+    reference: responses.referenceResponses
+  }
+});
 
 const mapDispatchToProps = dispatch => ({
-	createResponse: (data) => dispatch(createResponse(data))
+	createResponse: (data) => dispatch(createResponse(data)),
+  getCommonResponses: () => dispatch(getCommonResponses()),
+  getReferenceResponses: () => dispatch(getReferenceResponses()),
+  changeResponse: (data, id, title) => dispatch(changeResponse(data, id, title)),
+  onDeleteAnswer: id => dispatch(deleteResponse(id))
 });
 
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Answer));

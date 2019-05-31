@@ -1,0 +1,23 @@
+.table-spinner {
+  position: fixed;
+  top: 0;
+  left: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #f9f9fbad;
+  height: 100vh;
+  width: 100%;
+}
+
+.notification-success {
+    background-color: #fff !important;
+    color: rgb(67, 126, 38) !important;
+    margin: 10px;
+}
+
+.notification-error {
+    background-color: #fff !important;
+    color: rgb(126, 38, 38) !important;
+    margin: 10px;
+}

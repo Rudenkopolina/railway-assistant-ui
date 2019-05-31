@@ -78,6 +78,7 @@ export function register(username, email, password) {
 
 
 export function logout() {
+  auth.clearToken('jwtToken');
   return {
     type: LOGOUT
   };

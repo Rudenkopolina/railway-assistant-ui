@@ -1,45 +1,52 @@
-import React, { Fragment } from 'react';
+import React from 'react';
 import { Route, Switch } from 'react-router-dom';
 
 import ProtectedRoute from '../components/common/protected/route';
 
 import Login from '../components/auth/Login';
+import LoginNew from '../components/auth/Login/indexNew.js';
 import Home from '../containers/Home';
 import Answers from '../containers/Answers/Answers'
 import History from '../containers/History/History'
 import Account from '../containers/Account/Account'
-import Sidebar from '../components/Sidebar'
+import Layout from '../containers/Layout'
 import Users from '../containers/Users/Users'
 
 function Routes() {
 	return (
 		<Switch>
-			<Route exact path={'/login'} component={() => <Login register='/register'></Login>} />
-			<ProtectedRoute
-				path={'/answers'}
-				component={() => <Fragment><Sidebar title='answers'/><Answers/></Fragment>}
-				saveUrlOnFail
-			/>
+			<Route exact path={'/login'} component={Login} />
+			<Route exact path={'/login2'} component={LoginNew} />
+
 			<ProtectedRoute
 				requiredRoles='ALLOWED_HISTORY_EDITING'
 				path={'/history'}
-				component={() => <Fragment><Sidebar title='history'/><History/></Fragment>}
+				component={() => <Layout><History/></Layout> }
 				saveUrlOnFail
 			/>
+
 			<ProtectedRoute
 				path={'/account'}
-				component={() => <Fragment><Sidebar title='account'/><Account/></Fragment>}
+				component={() => <Layout><Account/></Layout> }
 				saveUrlOnFail
 			/>
+
+			<ProtectedRoute
+				path={'/answers'}
+				component={() => <Layout><Answers/></Layout> }
+				saveUrlOnFail
+			/>
+
+
 			<ProtectedRoute
         requiredRoles='ALLOWED_USERS_EDITING'
 				path={'/users'}
-				component={() => <Fragment><Sidebar title='users'/><Users/></Fragment>}
+				component={() => <Layout><Users/></Layout>}
 				saveUrlOnFail
 			/>
 			<ProtectedRoute
 				path={'/'}
-				component={() => <Fragment><Sidebar title='home'/><Home/></Fragment>}
+				component={() => <Layout><Home/></Layout> }
 				saveUrlOnFail
 			/>
 		</Switch>

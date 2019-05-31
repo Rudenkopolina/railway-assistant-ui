@@ -16,6 +16,10 @@ export const CREATE_RESPONSE = 'CREATE_RESPONSE';
 export const CREATE_RESPONSE_SUCCESS = 'CREATE_RESPONSE_SUCCESS';
 export const CREATE_RESPONSE_FAIL = 'CREATE_RESPONSE_FAIL';
 
+export const DELETE_RESPONSE = 'DELETE_RESPONSE';
+export const DELETE_RESPONSE_SUCCESS = 'DELETE_RESPONSE_SUCCESS';
+export const DELETE_RESPONSE_FAIL = 'DELETE_RESPONSE_FAIL';
+
 
 export function getCommonResponses() {
   return async dispatch => {
@@ -69,9 +73,11 @@ export function changeResponse(data, id, title) {
       const url = title === 'common' ?
       urls.responses.updateCommonResponse(id) :
       urls.responses.updateReferenceResponse(id);
-      await request(url, { method: 'POST',  body: { ...data } });
+      const response = await request(url, { method: 'POST',  body: { ...data } });
       dispatch({
         type: CHANGE_RESPONSE_SUCCESS,
+        response: response.value,
+        title
       });
 
     } catch (err) {
@@ -89,11 +95,10 @@ export function createResponse(data) {
     });
 
     try {
-      await request(urls.responses.createReferenceResponse, { method: 'POST',  body: { ...data } });
-      const res = await request(urls.responses.referenceResponses);
+      const response = await request(urls.responses.createReferenceResponse, { method: 'POST',  body: { ...data } });
       dispatch({
-        type: GET_REFERENCE_RESPONSES_SUCCESS,
-        responses: res.responses
+        type: CREATE_RESPONSE_SUCCESS,
+        response: response.value
       });
 
     } catch (err) {
@@ -107,20 +112,19 @@ export function createResponse(data) {
 export function deleteResponse(id) {
   return async dispatch => {
     dispatch({
-      type: CREATE_RESPONSE
+      type: DELETE_RESPONSE
     });
 
     try {
       await request(urls.responses.deleteReferenceResponse(id), { method: 'DELETE' });
-      const res = await request(urls.responses.referenceResponses);
       dispatch({
-        type: GET_REFERENCE_RESPONSES_SUCCESS,
-        responses: res.responses
+        type: DELETE_RESPONSE_SUCCESS,
+        deleteId: id
       });
 
     } catch (err) {
       dispatch({
-        type: CREATE_RESPONSE_FAIL
+        type: DELETE_RESPONSE_FAIL
       });
     }
   };

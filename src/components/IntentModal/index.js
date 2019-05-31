@@ -1,9 +1,11 @@
 import React from 'react';
-import { Modal, Popup, Input } from 'semantic-ui-react'
+import { Modal, Popup, Input, Icon } from 'semantic-ui-react'
 import { NotificationContainer } from 'react-notifications';
 import Keywords from './Keywords';
 import TextArea from 'react-textarea-autosize';
 import './styles.css';
+
+const hint = "Для передачи слов-омографов используйте + перед ударной гласной. Например, гот+ов.Чтобы отметить паузу между словами, используйте -.";
 
 class IntentModal extends React.Component {
     state = {
@@ -13,28 +15,33 @@ class IntentModal extends React.Component {
             textTranscription: '',
             audioTranscription: '',
             examples: []
-        }
-    }
-
-    componentWillMount() {
-        if (this.props.data) {
-            const { data } = this.props;
-            this.setState({
-                data: {
-                    responseDescription: data.responseDescription || '',
-                    textTranscription: data.textTranscription || '',
-                    audioTranscription: data.audioTranscription || '',
-                    examples: data.examples || []
-                }
-            })
-        }
+        },
     }
 
     componentDidUpdate(prevProps, prevState) {
-        const { data, isModalOpen } = this.state;
-        if (prevState.data.examples.length < data.examples.length && isModalOpen) {
-            document.getElementById(`key-${this.state.data.examples.length - 1}`).focus();
+        const { isModalOpen } = this.state;
+        let data = {};
+        if (this.props.data) {
+          data = {
+            responseDescription: this.props.data.responseDescription || '',
+            textTranscription: this.props.data.textTranscription || '',
+            audioTranscription: this.props.data.audioTranscription || '',
+            examples: this.props.data.examples || []
+          }
+        } else {
+          data = {
+              responseDescription: '',
+              textTranscription: '',
+              audioTranscription: '',
+              examples: []
+          }
         }
+        if (isModalOpen !== prevState.isModalOpen) {
+          this.setState({ data })
+        }
+        // if (prevState.data.examples.length < data.examples.length && isModalOpen) {
+        //     document.getElementById(`key-${this.state.data.examples.length - 1}`).focus();
+        // }
     }
 
     onHandlerFormField = (e, title) => {
@@ -48,17 +55,9 @@ class IntentModal extends React.Component {
     }
 
     onSendData = () => {
-        const { isModalOpen, data } = this.state;
+        const { data } = this.state;
         this.props.onSave(data);
-        this.setState({
-            data: {
-                responseDescription: '',
-                textTranscription: '',
-                audioTranscription: '',
-                examples: []
-            },
-            isModalOpen: !isModalOpen
-        })
+        this.setState({ isModalOpen: false })
     }
 
     isDisabled = () => {
@@ -77,30 +76,43 @@ class IntentModal extends React.Component {
         //   ||      (this.state.unUniqueExamples.length !== 0);
     }
 
-    getContent = () => {
+    renderContent = () => {
         const isDisabled = this.isDisabled();
         const { data } = this.state;
+        const {
+          isShowExamples = true,
+          isDescriptionChangeable = true
+        } = this.props;
         return (
             <div className="modal-wrapper">
                 <div className="modal-header">
                     {this.props.modalTitle}
                 </div>
                 <div className="modal-content">
+                  {isDescriptionChangeable ? (
                     <div className="modal-formfield">
-                        <div className="modal-formfield-title">Описание</div>
-                        <Input
-                            onChange={(e) => this.onHandlerFormField(e, 'responseDescription')}
-                            value={data.responseDescription}
-                            className="modal-field"
-                            placeholder='Справка о...'
-                        />
+                      <div className="modal-formfield-title">Описание</div>
+                      <Input
+                          onChange={(e) => this.onHandlerFormField(e, 'responseDescription')}
+                          value={data.responseDescription}
+                          className="modal-field"
+                          placeholder='Справка о...'
+                          disabled={!isDescriptionChangeable}
+                      />
                     </div>
-                    <div className="modal-formfield">
-                        <div className="modal-formfield-title">Ключевые слова</div>
-                        <div className="modal-keys-formfield">
-                            <Keywords data={data.examples} />
-                        </div>
+                  ) : (
+                    <div className="modal-description">
+                      {data.responseDescription}
                     </div>
+                  )}
+                    {isShowExamples &&
+                      <div className="modal-formfield">
+                      <div className="modal-formfield-title">Ключевые слова</div>
+                      <div className="modal-keys-formfield">
+                      <Keywords data={data.examples} />
+                      </div>
+                      </div>
+                    }
                     <div className="modal-formfield">
                         <div className="modal-formfield-title">Текстовый ответ</div>
                         <TextArea
@@ -111,7 +123,14 @@ class IntentModal extends React.Component {
                         />
                     </div>
                     <div className="modal-formfield">
-                        <div className="modal-formfield-title">Голосовой ответ</div>
+                        <div className="modal-formfield-title">
+                          Голосовой ответ
+                          <Popup
+                            content={hint}
+                            position="right center"
+                            trigger={<Icon name='question circle outline' className="hint-icon"/>}
+                          />
+                        </div>
                         <TextArea
                             className="modal-formfield-textarea modal-field"
                             placeholder='Голосовой ответ...'
@@ -161,7 +180,7 @@ class IntentModal extends React.Component {
                 closeOnDimmerClick={false}
                 onClose={this.onTrigerModal}
                 open={this.state.isModalOpen}
-                content={this.getContent()}
+                content={this.renderContent()}
                 closeIcon
             />
         );
