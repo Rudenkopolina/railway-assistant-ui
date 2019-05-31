@@ -94,7 +94,6 @@ class Keywords extends React.Component {
       emptyError,
       keyAlreadyUsed
     } = this.state;
-console.log(keys)
     return (
       <div>
         {keys.map((key, index) => (
@@ -132,7 +131,6 @@ console.log(keys)
               onBlur={() => this.checkExample(inputValue)}
               onKeyPress={event => {
                 if (event.key === 'Enter') {
-                  console.log('hey')
                   this.checkExample(inputValue);
                 }
               }}
