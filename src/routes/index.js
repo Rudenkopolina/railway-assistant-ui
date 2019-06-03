@@ -16,7 +16,6 @@ function Routes() {
 	return (
 		<Switch>
 			<Route exact path={'/login'} component={Login} />
-			<Route exact path={'/login2'} component={LoginNew} />
 
 			<ProtectedRoute
 				requiredRoles='ALLOWED_HISTORY_EDITING'

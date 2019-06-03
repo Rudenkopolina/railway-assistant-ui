@@ -13,7 +13,6 @@ class AnswerTable extends React.Component {
 
   onUpdateAnswer = (answer, id, index) => {
     const { title, changeResponse } = this.props;
-    console.log(this.state.data);
     if (this.props.data[index].textTranscription === answer.textTranscription) {
       delete answer.textTranscription;
     }
@@ -22,7 +21,7 @@ class AnswerTable extends React.Component {
     }
     changeResponse(answer, id, title)
     .then(() => {
-      const audio = document.getElementById(`audio-${id}`)
+      const audio = document.getElementById(`audio-${id}`);
       audio.load();
     })
   }

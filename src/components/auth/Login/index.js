@@ -1,5 +1,6 @@
 import React from 'react';
-import './Login.css';
+import './styles.css';
+import { Input } from 'semantic-ui-react'
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 
@@ -36,26 +37,29 @@ class Login extends React.Component {
 
   render() {
     return (
-      <div className='flex'>
-        <div className='login-container'>
-          <p className='header-text'>Пожалуйста, выполните вход</p>
-          <div >
-            <input
-              placeholder='Введите логин'
-              className='login-input'
-              value={this.state.email}
-              onChange={e => this.handleChange(e, 'email')}
-            />
-            <input
-              placeholder='Введите пароль'
-              className='login-input'
-              type='password'
-              value={this.state.password}
-              onChange={e => this.handleChange(e, 'password')}
-            />
-            <div className='login-error-message'>{this.state.message}</div>
-            <input type='button' value='Войти' onClick={this.handleSubmit}  className='login-button' />
-          </div>
+      <div className='login-wrapper'>
+      <div className='login-background-image' />
+      <div className='login-background' />
+      <div className='login-title'>Assistant Client</div>
+        <div className='login-card'>
+          <span className='login-header-text'>Пожалуйста, выполните вход</span>
+          <Input
+            placeholder='Введите логин'
+            className='login-field'
+            value={this.state.email}
+            onChange={e => this.handleChange(e, 'email')}
+          />
+          <Input
+            placeholder='Введите пароль'
+            className='login-field'
+            type='password'
+            value={this.state.password}
+            onChange={e => this.handleChange(e, 'password')}
+          />
+          <div className='login-error-message'>{this.state.message}</div>
+          <button onClick={this.handleSubmit}  className='login-submit-button'>
+            Войти
+          </button>
         </div>
       </div>
     );

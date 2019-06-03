@@ -1,88 +1,77 @@
 import React from 'react';
-import {NotificationContainer, NotificationManager} from 'react-notifications';
-import { Dropdown } from 'semantic-ui-react'
-import 'react-notifications/lib/notifications.css';
-import Spinner from '../../components/Spinner';
-import cx from 'classnames';
 import './Users.css';
-import moment from 'moment';
-import {connect} from "react-redux";
-import { withRouter } from 'react-router-dom';
-import mapStateToProps from "react-redux/es/connect/mapStateToProps";
-import mapDispatchToProps from "react-redux/es/connect/mapDispatchToProps";
+import UserCard from '../../components/UserCard/UserCard';
+import Filter from './../../components/Filter';
+import IntentModal from '../../components/IntentModal';
+
+const demoData = [
+  { username: 'rudenkopolina@gmail.com', name: 'ФИО', privilege: "Super Admin", id: 1 },
+  { username: 'rudenkopolina@icloud.com', name: 'Фамилия', privilege: 'Главный администратор', id: 2 },
+  { username: 'polina1997@mail.ru', name: 'Фамилия Имя Отчество', privilege: 'Редактор ответов', id: 3 },
+  { username: 'mmf.rudenkope@bsu.by', name: 'ДлиннаяФамилия Имя Отчество', privilege: 'Редактор базы знаний', id: 4 },
+  { username: 'rudenkopolina@yandex.com', name: 'ОченьДлиннаяФамилия Имя Отчество', privilege: 'Главный редактор', id: 5 },
+]
+
+const options = [
+  { text: 'Super Admin', value: 'Super Admin' },
+  { text: 'Главный администратор', value: 'Главный администратор' },
+  { text: 'Редактор ответов', value: 'Редактор ответов' },
+  { text: 'Редактор базы знаний', value: 'Редактор базы знаний' },
+  { text: 'Главный редактор', value: 'Главный редактор' }
+]
 
 
 class Users extends React.Component {
   state = {
-    data: [],
-    prevData: [],
-    isLoading: false,
-    intents: []
+    data: demoData,
+    filterString: ''
   }
 
-  componentWillMount() {
-    // axiosInstance.get(`/api/text/intents`)
-    // .then(res => this.setState({ intents: res.data.intents }))
-    // .catch(err => NotificationManager.error('Something go wrong. Reload page, please.', 'Sorry :('));
-    //
-    // axiosInstance.get(`/api/logs/intents`)
-    // .then(res => {
-    //   const prevData = JSON.parse(JSON.stringify(res.data.logs));
-    //   this.setState({ data: res.data.logs, prevData, isLoading: false })
-    // })
-    // .catch(err => NotificationManager.error('Something go wrong. Reload page, please.', 'Sorry :('))
-  }
-
-  onUpdateLog = (id) => {}
-
-  isLogChange = index => {
-    const { prevData, data } = this.state;
-    return prevData[index].intent !== data[index].intent;
-  }
-
-  getList = () => {
-    return this.state.intents.map(item => ({
-      key: item,
-      text: item,
-      value:item
-    }))
-  }
-
-  changeIntent = (data, index) => {
-    const newData = this.state.data;
-    newData[index] = {...newData[index], intent: data.value}
-    this.setState({ data: newData });
-  }
+  onFilterChange = (filterString) => {
+    this.setState({ filterString });
+}
 
   render() {
-    const { data, isLoading } = this.state;
-    const titles = ['Имя', 'Группа доступа']
+    const { data, filterString } = this.state;
+    const filterStringLowerCase = filterString.toLowerCase();
+
+    const filteredAnswers = filterStringLowerCase ?
+          data.filter(user => user.name.toLowerCase().indexOf(filterStringLowerCase) > -1
+          || user.username.toLowerCase().indexOf(filterStringLowerCase) > -1
+          || user.privilege.toLowerCase().indexOf(filterStringLowerCase) > -1)
+          :
+          data;
+    const titles = ['ФИО', 'Логин', 'Роль']
     return (
-      <div className={cx('answer-table-container container', { 'loading': isLoading })}>
-      {isLoading && (
-        <div className="table-spinner">
-          <Spinner />
+      <div className='answer-table-container container'>
+      <div className='user-page-title-wrapper'>
+        <div className='user-page-title'>
+          <div className='user-group-title'>Belarusian Railways</div>
+          <Filter filterString={filterString} onFilterChange={this.onFilterChange} />
         </div>
-      )}
-      <NotificationContainer />
+        <IntentModal
+          buttonText='Добавить сотрудника'
+          className='action-button'
+          modalTitle='Добавить справочный ответ'
+          onSave={(data) => this.props.createResponse(data)}
+        />
+      </div>
       {
-        <div className="table-title-row history-title-row">
+        <div className="users-title-row">
           {titles.map(item =>
-            <div className="table-title-content">
+            <div className="users-title-content">
               {item}
             </div>
           )}
         </div>
       }
-        {data.map((user, index) => (
-          <div className="table-row"  key={index}>
-            <div className="table-content">
-              {user.username}
-            </div>
-            <div className="table-content">
-              {user.privilege}
-            </div>
-          </div>
+        {filteredAnswers.map((user, index) => (
+          <UserCard
+            key={index}
+            user={user}
+            index={index}
+            options={options}
+          />
         ))}
       </div>
     );
