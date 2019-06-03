@@ -35,6 +35,12 @@ class Login extends React.Component {
     this.props.login(email, password);
   }
 
+  onKeyPress = (event) => {
+    if (event.key === 'Enter') {
+      this.handleSubmit();
+    }
+  }
+
   render() {
     return (
       <div className='login-wrapper'>
@@ -48,6 +54,7 @@ class Login extends React.Component {
             className='login-field'
             value={this.state.email}
             onChange={e => this.handleChange(e, 'email')}
+            onKeyPress={this.onKeyPress}
           />
           <Input
             placeholder='Введите пароль'
@@ -55,6 +62,7 @@ class Login extends React.Component {
             type='password'
             value={this.state.password}
             onChange={e => this.handleChange(e, 'password')}
+            onKeyPress={this.onKeyPress}
           />
           <div className='login-error-message'>{this.state.message}</div>
           <button onClick={this.handleSubmit}  className='login-submit-button'>
