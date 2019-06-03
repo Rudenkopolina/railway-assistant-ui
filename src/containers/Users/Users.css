@@ -1,0 +1,36 @@
+.users-title-row {
+  display: flex;
+  margin: 0 15% 0 65px;
+}
+
+.users-title-content {
+  width: 100%;
+  display: flex;
+  font-size: 16px;
+  font-weight: 500;
+  padding: 5px;
+}
+
+.table-dropdown {
+  border: 2px solid #cbd0d7 !important;
+  border-radius: 20px !important;
+}
+
+.user-page-title {
+  display: flex;
+  color: #345fdb;
+  font-weight: 500;
+}
+
+.user-page-title-wrapper {
+  justify-content: space-between;
+  display: flex;
+  margin: 30px 0;
+}
+
+.user-group-title {
+  font-size: 30px;
+  padding-right: 15px;
+  display: flex;
+  align-items: center;
+}

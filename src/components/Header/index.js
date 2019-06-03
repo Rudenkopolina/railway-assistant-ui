@@ -8,7 +8,7 @@ const titles = {
 		'/account': 'Личный кабинет',
 		'/answers':	'Ответы',
 		'/history': 'История',
-		'/employees': 'Сотрудники'
+		'/users': 'Сотрудники'
 }
 
 class Header extends React.Component {
