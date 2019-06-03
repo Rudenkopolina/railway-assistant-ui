@@ -27,13 +27,13 @@ class Answer extends React.Component {
     const titles = [];
     if (user.permissions.ALLOWED_ANSWERS_VIEWING) {
       titles.push(
-        {name: 'Типовые фразы', key: 'common', requiredRoles: 'ALLOWED_ANSWERS_VIEWING'}
+        {name: 'Базовые сообщения', key: 'common', requiredRoles: 'ALLOWED_ANSWERS_VIEWING'}
       )
       this.props.getCommonResponses();
     }
     if (user.permissions.ALLOWED_KNOWLEDGEBASE_VIEWING) {
       titles.push(
-        {name: 'Справка', key: 'reference', requiredRoles: 'ALLOWED_KNOWLEDGEBASE_VIEWING'}
+        {name: 'База знаний', key: 'reference', requiredRoles: 'ALLOWED_KNOWLEDGEBASE_VIEWING'}
       )
       this.props.getReferenceResponses();
     }

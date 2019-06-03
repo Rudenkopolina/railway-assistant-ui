@@ -24,10 +24,10 @@ class Keywords extends React.Component {
     });
   }
 
-  updateModal = keys => {
-    const { emptyError, sameKeysError, keyAlreadyUsed } = this.state;
-    const isError = emptyError || sameKeysError.show || keyAlreadyUsed.show;
-    this.props.handleUpdateKeys(keys, isError);
+  updateModal = (keys) => {
+    const {emptyError, sameKeysError, keyAlreadyUsed} = this.state;
+    const isValid = emptyError || sameKeysError.show || keyAlreadyUsed.show;
+    this.props.handleUpdateKeys(keys, isValid);
   };
 
   saveInputRef = input => (this.input = input);
@@ -80,10 +80,18 @@ class Keywords extends React.Component {
       this.updateModal(keys);
   };
 
-  onChangeKey = (e, index) => {
+  onChangeKey = (e, index) => {  
     const { keys } = this.state;
     const newKeys = [...keys];
-    newKeys[index] = e.target.value;
+    const newValue = e.target.value.trim().toLowerCase();
+    request(urls.responses.compareKeyword, {
+            method: 'POST',
+            body: { keyword: newValue }
+          })
+            .then(response => {
+
+            })
+    // newKeys[index] = e.target.value.trim().toLowerCase();
     this.setState({ keys: newKeys });
   };
 
@@ -91,8 +99,8 @@ class Keywords extends React.Component {
     const { sameKeysError, keyAlreadyUsed } = this.state;
     const keys = this.state.keys.filter(tag => tag !== removedKey);
     if (
-      keyAlreadyUsed.keyword === removedKey ||
-      sameKeysError.keyword === removedKey
+      keyAlreadyUsed.keyword.trim() === removedKey.toLowerCase().trim() ||
+      sameKeysError.keyword.trim() === removedKey.toLowerCase().trim()
     ) {
       this.setState({
         keys,
@@ -105,33 +113,43 @@ class Keywords extends React.Component {
     this.updateModal(keys);
   };
 
+  // checkAfterChange = (keyword) => {
+  //   if (keyword) {
+  //   }
+  //   else {
+  //     this.setState({
+  //       emptyError: true
+  //     })
+  //   }
+  // }
+
   checkExample = keyword => {
-    if (keyword) {
-      //check if word is the same
+    const newKeyword = keyword.trim().toLowerCase();
+    if (newKeyword) {   
       request(urls.responses.compareKeyword, {
         method: 'POST',
-        body: { keyword }
+        body: { keyword: newKeyword }
       })
         .then(response => {
           if (response.isUsed) {
             this.onAddKey(
               {
                 show: response.isUsed,
-                keyword,
+                keyword: newKeyword,
                 description: response.responses[0].responseDescription
               },
-              keyword
+              newKeyword
             );
           } else {
             this.onAddKey(
               { show: response.isUsed, keyword: '', description: '' },
-              keyword
+              newKeyword
             );
           }
         })
         .catch(err => console.log(err));
     } else
-      this.onAddKey({ show: false, keyword: '', description: '' }, keyword);
+      this.onAddKey({ show: false, keyword: '', description: '' }, newKeyword);
   };
 
   render() {
@@ -154,12 +172,12 @@ class Keywords extends React.Component {
               className='tag'
               value={key}
               onChange={e => this.onChangeKey(e, index)}
-              onBlur={() => this.checkExample(key)}
-              onKeyPress={event => {
-                if (event.key === 'Enter') {
-                  this.checkExample(key);
-                }
-              }}
+              // onBlur={() => this.checkAfterChange(key)}
+              // onKeyPress={event => {
+              //   if (event.key === 'Enter') {
+              //     this.checkAfterChange(key);
+              //   }
+              // }}
             />
             <Closeicon
               buttonClick={e => {
@@ -178,11 +196,11 @@ class Keywords extends React.Component {
               value={inputValue}
               onChange={this.handleInputChange}
               onBlur={() => this.checkExample(inputValue)}
-              onKeyPress={event => {
-                if (event.key === 'Enter') {
-                  this.checkExample(inputValue);
-                }
-              }}
+              // onKeyPress={event => {
+              //   if (event.key === 'Enter') {
+              //     this.checkExample(inputValue);
+              //   }
+              // }}
             />
             <Closeicon
               buttonClick={e => {
