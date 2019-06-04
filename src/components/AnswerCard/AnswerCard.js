@@ -19,7 +19,6 @@ class AnswerCard extends React.Component {
     this.props.onDeleteAnswer(answer);
   }
 
-
   toggleKeywordsView = () => {
   const { isKeywordsShown } = this.state;
   this.setState({ isKeywordsShown: !isKeywordsShown})
@@ -112,41 +111,30 @@ renderKeywords = () => {
       playedId
     } = this.props;
     return (
-        <div className="table-row-wrapper">
-          <div className="table-row">
-            <div className="table-number">{index + 1}</div>
-            <div className="table-intent">
-              {answer.responseDescription}
-            </div>
-              <div className="table-content">
-                {answer.textTranscription}
-              </div>
-              <div className="table-content">
-                {answer.audioTranscription}
-              </div>
-              <div className="table-action">
-              {playedId === answer.id ?
-                <Icon
-                  size='large'
-                  name="pause"
-                  className="audio-icon"
-                  onClick={() => this.props.onStopAudio(answer.id)}
-                /> :
-                <Icon
-                  size='large'
-                  name="play circle outline"
-                  className="audio-icon"
-                  onClick={() => this.props.onPlayAudio(answer.id)}
-                />
-              }
-              <audio preload='none' id={`audio-${answer.id}`} onEnded={() => this.props.onStopAudio(answer.id)}>
-                <source src={this.getAudioSrc(answer.id)} type="audio/ogg" />
-              </audio>
-            </div>
-            {this.renderActions()}
-          </div>
-          {this.renderKeywords()}
-        </div>
+      <div className="table-raw-wrapper">
+        {answer.responseDescription}
+      
+        {playedId === answer.id ?
+          <Icon
+            size='large'
+            name="pause"
+            className="audio-icon"
+            onClick={() => this.props.onStopAudio(answer.id)}
+          /> :
+          <Icon
+            size='large'
+            name="play circle outline"
+            className="audio-icon"
+            onClick={() => this.props.onPlayAudio(answer.id)}
+          />
+        }
+        <audio preload='none' id={`audio-${answer.id}`} onEnded={() => this.props.onStopAudio(answer.id)}>
+          <source src={this.getAudioSrc(answer.id)} type="audio/ogg" />
+        </audio>
+
+        {this.renderActions()}
+        {this.renderKeywords()}
+      </div>
     );
   }
 }

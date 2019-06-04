@@ -64,14 +64,14 @@
   margin: 10px 20px !important;
 }
 
-.table-row-wrapper {
+.table-raw-wrapper {
   display: flex;
-  /* align-items: center; */
   flex-direction: column;
   background-color: #fff;
   font-size: 16px;
   padding: 20px;
-  margin-bottom: 10px;
+  width: 300px;
+  margin: 10px;
 }
 
 .key-words-title {

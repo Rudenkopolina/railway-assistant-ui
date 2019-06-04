@@ -56,8 +56,8 @@ class AnswerTable extends React.Component {
           data;
     return (
       <div className='answer-table-container'>
-      <div className="table-title-row answer-title-row">
-        <div className="table-title-content">
+      {/* <div className="table-title-row answer-title-row"> */}
+        {/* <div className="table-title-content">
           Текстовый ответ
         </div>
         <div className="table-title-content">
@@ -67,8 +67,8 @@ class AnswerTable extends React.Component {
             position="right center"
             trigger={<Icon name='question circle outline' className="hint-icon"/>}
           />
-        </div>
-      </div>
+        </div> */}
+      {/* </div> */}
         {filteredAnswers.map((answer, index) => (
           <AnswerCard
             key={answer.id}
