@@ -3,6 +3,7 @@ import cx from 'classnames';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import AnswerTable from '../../components/AnswerTable/AnswerTable';
+import BaseSections from '../../components/BaseSections';
 import IntentModal from '../../components/IntentModal';
 import Protected from '../../components/common/protected/container'
 import './styles.css';
@@ -37,6 +38,7 @@ class Answer extends React.Component {
       )
       this.props.getReferenceResponses();
     }
+
     this.setState({ titles, activeTab: titles[0].key })
   }
 
@@ -66,7 +68,7 @@ class Answer extends React.Component {
       case 'reference':
         return (
           <Protected requiredRoles='ALLOWED_KNOWLEDGEBASE_VIEWING'>
-            <AnswerTable
+            <BaseSections
               title='reference'
               key='reference'
               data={this.props.data.reference}
