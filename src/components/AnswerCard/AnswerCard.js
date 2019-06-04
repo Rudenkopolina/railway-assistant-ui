@@ -44,7 +44,7 @@ class AnswerCard extends React.Component {
           {onDeleteAnswer && (
             <Modal
               closeIcon
-              trigger={<div className='table-button'>Удалить</div>}
+              trigger={<div className='card-button'>Удалить</div>}
               closeOnEscape={true}
               size={'mini'}
               content='Это действие нельзя отменить. Вы уверены, что хотите удалить этот ответ?'
@@ -63,7 +63,7 @@ class AnswerCard extends React.Component {
           <IntentModal
             key={answer.id}
             buttonText='Изменить'
-            className='table-button'
+            className='card-button'
             modalTitle={titlesForModal[title]}
             onSave={data => onUpdateAnswer(data, answer.id, index)}
             data={answer}
@@ -89,7 +89,7 @@ class AnswerCard extends React.Component {
         iconName = 'angle down';
       }
       return (
-        <Fragment>
+        <div className='key-words-container'>
           <div className='key-words-title' onClick={this.toggleKeywordsView}>
             <Icon name={iconName} />
             {message}
@@ -103,7 +103,7 @@ class AnswerCard extends React.Component {
               ))}
             </div>
           )}
-        </Fragment>
+          </div>
       );
     }
   };
@@ -112,8 +112,11 @@ class AnswerCard extends React.Component {
     const { answer, index, playedId } = this.props;
     return (
       <div className='table-raw-wrapper'>
-        {answer.responseDescription}
-        {answer.responseDescription}
+      <div className='header'>
+      <div className = 'info'>
+        <div className='title'>{answer.responseDescription}</div>
+        <div className='description'>{answer.responseDescription}</div>
+      </div>
         {playedId === answer.id ? (
           <Icon
             size='large'
@@ -129,6 +132,7 @@ class AnswerCard extends React.Component {
             onClick={() => this.props.onPlayAudio(answer.id)}
           />
         )}
+        </div>
         <audio
           preload='none'
           id={`audio-${answer.id}`}
@@ -137,8 +141,8 @@ class AnswerCard extends React.Component {
           <source src={this.getAudioSrc(answer.id)} type='audio/ogg' />
         </audio>
 
-        {this.renderActions()}
         {this.renderKeywords()}
+        {this.renderActions()}   
       </div>
     );
   }

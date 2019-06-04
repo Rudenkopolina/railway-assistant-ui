@@ -1,6 +1,5 @@
 import React from 'react';
 import { withRouter } from 'react-router-dom';
-import { Icon, Popup } from 'semantic-ui-react'
 import AnswerCard from '../AnswerCard/AnswerCard';
 import './styles.css';
 
@@ -56,19 +55,6 @@ class AnswerTable extends React.Component {
           data;
     return (
       <div className='answer-table-container'>
-      {/* <div className="table-title-row answer-title-row"> */}
-        {/* <div className="table-title-content">
-          Текстовый ответ
-        </div>
-        <div className="table-title-content">
-          Голосовой ответ
-          <Popup
-            content={hint}
-            position="right center"
-            trigger={<Icon name='question circle outline' className="hint-icon"/>}
-          />
-        </div> */}
-      {/* </div> */}
         {filteredAnswers.map((answer, index) => (
           <AnswerCard
             key={answer.id}

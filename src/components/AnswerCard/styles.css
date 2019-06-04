@@ -1,41 +1,13 @@
-.table-row {
-  display: flex;
-  align-items: center;
-  /* background-color: #fff; */
-  font-size: 16px;
-  /* padding: 20px; */
-  /* margin-bottom: 10px; */
-}
-
-.table-number {
-  margin-right: 10px;
-}
-
-.table-content {
-  width: 100%;
-  padding: 15px 20px;
-  margin: 0 10px;
-}
-
-.table-intent {
-  color: rgb(30, 75, 202);
-  width: 500px;
-  font-weight: 500;
-  padding: 15px 20px;
-  margin: 0 10px;
-  display: flex;
-  align-items: center;
-}
-
 .table-actions {
   display: flex;
+  justify-content: space-between;
 }
 
 .table-action {
   min-width: 120px;
 }
 
-.table-button {
+.card-button {
   min-width: 82px;
   border: 2px solid #cbd0d7;
   color: #cbd0d7;
@@ -46,41 +18,44 @@
   cursor: pointer;
   font-size: 12px;
   font-weight: 500;
-  padding: 8px 21px;
+  padding: 7px 21px;
   text-decoration: none;
   margin: 0 10px;
 }
 
-.table-button:hover {
+.card-button:hover {
   background-color: #cbd0d7;
   color: #fff;
 }
 
-.table-button:active {
-	position: relative;
-	top: 1px;
+.card-button:active {
+  position: relative;
+  top: 1px;
 }
 
 .audio-icon {
   color: #3167ff;
-  margin: 10px 20px !important;
+  margin: 10px !important;
 }
 
 .table-raw-wrapper {
   display: flex;
   flex-direction: column;
   background-color: #fff;
-  font-size: 16px;
+  font-size: 14px;
   padding: 20px;
   width: 300px;
-  margin: 10px;
+  margin: 10px 20px 10px 0px;
+}
+
+.key-words-container {
+  margin-bottom: 20px;
 }
 
 .key-words-title {
   font-size: 14px;
   color: #a3a3a3;
   cursor: pointer;
-  padding: 5px;
 }
 
 .key-words {
@@ -90,6 +65,9 @@
 
 .key-word {
   color: #1890ff;
+  max-width: 285px;
+  overflow: hidden;
+  text-overflow: ellipsis;
   background: #e6f7ff;
   margin-top: 8px;
   margin-right: 8px;
@@ -101,8 +79,25 @@
   border-radius: 4px;
 }
 
-.info-icon {
-  margin: 0 10px !important;
-  cursor: help;
-  color: #cbd0d7;
+.descritpion {
+  color: #314659;
+  font-size: 12px;
+  line-height: 2;
+}
+
+.title {
+  font-size: 16px;
+  line-height: 32px;
+  color: #3167ff;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+.info {
+  display: flex;
+  flex-direction: column;
 }
