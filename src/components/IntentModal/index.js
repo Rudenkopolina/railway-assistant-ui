@@ -17,13 +17,14 @@ class IntentModal extends React.Component {
                 textTranscription: '',
                 audioTranscription: '',
                 examples: []
-            }
+            },
+            keywordsError: false
         }
     }
 
-    handleUpdateKeys = (keys) => {
+    handleUpdateKeys = (keys, error) => {
         this.setState({
-            data: {...this.state.data, examples: keys}
+            data: {...this.state.data, examples: keys}, keywordsError: error
         })
 	}
 
@@ -82,7 +83,7 @@ class IntentModal extends React.Component {
         })
         return !responseDescription || !textTranscription ||
             !audioTranscription || !examples.length || !isDisabled
-        //   ||      (this.state.unUniqueExamples.length !== 0);
+            || this.state.keywordsError;
     }
 
     renderContent = () => {
