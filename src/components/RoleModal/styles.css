@@ -1,0 +1,36 @@
+.modal-dropdown {
+  border: 2px solid #cbd0d7 !important;
+  border-radius: 20px !important;
+  width: 100%;
+}
+
+.clickable-text {
+  color: #5385fe;
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+.sapce-between {
+  display: flex;
+  justify-content: space-between;
+}
+
+.modal-subheader {
+  color: #5385fe;
+  cursor: pointer;
+  text-decoration: underline;
+  margin: 10px;
+}
+
+.modal-subheader[disabled]
+{
+  pointer-events: none;
+  color: #d4edff;
+}
+
+.message-to-user {
+  white-space: pre;
+    border: 1px solid rgba(82, 133, 254, 0.64);
+    border-radius: 4px;
+    margin: 10px;
+}

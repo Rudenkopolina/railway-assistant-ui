@@ -1,14 +1,12 @@
 import React from 'react';
-import { Dropdown, Modal } from 'semantic-ui-react'
-import IntentModal from '../IntentModal';
+import { Modal } from 'semantic-ui-react'
 import './styles.css';
 
 class UserCard extends React.Component {
   renderActions = () => {
     const {
       user,
-      index,
-      onUpdateAnswer,
+      onDeleteUser
     } = this.props;
     return (
     <div className='table-actions'>
@@ -19,7 +17,7 @@ class UserCard extends React.Component {
           closeOnEscape={true}
           size={'mini'}
           content='Это действие нельзя отменить. Вы уверены, что хотите удалить этотого сотрудника из базы?'
-          actions={['Отменить', { key: 'done', content: 'Удалить', onClick: (event) => this.deleteAnswer(event, user.id) }]}
+          actions={['Отменить', { key: 'done', content: 'Удалить', onClick: () => onDeleteUser(user.id) }]}
         />
       </div>
     </div>
@@ -29,8 +27,7 @@ class UserCard extends React.Component {
   render() {
     const {
       user,
-      index,
-      options
+      index
     } = this.props;
     return (
         <div className="table-row-wrapper">
