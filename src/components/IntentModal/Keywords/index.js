@@ -1,6 +1,7 @@
 import React from 'react';
 import request from '../../../services/request';
 import Closeicon from '../Closeicon';
+import AddButton from '../AddButton';
 import { urls } from '../../../config';
 import './styles.css';
 
@@ -10,6 +11,7 @@ class Keywords extends React.Component {
     this.state = {
       keys: [],
       inputVisible: false,
+      inputChangeVisible: false,
       inputValue: '',
       emptyError: false,
       sameKeysError: { show: false, keyword: '' },
@@ -24,8 +26,8 @@ class Keywords extends React.Component {
     });
   }
 
-  updateModal = (keys) => {
-    const {emptyError, sameKeysError, keyAlreadyUsed} = this.state;
+  updateModal = keys => {
+    const { emptyError, sameKeysError, keyAlreadyUsed } = this.state;
     const isValid = emptyError || sameKeysError.show || keyAlreadyUsed.show;
     this.props.handleUpdateKeys(keys, isValid);
   };
@@ -33,7 +35,10 @@ class Keywords extends React.Component {
   saveInputRef = input => (this.input = input);
 
   showInput = () => {
-    this.setState({ inputVisible: true }, () => this.input.focus());
+    const { inputChangeVisible } = this.state;
+    if (!inputChangeVisible) {
+      this.setState({ inputVisible: true }, () => this.input.focus());
+    }
   };
 
   closeInput = inputValue => {
@@ -54,48 +59,16 @@ class Keywords extends React.Component {
     }
   };
 
-  handleInputChange = e => {
-    this.setState({ inputValue: e.target.value });
-  };
-
-  onAddKey = (responseObject, keyword) => {
-      let { keys } = this.state;
-      const emptyError = !keyword.length;
-      const sameKeysError = !(keys.indexOf(keyword) === -1);
-      const sameKey = sameKeysError ? keyword : '';
-      const isValid = emptyError || sameKeysError || responseObject.show;
-      const value = isValid ? keyword : '';
-
-      if (keyword && !sameKeysError && !responseObject.show) {
-        keys = [...keys, keyword];
-      }
-      this.setState({
-        keys,
-        inputVisible: isValid, 
-        inputValue: value,
-        emptyError,
-        sameKeysError: { show: sameKeysError, keyword: sameKey },
-        keyAlreadyUsed: responseObject
-      });
-      this.updateModal(keys);
-  };
-
-  onChangeKey = (e, index) => {  
-    const { keys } = this.state;
-    const newKeys = [...keys];
-    const newValue = e.target.value.trim().toLowerCase();
-    request(urls.responses.compareKeyword, {
-            method: 'POST',
-            body: { keyword: newValue }
-          })
-            .then(response => {
-
-            })
-    // newKeys[index] = e.target.value.trim().toLowerCase();
-    this.setState({ keys: newKeys });
+  getUnique = arr => {
+    const final = [];
+    arr.map((e, i) => !final.includes(e) && final.push(e));
+    return final;
   };
 
   removeKey = removedKey => {
+    let newKeys;
+    newKeys = this.getUnique(this.state.keys);
+    //////////////////////////
     const { sameKeysError, keyAlreadyUsed } = this.state;
     const keys = this.state.keys.filter(tag => tag !== removedKey);
     if (
@@ -113,19 +86,81 @@ class Keywords extends React.Component {
     this.updateModal(keys);
   };
 
-  // checkAfterChange = (keyword) => {
-  //   if (keyword) {
-  //   }
-  //   else {
-  //     this.setState({
-  //       emptyError: true
-  //     })
-  //   }
-  // }
+  handleInputChange = e => {
+    this.setState({ inputValue: e.target.value });
+  };
+
+  onAddKey = (responseObject, keyword) => {
+    let { keys } = this.state;
+    const emptyError = !keyword.length;
+    const sameKeysError = !(keys.indexOf(keyword) === -1);
+    const sameKey = sameKeysError ? keyword : '';
+    const isValid = emptyError || sameKeysError || responseObject.show;
+    const value = isValid ? keyword : '';
+
+    if (keyword && !sameKeysError && !responseObject.show) {
+      keys = [...keys, keyword];
+    }
+    this.setState({
+      keys,
+      inputVisible: isValid,
+      inputValue: value,
+      emptyError,
+      sameKeysError: { show: sameKeysError, keyword: sameKey },
+      keyAlreadyUsed: responseObject
+    });
+    this.updateModal(keys);
+  };
+
+  onChangeKey = (e, index) => {
+    const { keys } = this.state;
+    const newKeys = [...keys];
+    const newValue = e.target.value.trim().toLowerCase();
+    newKeys[index] = newValue;
+    this.setState({ keys: newKeys });
+  };
+
+  checkAfterChange = newValue => {
+    const { keys } = this.state;
+    const notSame = keys.indexOf(newValue) === keys.lastIndexOf(newValue);
+    let responseObject = {};
+    if (newValue && notSame) {
+      request(urls.responses.compareKeyword, {
+        method: 'POST',
+        body: { keyword: newValue }
+      }).then(response => {
+        if (!response.isUsed) {
+          responseObject = {
+            show: response.isUsed,
+            keyword: '',
+            description: ''
+          };
+        } else {
+          responseObject = {
+            show: response.isUsed,
+            keyword: newValue,
+            description: response.responses[0].responseDescription
+          };
+        }
+        this.setState({
+          inputChangeVisible: response.isUsed,
+          emptyError: false,
+          sameKeysError: { show: false, keyword: '' },
+          keyAlreadyUsed: responseObject
+        });
+      });
+    } else {
+      this.setState({
+        inputChangeVisible: true,
+        emptyError: !newValue.length,
+        sameKeysError: { show: !notSame, keyword: newValue }
+      });
+    }
+  };
 
   checkExample = keyword => {
     const newKeyword = keyword.trim().toLowerCase();
-    if (newKeyword) {   
+    if (newKeyword) {
       request(urls.responses.compareKeyword, {
         method: 'POST',
         body: { keyword: newKeyword }
@@ -172,7 +207,7 @@ class Keywords extends React.Component {
               className='tag'
               value={key}
               onChange={e => this.onChangeKey(e, index)}
-              // onBlur={() => this.checkAfterChange(key)}
+              onBlur={() => this.checkAfterChange(key)}
               // onKeyPress={event => {
               //   if (event.key === 'Enter') {
               //     this.checkAfterChange(key);
@@ -210,35 +245,12 @@ class Keywords extends React.Component {
             />
           </span>
         )}
-        {
-          <span
-            key='add'
-            style={{ display: 'inline-block', marginBottom: '10px' }}
-          >
-            <button
-              className='tag'
-              style={{
-                background: '#fff',
-                borderStyle: 'dashed',
-                width: '80px'
-              }}
-              onClick={this.showInput}
-            >
-              <i className='anticon'>
-                <svg
-                  viewBox='64 64 896 896'
-                  fill='#1890ff'
-                  width='1em'
-                  height='1em'
-                >
-                  <path d='M482 152h60q8 0 8 8v704q0 8-8 8h-60q-8 0-8-8V160q0-8 8-8z' />
-                  <path d='M176 474h672q8 0 8 8v60q0 8-8 8H176q-8 0-8-8v-60q0-8 8-8z' />
-                </svg>
-              </i>
-              Добавить
-            </button>
-          </span>
-        }
+        <AddButton
+          buttonClick={e => {
+            e.preventDefault();
+            this.showInput(inputValue);
+          }}
+        />
         {keyAlreadyUsed.show && (
           <div className='error'>
             Ключ <b>{keyAlreadyUsed.keyword}</b> уже используется в намерении{' '}
