@@ -22,16 +22,6 @@ class UserCard extends React.Component {
           actions={['Отменить', { key: 'done', content: 'Удалить', onClick: (event) => this.deleteAnswer(event, user.id) }]}
         />
       </div>
-      <div className="table-action">
-        <IntentModal
-          key={user.id}
-          buttonText='Изменить'
-          className="table-button"
-          modalTitle=''
-          onSave={(data) => onUpdateAnswer(data, user.id, index)}
-          data={user}
-        />
-      </div>
     </div>
     )
   }
@@ -55,15 +45,7 @@ class UserCard extends React.Component {
               </a>
             </div>
             <div className="table-content">
-              <Dropdown
-                className='table-dropdown'
-                search
-                selection
-                options={options}
-                value={user.privilege}
-                disabled
-                // onChange={(e, data) => this.changeIntent(data, index)}
-              />
+              {user.privilege}
             </div>
             {this.renderActions()}
           </div>

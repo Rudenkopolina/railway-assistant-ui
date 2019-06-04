@@ -23,6 +23,8 @@
   font-weight: 500;
   padding: 15px 20px;
   margin: 0 10px;
+  display: flex;
+  align-items: center;
 }
 
 .table-actions {
@@ -97,4 +99,10 @@
   white-space: nowrap;
   border: 1px solid #91d5ff;
   border-radius: 4px;
+}
+
+.info-icon {
+  margin: 0 10px !important;
+  cursor: help;
+  color: #cbd0d7;
 }
