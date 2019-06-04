@@ -19,4 +19,5 @@
 
 .hint-icon {
   margin: 0 5px !important;
+  cursor: help;
 }

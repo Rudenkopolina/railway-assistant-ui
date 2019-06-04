@@ -1,5 +1,5 @@
 import React, { Fragment } from 'react';
-import { Icon, Modal } from 'semantic-ui-react'
+import { Icon, Modal, Popup } from 'semantic-ui-react'
 import IntentModal from '../IntentModal';
 import './styles.css';
 import { urls } from '../../config';
@@ -116,6 +116,11 @@ renderKeywords = () => {
           <div className="table-row">
             <div className="table-number">{index + 1}</div>
             <div className="table-intent">
+              <Popup
+                content={answer.responseDescription}
+                position="bottom center"
+                trigger={<Icon name='info circle' className='info-icon' />}
+              />
               {answer.responseDescription}
             </div>
               <div className="table-content">
