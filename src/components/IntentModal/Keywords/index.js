@@ -96,7 +96,7 @@ class Keywords extends React.Component {
       sameKeysError: { show: sameKeysError, keyword: newKeyword }
     });
   };
-  
+
 
   onAddKeys = (newKeyword) => {
     const { emptyError, sameKeysError, keyAlreadyUsed } = this.state;

@@ -23,9 +23,15 @@ export const roles = {
   failed: false
 };
 
+export const audios = {
+  playedId: null,
+  audioUrl: null
+};
+
 export default {
   auth,
   responses,
   users,
-  roles
+  roles,
+  audios
 };

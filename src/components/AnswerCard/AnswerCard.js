@@ -1,5 +1,6 @@
-import React, { Fragment } from 'react';
-import { Icon, Modal, Button } from 'semantic-ui-react';
+import React from 'react';
+import { Icon, Modal } from 'semantic-ui-react';
+import AudioPlayer from '../AudioPlayer/AudioPlayer';
 import Truncate from 'react-truncate';
 import IntentModal from '../IntentModal';
 import './styles.css';
@@ -39,7 +40,7 @@ class AnswerCard extends React.Component {
       title
     } = this.props;
     return (
-     
+
         <IntentModal
           key={answer.id}
           buttonText='Детали'
@@ -50,7 +51,7 @@ class AnswerCard extends React.Component {
           isShowExamples={isShowExamples}
           isDescriptionChangeable={title === 'reference'}
         />
-      
+
     );
   };
 
@@ -117,9 +118,9 @@ class AnswerCard extends React.Component {
   // };
 
   render() {
-    const { answer, playedId } = this.props;
+    const { answer } = this.props;
     return (
-      <div className='table-raw-wrapper'>       
+      <div className='table-raw-wrapper'>
         <div className='answer-card-content'>
           <div className='answer-card-title'>
             <div className='answer-overflow'>{answer.responseDescription}</div>
@@ -130,31 +131,13 @@ class AnswerCard extends React.Component {
               {answer.responseDescription}
             </Truncate>
           </div>
-        </div>        
+        </div>
         <div className='table-actions'>
-          <div className='icon-position'>            
-            {playedId === answer.id ? (
-              <Icon
-                size='large'
-                name='pause'
-                className='audio-icon'
-                onClick={() => this.props.onStopAudio(answer.id)}
-              />
-            ) : (
-              <Icon
-                size='large'
-                name='play circle outline'
-                className='audio-icon'
-                onClick={() => this.props.onPlayAudio(answer.id)}
-              />
-            )}
-            <audio
-              preload='none'
-              id={`audio-${answer.id}`}
-              onEnded={() => this.props.onStopAudio(answer.id)}
-            >
-              <source src={this.getAudioSrc(answer.id)} type='audio/ogg' />
-            </audio>
+          <div className='icon-position'>
+            <AudioPlayer
+              id={answer.id}
+              url={this.getAudioSrc(answer.id)}
+            />
           </div>
           {this.renderActions()}
         </div>

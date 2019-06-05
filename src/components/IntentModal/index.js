@@ -1,27 +1,27 @@
 import React from 'react';
 import { Modal, Popup, Input, Icon, Button } from 'semantic-ui-react';
 import { NotificationContainer } from 'react-notifications';
+import AudioPlayer from '../AudioPlayer/AudioPlayer';
 import Keywords from './Keywords';
 import TextArea from 'react-textarea-autosize';
+import { urls } from '../../config';
 import './styles.css';
 
 const hint =
   'Для передачи слов-омографов используйте + перед ударной гласной. Например, гот+ов.Чтобы отметить паузу между словами, используйте -.';
 
 class IntentModal extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      isModalOpen: false,
-      data: {
-        responseDescription: '',
-        textTranscription: '',
-        audioTranscription: '',
-        examples: []
-      },
-      keywordsError: false
-    };
-  }
+  state = {
+    isModalOpen: false,
+    data: {
+      responseDescription: '',
+      textTranscription: '',
+      audioTranscription: '',
+      examples: []
+    },
+    keywordsError: false,
+    playedId: null
+  };
 
   handleUpdateKeys = (keys, error) => {
     this.setState({
@@ -70,6 +70,11 @@ class IntentModal extends React.Component {
     const { data } = this.state;
     this.props.onSave(data);
     this.setState({ isModalOpen: false });
+  };
+
+  getAudioSrc = () => {
+    const { audioTranscription } = this.state.data;
+    return urls.responses.newAudioUrl(audioTranscription);
   };
 
   isDisabled = () => {
@@ -150,6 +155,11 @@ class IntentModal extends React.Component {
                   <Icon name='question circle outline' className='hint-icon' />
                 }
               />
+              <AudioPlayer
+                disabled={!this.state.data.audioTranscription}
+                id='newAudio'
+                url={this.getAudioSrc()}
+              />
             </div>
             <TextArea
               className='modal-formfield-textarea modal-field'
@@ -187,7 +197,6 @@ class IntentModal extends React.Component {
   };
 
   render() {
-    // console.log(this.state.data.examples)
     return (
       <Modal
         trigger={
