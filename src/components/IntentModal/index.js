@@ -1,8 +1,10 @@
 import React from 'react';
 import { Modal, Popup, Input, Icon } from 'semantic-ui-react'
 import { NotificationContainer } from 'react-notifications';
+import AudioPlayer from '../AudioPlayer/AudioPlayer';
 import Keywords from './Keywords';
 import TextArea from 'react-textarea-autosize';
+import { urls } from '../../config';
 import './styles.css';
 
 const hint = "Для передачи слов-омографов используйте + перед ударной гласной. Например, гот+ов.Чтобы отметить паузу между словами, используйте -.";
@@ -18,7 +20,8 @@ class IntentModal extends React.Component {
                 audioTranscription: '',
                 examples: []
             },
-            keywordsError: false
+            keywordsError: false,
+            playedId: null
         }
     }
 
@@ -86,6 +89,30 @@ class IntentModal extends React.Component {
             || this.state.keywordsError;
     }
 
+    onPlayAudio = id => {
+      const { playedId } = this.state;
+      if (playedId) {
+        this.onStopAudio(playedId);
+      }
+      const audio = document.getElementById(`audio-${id}`)
+      audio.currentTime = 0;
+      audio.load();
+      audio.play();
+      this.setState({ playedId: id });
+      audio.onended = () => this.setState({ playedId: null });
+    }
+
+    onStopAudio = id => {
+      document.getElementById(`audio-${id}`).pause();
+      this.setState({ playedId: null });
+    }
+
+    getAudioSrc = () => {
+      const { audioTranscription } = this.state.data;
+      console.log(urls.responses.newAudioUrl(audioTranscription));
+      return urls.responses.newAudioUrl(audioTranscription);
+    };
+
     renderContent = () => {
         const isDisabled = this.isDisabled();
         const { data } = this.state;
@@ -139,6 +166,14 @@ class IntentModal extends React.Component {
                             content={hint}
                             position="right center"
                             trigger={<Icon name='question circle outline' className="hint-icon"/>}
+                          />
+                          <AudioPlayer
+                            disabled={!this.state.data.audioTranscription}
+                            playedId={this.state.playedId}
+                            id='newAudio'
+                            onStopAudio={this.onStopAudio}
+                            onPlayAudio={this.onPlayAudio}
+                            getAudioSrc={this.getAudioSrc}
                           />
                         </div>
                         <TextArea

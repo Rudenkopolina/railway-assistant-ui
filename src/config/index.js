@@ -16,6 +16,10 @@ module.exports = {
 				const token = sessionStorage.getItem('jwtToken');
 				return `${baseUrl}/api/answers/${title}_responses/${id}/audio/${token.substring(1, token.length - 1)}`
 			},
+			newAudioUrl: text => {
+				const token = sessionStorage.getItem('jwtToken');
+				return `${baseUrl}/api/speech/textToSpeech?text=${text}&token=${token.substring(1, token.length - 1)}`
+			},
 			createReferenceResponse: '/api/answers/reference_responses',
 			getReferenceResponse: id => `/api/answers/reference_responses/${id}`,
 			deleteReferenceResponse: id => `/api/answers/reference_responses/${id}`,

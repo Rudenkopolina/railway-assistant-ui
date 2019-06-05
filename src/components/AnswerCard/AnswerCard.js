@@ -1,5 +1,6 @@
-import React, { Fragment } from 'react';
-import { Icon, Modal, Popup } from 'semantic-ui-react';
+import React from 'react';
+import { Icon, Modal } from 'semantic-ui-react';
+import AudioPlayer from '../AudioPlayer/AudioPlayer';
 import IntentModal from '../IntentModal';
 import './styles.css';
 import { urls } from '../../config';
@@ -109,7 +110,7 @@ class AnswerCard extends React.Component {
   };
 
   render() {
-    const { answer, index, playedId } = this.props;
+    const { answer, playedId } = this.props;
     return (
       <div className='table-raw-wrapper'>
       <div className='header'>
@@ -117,32 +118,16 @@ class AnswerCard extends React.Component {
         <div className='title'>{answer.responseDescription}</div>
         <div className='description'>{answer.responseDescription}</div>
       </div>
-        {playedId === answer.id ? (
-          <Icon
-            size='large'
-            name='pause'
-            className='audio-icon'
-            onClick={() => this.props.onStopAudio(answer.id)}
-          />
-        ) : (
-          <Icon
-            size='large'
-            name='play circle outline'
-            className='audio-icon'
-            onClick={() => this.props.onPlayAudio(answer.id)}
-          />
-        )}
+        <AudioPlayer
+          playedId={playedId}
+          id={answer.id}
+          onStopAudio={this.props.onStopAudio}
+          onPlayAudio={this.props.onPlayAudio}
+          getAudioSrc={this.getAudioSrc}
+        />
         </div>
-        <audio
-          preload='none'
-          id={`audio-${answer.id}`}
-          onEnded={() => this.props.onStopAudio(answer.id)}
-        >
-          <source src={this.getAudioSrc(answer.id)} type='audio/ogg' />
-        </audio>
-
         {this.renderKeywords()}
-        {this.renderActions()}   
+        {this.renderActions()}
       </div>
     );
   }

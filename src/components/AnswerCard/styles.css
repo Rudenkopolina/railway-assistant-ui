@@ -33,11 +33,6 @@
   top: 1px;
 }
 
-.audio-icon {
-  color: #3167ff;
-  margin: 10px !important;
-}
-
 .table-raw-wrapper {
   display: flex;
   flex-direction: column;
