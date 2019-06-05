@@ -96,14 +96,17 @@ class Answer extends React.Component {
               >
                 {title.name}
               </div>
-            )}
-            <Filter filterString={filterString} onFilterChange={this.onFilterChange} />
+            )} 
+            <div className='element-mb'>
+            <Filter filterString={filterString} onFilterChange={this.onFilterChange} />   
+            </div>
+                
           </div>
-          <div className='answer-menu-item'>
+          <div className='header-button'>
             <Protected requiredRoles='ALLOWED_KNOWLEDGEBASE_CREATION'>
               <IntentModal
                 buttonText='Добавить справочный ответ'
-                className='action-button'
+                className='element-mb'
                 modalTitle='Добавить справочный ответ'
                 onSave={(data) => this.props.createResponse(data)}
               />

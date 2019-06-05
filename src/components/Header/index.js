@@ -5,7 +5,7 @@ import './styles.css'
 
 const titles = {
 		'/': 'Домашняя страница',
-		'/account': 'Личный кабинет',
+		'/account': 'Профиль',
 		'/answers':	'Ответы',
 		'/history': 'История',
 		'/users': 'Сотрудники'
@@ -20,9 +20,6 @@ class Header extends React.Component {
     const title = this.props.match.path;
 		return (
 			<div className='header-wrapper'>
-				<div>
-					{titles[title]}
-				</div>
 				<div>
 					{this.props.user}
 					<Dropdown item icon='ellipsis horizontal' className='header-menu'>

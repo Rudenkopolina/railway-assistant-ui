@@ -11,13 +11,13 @@ class Keywords extends React.Component {
     this.state = {
       keys: [],
       inputVisible: false,
+      loading: false,
       inputValue: '',
       emptyError: false,
       sameKeysError: { show: false, keyword: '' },
       keyAlreadyUsed: {
         show: false,
         keyword: '',
-        canAdd: false,
         description: ''
       }
     };
@@ -46,40 +46,14 @@ class Keywords extends React.Component {
     this.setState({ inputVisible: true }, () => this.input.focus());
   };
 
-  closeInput = inputValue => {
-    // const { sameKeysError, keyAlreadyUsed } = this.state;
-    // if (
-    //   keyAlreadyUsed.keyword === inputValue ||
-    //   sameKeysError.keyword === inputValue
-    // ) {
-    //   this.setState({
-    //     inputVisible: false,
-    //     inputValue: '',
-    //     keyAlreadyUsed: { show: false, keyword: '', description: '' },
-    //     sameKeysError: { show: false, keyword: '' },
-    //     emptyError: false
-    //   });
-    // } else {
-    this.setState({ inputVisible: false, inputValue: '', emptyError: false });
-    // }
+  closeInput = () => {
+    this.setState({ inputVisible: false, inputValue: ''});
   };
 
   removeKey = removedKey => {
-    // const { sameKeysError, keyAlreadyUsed } = this.state;
     const keys = this.state.keys.filter(tag => tag !== removedKey);
-    // if (
-    //   keyAlreadyUsed.keyword.trim() === removedKey.toLowerCase().trim() ||
-    //   sameKeysError.keyword.trim() === removedKey.toLowerCase().trim()
-    // ) {
-    //   this.setState({
-    //     keys,
-    //     keyAlreadyUsed: { show: false, keyword: '', description: '' },
-    //     sameKeysError: { show: false, keyword: '' }
-    //   });
-    // } else {
     this.setState({ keys });
-    // }
-    this.updateModal(keys);
+    this.onAddKeys(keys);
   };
 
   isKeyUsed = newKeyword => {
@@ -91,7 +65,6 @@ class Keywords extends React.Component {
         this.setState({
           keyAlreadyUsed: {
             show: response.isUsed,
-            canAdd: false,
             keyword: newKeyword,
             description: response.responses[0].responseDescription
           }
@@ -100,7 +73,6 @@ class Keywords extends React.Component {
         this.setState({
           keyAlreadyUsed: {
             show: response.isUsed,
-            canAdd: true,
             keyword: '',
             description: ''
           }
@@ -113,11 +85,13 @@ class Keywords extends React.Component {
     const newKeyword = keyword.trim().toLowerCase();
     const emptyError = !newKeyword.length;
     const sameKeysError = !(keys.indexOf(newKeyword) === -1);
+    let loading = false;
     if (newKeyword) {
+      loading = true;
       this.isKeyUsed(newKeyword);
-      this.onAddKeys(newKeyword);
     }
     this.setState({
+      loading,
       emptyError,
       sameKeysError: { show: sameKeysError, keyword: newKeyword }
     });
@@ -132,10 +106,7 @@ class Keywords extends React.Component {
     const {
       keys,
       inputVisible,
-      inputValue,
-      sameKeysError,
-      emptyError,
-      keyAlreadyUsed
+      inputValue
     } = this.state;
     return (
       <div>
@@ -151,7 +122,7 @@ class Keywords extends React.Component {
           </span>
         ))}
 
-        {inputVisible && (
+        {inputVisible &&  (
           <span style={{ display: 'inline-block', marginBottom: '10px' }}>
             <input
               className='tag'
@@ -168,7 +139,7 @@ class Keywords extends React.Component {
             <Closeicon
               buttonClick={e => {
                 e.preventDefault();
-                this.closeInput(inputValue);
+                this.closeInput();
               }}
             />
           </span>
@@ -179,18 +150,6 @@ class Keywords extends React.Component {
             this.showInput(inputValue);
           }}
         />
-        {keyAlreadyUsed.show && (
-          <div className='error'>
-            Ключ <b>{keyAlreadyUsed.keyword}</b> уже используется в намерении{' '}
-            <b>{keyAlreadyUsed.description}</b>
-          </div>
-        )}
-        {sameKeysError.show && (
-          <div className='error'>
-            Нельзя добавлять одинаковые ключи <b>{sameKeysError.keyword}</b>
-          </div>
-        )}
-        {emptyError && <div className='error'>Поле не должно быть пустым</div>}
       </div>
     );
   }
