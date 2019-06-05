@@ -1,5 +1,6 @@
 import React from 'react';
 import { withRouter } from 'react-router-dom';
+import cx from 'classnames';
 import AnswerTable from './../AnswerTable/AnswerTable';
 import './styles.css';
 
@@ -7,43 +8,94 @@ class BaseSections extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      displayCategory:[props.data[0]],
-      data: props.data
+      categoriesList: '',
+      activeTab: '',
+      displayCategory: [],
+      filterString: this.props
     };
   }
 
+  componentWillMount() {
+    const { data } = this.props;
+    const tempCategories = data.map(i => i.categoryName);
+    const category = tempCategories[0];
+    const categoriesList = tempCategories.filter(
+      (item, index, self) => self.indexOf(item) === index
+    );
+    this.setCategory(category);
+    this.setState({ categoriesList, activeTab: category });
+  }
+
   setCategory = category => {
-    const { data } = this.state;
+    const { data } = this.props;
     const displayCategory = data.filter(item => {
-      return item.responseDescription === category;
+      return item.categoryName === category;
     });
     this.setState({
+      activeTab: category,
       displayCategory
     });
   };
 
+  onFilterCount = (filteredAnswers, allAnswers) => {
+    return <span className='filter-results'>{filteredAnswers.length} из {allAnswers.length}</span>
+  };
+
+  getFilteredAnswers = displayCategory => {
+      const { filterString } = this.props;
+      let filterStringLowerCase = '';
+      if (filterString) {
+          filterStringLowerCase = filterString.toLowerCase();
+      }
+
+    return filterStringLowerCase
+      ? displayCategory.filter(
+          answer =>
+            answer.responseDescription
+              .toLowerCase()
+              .indexOf(filterStringLowerCase) > -1 ||
+            answer.textTranscription
+              .toLowerCase()
+              .indexOf(filterStringLowerCase) > -1 ||
+            answer.audioTranscription
+              .toLowerCase()
+              .indexOf(filterStringLowerCase) > -1 ||
+            answer.examples.some(
+              example =>
+                example.toLowerCase().indexOf(filterStringLowerCase) > -1
+            )
+        )
+      : displayCategory;
+  };
+
   render() {
-    const { data, displayCategory } = this.state;
+    const {filterString} = this.props;
+    const { displayCategory, activeTab, categoriesList } = this.state;
+    const filteredAnswers = this.getFilteredAnswers(displayCategory);
+    const filterCount = this.onFilterCount(filteredAnswers, displayCategory)
+
     return (
       <div>
         <div className='categories-container'>
-          {data.map((item, index) => (            
-            <button
+          {categoriesList.map((category, index) => (
+            <div
               key={index}
-              className='category-button'
-              onClick={() => this.setCategory(item.responseDescription)}
+              className={cx('category-button', {
+                'category-button-active': activeTab === category
+              })}
+              onClick={() => this.setCategory(category)}
             >
-              {item.responseDescription}
-            </button>
+              {category} {filterString && (filterCount)}
+            </div>
           ))}
         </div>
         <AnswerTable
           title='reference'
           key='reference'
-          data={displayCategory}
+          data={filteredAnswers}
           onDeleteAnswer={this.props.onDeleteAnswer}
           changeResponse={this.props.changeResponse}
-          filterString={this.props.filterString}
+          filterString={filterString}
         />
       </div>
     );

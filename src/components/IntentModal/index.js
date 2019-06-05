@@ -164,6 +164,7 @@ class IntentModal extends React.Component {
             onClick={this.onTrigerModal}
             className='action-button grey-button'
           >
+
             Отменить
           </div>
           {isDisabled ? (
@@ -175,6 +176,7 @@ class IntentModal extends React.Component {
             />
           ) : (
             <div onClick={this.onSendData} className='action-button'>
+
               Сохранить
             </div>
           )}
@@ -189,7 +191,7 @@ class IntentModal extends React.Component {
     return (
       <Modal
         trigger={
-          <Button onClick={this.onTrigerModal}>
+          <Button primary onClick={this.onTrigerModal}>
             {this.props.buttonText}
           </Button>
         }
