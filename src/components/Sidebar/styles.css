@@ -16,12 +16,12 @@
 }
 
 .sidebar-active-item {
-  border-left: 4px solid #3c69e7;
+  border-left: 4px solid #1a69a4;
   margin-left: -2px;
 }
 
 .sidebar-active-icon {
-  color: #3c69e7;
+  color: #1a69a4;
 }
 
 .header-wrapper {

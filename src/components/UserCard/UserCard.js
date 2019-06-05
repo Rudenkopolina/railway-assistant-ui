@@ -16,7 +16,7 @@ class UserCard extends React.Component {
           trigger={<div className='users-table-button'>Удалить</div>}
           closeOnEscape={true}
           size={'mini'}
-          content='Это действие нельзя отменить. Вы уверены, что хотите удалить этотого сотрудника из базы?'
+          content='Это действие нельзя будет отменить. Вы уверены, что хотите удалить этотого сотрудника из базы?'
           actions={['Отменить', { key: 'done', content: 'Удалить', onClick: () => onDeleteUser(user.id) }]}
         />
       </div>
