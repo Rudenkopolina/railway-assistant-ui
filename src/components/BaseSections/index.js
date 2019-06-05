@@ -37,10 +37,6 @@ class BaseSections extends React.Component {
     });
   };
 
-  onFilterCount = (filteredAnswers, allAnswers) => {
-    return <span className='filter-results'>{filteredAnswers.length} из {allAnswers.length}</span>
-  };
-
   getFilteredAnswers = displayCategory => {
       const { filterString } = this.props;
       let filterStringLowerCase = '';
@@ -72,7 +68,6 @@ class BaseSections extends React.Component {
     const {filterString} = this.props;
     const { displayCategory, activeTab, categoriesList } = this.state;
     const filteredAnswers = this.getFilteredAnswers(displayCategory);
-    const filterCount = this.onFilterCount(filteredAnswers, displayCategory)
 
     return (
       <div>
@@ -85,7 +80,8 @@ class BaseSections extends React.Component {
               })}
               onClick={() => this.setCategory(category)}
             >
-              {category} {filterString && (filterCount)}
+              {category} 
+              <span className='filter-results'>{filteredAnswers.length}</span>
             </div>
           ))}
         </div>
@@ -95,7 +91,6 @@ class BaseSections extends React.Component {
           data={filteredAnswers}
           onDeleteAnswer={this.props.onDeleteAnswer}
           changeResponse={this.props.changeResponse}
-          filterString={filterString}
         />
       </div>
     );

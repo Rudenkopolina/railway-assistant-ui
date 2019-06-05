@@ -64,7 +64,7 @@ class AnswerCard extends React.Component {
             closeIcon
             trigger={<Icon
               size='small'
-              name='remove'
+              name='trash'
               className='remove-icon'
             />}
             closeOnEscape={true}

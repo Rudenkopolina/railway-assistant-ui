@@ -48,33 +48,40 @@ class AnswerTable extends React.Component {
     this.setState({ playedId: null });
   };
 
+  getFilteredAnswers = displayCategory => {
+    const { filterString } = this.props;
+    let filterStringLowerCase = '';
+    if (filterString) {
+        filterStringLowerCase = filterString.toLowerCase();    }
+
+  return filterStringLowerCase
+    ? displayCategory.filter(
+        answer =>
+          answer.responseDescription
+            .toLowerCase()
+            .indexOf(filterStringLowerCase) > -1 ||
+          answer.textTranscription
+            .toLowerCase()
+            .indexOf(filterStringLowerCase) > -1 ||
+          answer.audioTranscription
+            .toLowerCase()
+            .indexOf(filterStringLowerCase) > -1 ||
+          answer.examples.some(
+            example =>
+              example.toLowerCase().indexOf(filterStringLowerCase) > -1
+          )
+      )
+    : displayCategory;
+};
+
   render() {
     const { data, title, onDeleteAnswer, filterString } = this.props;
-
-    // const filterStringLowerCase = filterString.toLowerCase();
-
-    // const filteredAnswers = filterStringLowerCase
-    //   ? data.filter(
-    //       title =>
-    //         title.responseDescription
-    //           .toLowerCase()
-    //           .indexOf(filterStringLowerCase) > -1 ||
-    //         title.textTranscription
-    //           .toLowerCase()
-    //           .indexOf(filterStringLowerCase) > -1 ||
-    //         title.audioTranscription
-    //           .toLowerCase()
-    //           .indexOf(filterStringLowerCase) > -1 ||
-    //         title.examples.some(
-    //           example =>
-    //             example.toLowerCase().indexOf(filterStringLowerCase) > -1
-    //         )
-    //     )
-    //   : data;
-
+    if(filterString) {         
+    }
+    const displayAnswers = filterString ? this.getFilteredAnswers(data) : data;
     return (
       <div className='answer-table-container'>
-        {data.map((answer, index) => (
+        {displayAnswers.map((answer, index) => (
           <AnswerCard
             key={answer.id}
             answer={answer}

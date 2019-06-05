@@ -10,7 +10,7 @@ class Filter extends Component {
             <div className='filter-wrapper'>
               <Input
                 icon='search'
-                placeholder='Поиск...'
+                placeholder='Фильтр...'
                 value={filterString}
                 onChange={({target}) => onFilterChange(target.value)}
               />
