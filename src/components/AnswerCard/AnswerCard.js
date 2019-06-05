@@ -112,10 +112,10 @@ class AnswerCard extends React.Component {
     const { answer, index, playedId } = this.props;
     return (
       <div className='table-raw-wrapper'>
-      <div className='header'>
-      <div className = 'info'>
-        <div className='title'>{answer.responseDescription}</div>
-        <div className='description'>{answer.responseDescription}</div>
+      <div className='answer-card-header'>
+      <div className = 'answer-card-info'>
+        <div className='answer-card-title'>{answer.responseDescription}</div>
+        <div className='answer-card-description'>{answer.responseDescription}</div>
       </div>
         {playedId === answer.id ? (
           <Icon

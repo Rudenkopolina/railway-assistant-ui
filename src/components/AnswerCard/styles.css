@@ -79,25 +79,25 @@
   border-radius: 4px;
 }
 
-.descritpion {
+.answer-card-descritpion {
   color: #314659;
   font-size: 12px;
   line-height: 2;
 }
 
-.title {
+.answer-card-title {
   font-size: 16px;
   line-height: 32px;
   color: #3167ff;
 }
 
-.header {
+.answer-card-header {
   display: flex;
   justify-content: space-between;
   margin-bottom: 20px;
 }
 
-.info {
+.answer-card-info {
   display: flex;
   flex-direction: column;
 }
