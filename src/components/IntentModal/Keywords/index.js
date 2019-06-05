@@ -4,7 +4,6 @@ import Closeicon from '../Closeicon';
 import AddButton from '../AddButton';
 import { urls } from '../../../config';
 import './styles.css';
-import { GET_COMMON_RESPONSES_FAIL } from '../../../redux/actions/responses';
 
 class Keywords extends React.Component {
   constructor(props) {
@@ -116,33 +115,17 @@ class Keywords extends React.Component {
     const sameKeysError = !(keys.indexOf(newKeyword) === -1);
     if (newKeyword) {
       this.isKeyUsed(newKeyword);
+      this.onAddKeys(newKeyword);
     }
     this.setState({
       emptyError,
       sameKeysError: { show: sameKeysError, keyword: newKeyword }
     });
-    this.onAddKeys(newKeyword);
   };
+  
 
   onAddKeys = (newKeyword) => {
     const { emptyError, sameKeysError, keyAlreadyUsed } = this.state;
-    console.log(emptyError, sameKeysError, keyAlreadyUsed)
-
-
-    // let {keys} = this.state;
-    // if (!emptyError && !sameKeysError.show && !keyAlreadyUsed.canAdd) {
-    //   keys = [...keys, newKeyword];
-    // }
-    // this.setState({
-    //   keys, 
-    //   keyAlreadyUsed: {
-    //     show: false,
-    //     keyword: '',
-    //     canAdd: false,
-    //     description: ''
-    //   }
-    // });
-    // this.updateModal(keys);
   };
 
   render() {
