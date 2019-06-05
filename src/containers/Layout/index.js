@@ -6,11 +6,28 @@ import Sidebar from '../../components/Sidebar'
 import Header from '../../components/Header'
 import Spinner from '../../components/Spinner'
 import { logout } from '../../redux/actions/auth';
+import { stopAudio } from '../../redux/actions/audios';
+
 
 import './styles.css';
 
 
 class Layout extends React.Component {
+	componentWillReceiveProps(nextProps) {
+		if (nextProps.audios.playedId !== this.props.audios.playedId) {
+			const audio = document.getElementById('audio');
+			if (nextProps.audios.playedId) {
+				audio.pause();
+				audio.currentTime = 0;
+				audio.load();
+				audio.play();
+				audio.onended = this.props.stopAudio;
+			} else {
+				audio.pause();
+			}
+		}
+	}
+
 	render() {
     const { failed, pending } = this.props.responses;
 		if (failed) {
@@ -30,18 +47,27 @@ class Layout extends React.Component {
           logout={this.props.logout}
         />
         {this.props.children}
+				<audio
+					preload='none'
+					id='audio'
+					onEnded={this.props.stopAudio}
+				>
+					<source src={this.props.audios.audioUrl} type='audio/ogg' />
+				</audio>
 			</Fragment>
 		);
 	}
 }
 
-const mapStateToProps = ({ auth, responses }) => ({
+const mapStateToProps = ({ auth, responses, audios }) => ({
 	auth,
-	responses
+	responses,
+	audios
 });
 
 const mapDispatchToProps = dispatch => ({
-	logout: () => dispatch(logout())
+	logout: () => dispatch(logout()),
+	stopAudio: () => dispatch(stopAudio())
 });
 
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Layout));

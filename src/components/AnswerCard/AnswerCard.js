@@ -1,5 +1,5 @@
-import React, { Fragment } from 'react';
-import { Icon, Modal, Button } from 'semantic-ui-react';
+import React from 'react';
+import { Icon, Modal } from 'semantic-ui-react';
 import AudioPlayer from '../AudioPlayer/AudioPlayer';
 import Truncate from 'react-truncate';
 import IntentModal from '../IntentModal';
@@ -118,7 +118,7 @@ class AnswerCard extends React.Component {
   // };
 
   render() {
-    const { answer, playedId } = this.props;
+    const { answer } = this.props;
     return (
       <div className='table-raw-wrapper'>
         <div className='answer-card-content'>
@@ -133,13 +133,10 @@ class AnswerCard extends React.Component {
           </div>
         </div>
         <div className='table-actions'>
-          <div className='icon-position'>            
+          <div className='icon-position'>
             <AudioPlayer
-              playedId={playedId}
               id={answer.id}
-              onStopAudio={this.props.onStopAudio}
-              onPlayAudio={this.props.onPlayAudio}
-              getAudioSrc={this.getAudioSrc}
+              url={this.getAudioSrc(answer.id)}
             />
           </div>
           {this.renderActions()}

@@ -72,27 +72,8 @@ class IntentModal extends React.Component {
     this.setState({ isModalOpen: false });
   };
 
-  onPlayAudio = id => {
-    const { playedId } = this.state;
-    if (playedId) {
-      this.onStopAudio(playedId);
-    }
-    const audio = document.getElementById(`audio-${id}`)
-    audio.currentTime = 0;
-    audio.load();
-    audio.play();
-    this.setState({ playedId: id });
-    audio.onended = () => this.setState({ playedId: null });
-  }
-
-  onStopAudio = id => {
-    document.getElementById(`audio-${id}`).pause();
-    this.setState({ playedId: null });
-  }
-
   getAudioSrc = () => {
     const { audioTranscription } = this.state.data;
-    console.log(urls.responses.newAudioUrl(audioTranscription));
     return urls.responses.newAudioUrl(audioTranscription);
   };
 
@@ -176,11 +157,8 @@ class IntentModal extends React.Component {
               />
               <AudioPlayer
                 disabled={!this.state.data.audioTranscription}
-                playedId={this.state.playedId}
                 id='newAudio'
-                onStopAudio={this.onStopAudio}
-                onPlayAudio={this.onPlayAudio}
-                getAudioSrc={this.getAudioSrc}
+                url={this.getAudioSrc()}
               />
             </div>
             <TextArea
@@ -217,7 +195,6 @@ class IntentModal extends React.Component {
   };
 
   render() {
-    // console.log(this.state.data.examples)
     return (
       <Modal
         trigger={

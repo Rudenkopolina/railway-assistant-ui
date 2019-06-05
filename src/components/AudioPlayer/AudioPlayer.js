@@ -1,26 +1,30 @@
 import React, { Fragment } from 'react';
+import { connect } from 'react-redux';
+import { withRouter } from 'react-router-dom';
 import { Icon } from 'semantic-ui-react';
+
+import { stopAudio, playAudio } from '../../redux/actions/audios';
 import './styles.css';
 
 class AudioPlayer extends React.Component {
 
   render() {
     const {
-      playedId,
-      id,
+      audios,
       onStopAudio,
       onPlayAudio,
-      getAudioSrc,
+      id,
+      url,
       disabled
     } = this.props;
     return (
       <Fragment>
-        {playedId === id ? (
+        {audios.playedId === id ? (
           <Icon
             size='large'
             name='pause'
             className='audio-icon'
-            onClick={() => onStopAudio(id)}
+            onClick={onStopAudio}
           />
         ) : (
           <Icon
@@ -28,18 +32,21 @@ class AudioPlayer extends React.Component {
             size='large'
             name='play circle outline'
             className='audio-icon'
-            onClick={() => onPlayAudio(id)}
+            onClick={() => onPlayAudio(id, url)}
           />
         )}
-      <audio
-        preload='none'
-        id={`audio-${id}`}
-        onEnded={() => onStopAudio(id)}
-      >
-        <source src={getAudioSrc(id)} type='audio/ogg' />
-      </audio>
     </Fragment>
     );
   }
 }
-export default AudioPlayer;
+
+const mapStateToProps = ({ audios }) => ({
+	audios
+});
+
+const mapDispatchToProps = dispatch => ({
+	onPlayAudio: (id, url) => dispatch(playAudio(id, url)),
+	onStopAudio: () => dispatch(stopAudio())
+});
+
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(AudioPlayer));
