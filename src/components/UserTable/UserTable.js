@@ -16,7 +16,7 @@ class UserTable extends React.Component {
           data;
     const titles = ['ФИО', 'Логин', 'Роль']
     return (
-      <div className='answer-table-container'>
+      <div className='users-table-container'>
         {
           <div className="users-title-row">
             {titles.map(item =>

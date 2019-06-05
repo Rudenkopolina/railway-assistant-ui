@@ -19,8 +19,8 @@ class RoleCard extends React.Component {
     const { permissions } = this.props.data;
     const isPermissionsChanged = JSON.stringify(this.state.data.permissions.sort()) !== JSON.stringify(permissions.sort());
     return (
-    <div className='table-actions'>
-      <div className="table-action no-button">
+    <div className='role-table-actions'>
+      <div className="role-table-action no-button">
       {isPermissionsChanged &&
         <div
         className="action-button"
@@ -47,17 +47,17 @@ class RoleCard extends React.Component {
   render() {
     const { data } = this.state;
     return (
-        <div className="table-row-wrapper">
-          <div className="table-row">
-            <div className="table-number">{this.props.index + 1}</div>
-            <div className="table-content">
+        <div className="role-table-row-wrapper">
+          <div className="role-table-row">
+            <div className="role-table-number">{this.props.index + 1}</div>
+            <div className="role-table-content">
                 {data.name}
             </div>
             {permissions.map(item =>
-              <div className="table-content checkbox-container" key={item}>
+              <div className="role-table-content checkbox-container" key={item}>
                 <input
                   type="checkbox"
-                  className='table-checkbox'
+                  className='role-table-checkbox'
                   checked={data.permissions.includes(item)}
                   onChange={() => this.handleCheckbox(item)}
                 />

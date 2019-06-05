@@ -1,4 +1,4 @@
-.table-row {
+.users-table-row {
   display: flex;
   align-items: center;
   /* background-color: #fff; */
@@ -11,25 +11,25 @@
   color: rgb(0, 193, 255);;
 }
 
-.table-number {
+.users-table-number {
   margin-right: 10px;
 }
 
-.table-content {
+.users-table-content {
   width: 100%;
   padding: 15px 20px;
   margin: 0 10px;
 }
 
-.table-actions {
+.users-table-actions {
   display: flex;
 }
 
-.table-action {
+.users-table-action {
   min-width: 120px;
 }
 
-.table-button {
+.users-table-button {
   min-width: 82px;
   border: 2px solid #cbd0d7;
   color: #cbd0d7;
@@ -45,17 +45,17 @@
   margin: 0 10px;
 }
 
-.table-button:hover {
+.users-table-button:hover {
   background-color: #cbd0d7;
   color: #fff;
 }
 
-.table-button:active {
+.users-table-button:active {
 	position: relative;
 	top: 1px;
 }
 
-.table-row-wrapper {
+.users-table-row-wrapper {
   display: flex;
   /* align-items: center; */
   flex-direction: column;

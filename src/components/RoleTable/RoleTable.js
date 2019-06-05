@@ -17,9 +17,9 @@ class RoleTable extends React.Component {
   render() {
     const { data, onUpdateRole } = this.props;
     return (
-      <div className='answer-table-container'>
+      <div className='role-table-container'>
         {
-          <div className="users-title-row">
+          <div className="role-title-row">
             {titles.map(item =>
               <div className="role-title-content" key={item}>
                 {item}

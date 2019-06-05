@@ -9,11 +9,11 @@ class UserCard extends React.Component {
       onDeleteUser
     } = this.props;
     return (
-    <div className='table-actions'>
-      <div className="table-action">
+    <div className='users-table-actions'>
+      <div className="users-table-action">
         <Modal
           closeIcon
-          trigger={<div className='table-button'>Удалить</div>}
+          trigger={<div className='users-table-button'>Удалить</div>}
           closeOnEscape={true}
           size={'mini'}
           content='Это действие нельзя отменить. Вы уверены, что хотите удалить этотого сотрудника из базы?'
@@ -30,18 +30,18 @@ class UserCard extends React.Component {
       index
     } = this.props;
     return (
-        <div className="table-row-wrapper">
-          <div className="table-row">
-            <div className="table-number">{index + 1}</div>
-            <div className="table-content">
+        <div className="users-table-row-wrapper">
+          <div className="users-table-row">
+            <div className="users-table-number">{index + 1}</div>
+            <div className="users-table-content">
                 {user.name}
             </div>
-            <div className="table-content">
+            <div className="users-table-content">
               <a href={`mailto:${user.username}`} className='link'>
                 {user.username}
               </a>
             </div>
-            <div className="table-content">
+            <div className="users-table-content">
               {user.privilege}
             </div>
             {this.renderActions()}

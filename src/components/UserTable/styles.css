@@ -1,23 +1,17 @@
-.answer-table-container {
+.users-table-container {
   padding: 30px 20px;
 }
 
-.table-title-row {
+.users-title-row {
+  display: flex;
+  margin: 0 9% 0 65px;
+}
+
+.users-title-content {
+  width: 100%;
   display: flex;
   font-size: 16px;
   font-weight: 500;
   padding: 5px;
-}
-
-.answer-title-row {
-  margin: 0 19%;
-}
-
-.table-title-content {
-  width: 100%;
-}
-
-.hint-icon {
-  margin: 0 5px !important;
-  cursor: help;
+  color: #a3a3a3;
 }

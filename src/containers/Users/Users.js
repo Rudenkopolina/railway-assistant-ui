@@ -45,6 +45,20 @@ class Users extends React.Component {
     this.setState({ activeTab: tab});
   }
 
+  onCreate = (title, data) => {
+    switch (title) {
+      case 'users':
+        this.props.createUser(data);
+        break;
+      case 'roles':
+        this.props.createRole(data);
+        break;
+      default:
+    }
+    this.setState({ activeTab: title })
+  }
+
+
   getContent = () => {
     const { activeTab, filterString } =this.state;
     const { users, onDeleteUser, roles } = this.props;
@@ -71,13 +85,13 @@ class Users extends React.Component {
   render() {
     const { activeTab, titles, filterString } =this.state;
     return (
-      <div className="container">
-        <div className="answer-header">
-          <div className="answer-menu">
+      <div className="users-container">
+        <div className="users-header">
+          <div className="users-menu">
             {titles.map(title =>
               <div
                 key={title.key}
-                className={cx('answer-menu-item', { 'answer-menu-item-active': activeTab === title.key })}
+                className={cx('users-menu-item', { 'users-menu-item-active': activeTab === title.key })}
                 onClick={() => this.changeTab(title.key)}
               >
                 {title.name}
@@ -85,18 +99,18 @@ class Users extends React.Component {
             )}
             <Filter filterString={filterString} onFilterChange={this.onFilterChange} />
           </div>
-          <div className='answer-menu-item'>
+          <div className='users-menu-item'>
             <RoleModal
               buttonText='создать роль'
-              className='table-button'
+              className='role-table-button'
               modalTitle='Создать роль'
-              onSave={(data) => this.props.createUser(data)}
+              onSave={(data) => this.onCreate('roles', data)}
             />
             <UserModal
               buttonText='Добавить сотрудника'
               className='action-button'
               modalTitle='Добавить сотрудника'
-              onSave={(data) => this.props.createUser(data)}
+              onSave={(data) => this.onCreate('users', data)}
             />
           </div>
         </div>

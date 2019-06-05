@@ -50,6 +50,16 @@ class RoleModal extends React.Component {
         return !name || !permissions.length;
     }
 
+    handleCheckbox = value => {
+      let newPermissions = this.state.data.permissions;
+      if (this.state.data.permissions.includes(value)) {
+        newPermissions = newPermissions.filter(item => item !== value);
+      } else {
+        newPermissions = [...newPermissions, value];
+      }
+      this.setState({ data: {...this.state.data, permissions: newPermissions}});
+    }
+
     renderContent = () => {
         const isDisabled = this.isDisabled();
         const { data } = this.state;
@@ -70,13 +80,17 @@ class RoleModal extends React.Component {
                     />
                   </div>
                   <div className="modal-formfield">
+                  <div className="modal-formfield-title">Права:</div>
                   {permissions.map(item =>
-                    <input
-                      type="checkbox"
-                      className='table-checkbox'
-                      // checked={data.permissions.includes(item)}
-                      // onChange={() => this.handleCheckbox(item)}
-                    />
+                    <div className='role-modal-labeld-checkbox'>
+                      <input
+                        type="checkbox"
+                        className='role-table-checkbox'
+                        // checked={data.permissions.includes(item)}
+                        onChange={() => this.handleCheckbox(item.key)}
+                      />
+                      <span className='role-checkbox-label'>{item.title}</span>
+                    </div>
                   )}
                   </div>
                 </div>

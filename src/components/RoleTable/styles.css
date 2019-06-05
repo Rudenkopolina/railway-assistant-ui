@@ -9,3 +9,12 @@
   padding: 5px;
   color: #a3a3a3;
 }
+
+.role-table-container {
+  padding: 30px 20px;
+}
+
+.role-title-row {
+  display: flex;
+  margin: 0 9% 0 65px;
+}
