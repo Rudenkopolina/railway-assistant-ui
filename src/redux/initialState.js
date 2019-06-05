@@ -11,7 +11,21 @@ export const responses = {
   failed: false
 };
 
+export const users = {
+  users: [],
+  pending: false,
+  failed: false
+};
+
+export const roles = {
+  roles: [],
+  pending: false,
+  failed: false
+};
+
 export default {
   auth,
   responses,
+  users,
+  roles
 };

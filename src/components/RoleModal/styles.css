@@ -1,0 +1,11 @@
+.role-modal-labeld-checkbox {
+  display: flex;
+  margin: 10px;
+  align-items: center;
+}
+
+.role-checkbox-label {
+  color: #363f56;
+  padding: 0 15px;
+  font-size: 16px;
+}

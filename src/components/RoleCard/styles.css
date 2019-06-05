@@ -1,4 +1,37 @@
-.users-table-row {
+.role-table-checkbox {
+  -webkit-appearance: none;
+    background-color: #eeeef5;
+    padding: 9px;
+    border-radius: 2px;
+    display: inline-block;
+    position: relative;
+    outline: none;
+}
+
+.role-table-checkbox:checked {
+	background-color: #96a1b8;
+}
+
+.role-table-checkbox:checked:after {
+  content: '✔';
+  font-size: 13px;
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  color: #fff;
+}
+
+.checkbox-container {
+  display: flex;
+  justify-content: center;
+}
+
+.no-button {
+  min-height: 10px;
+  width: 140px;
+}
+
+.role-table-row {
   display: flex;
   align-items: center;
   /* background-color: #fff; */
@@ -11,25 +44,25 @@
   color: rgb(0, 193, 255);;
 }
 
-.users-table-number {
+.role-table-number {
   margin-right: 10px;
 }
 
-.users-table-content {
+.role-table-content {
   width: 100%;
   padding: 15px 20px;
   margin: 0 10px;
 }
 
-.users-table-actions {
+.role-table-actions {
   display: flex;
 }
 
-.users-table-action {
+.role-table-action {
   min-width: 120px;
 }
 
-.users-table-button {
+.role-table-button {
   min-width: 82px;
   border: 2px solid #cbd0d7;
   color: #cbd0d7;
@@ -45,17 +78,17 @@
   margin: 0 10px;
 }
 
-.users-table-button:hover {
+.role-table-button:hover {
   background-color: #cbd0d7;
   color: #fff;
 }
 
-.users-table-button:active {
+.role-table-button:active {
 	position: relative;
 	top: 1px;
 }
 
-.users-table-row-wrapper {
+.role-table-row-wrapper {
   display: flex;
   /* align-items: center; */
   flex-direction: column;
