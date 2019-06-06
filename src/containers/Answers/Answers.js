@@ -100,11 +100,11 @@ class Answer extends React.Component {
               >
                 {title.name}
               </div>
-            )} 
+            )}
             <div className='element-mb'>
-            <Filter filterString={filterString} onFilterChange={this.onFilterChange} />   
+            <Filter filterString={filterString} onFilterChange={this.onFilterChange} />
             </div>
-                
+
           </div>
           <div className='header-button'>
             <Protected requiredRoles='ALLOWED_KNOWLEDGEBASE_CREATION'>
@@ -124,7 +124,7 @@ class Answer extends React.Component {
 }
 
 const mapStateToProps = ({ responses, auth, categories }) => ({
-  categories, 
+  categories,
   auth,
   data: {
     common: responses.commonResponses,
