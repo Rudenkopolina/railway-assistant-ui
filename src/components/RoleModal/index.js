@@ -123,7 +123,6 @@ class RoleModal extends React.Component {
     }
 
     render() {
-        // console.log(this.state.data.examples)
         return (
             <Modal
                 trigger={

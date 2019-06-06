@@ -70,10 +70,14 @@
   color: #fff;
 }
 
-.modal-description {
+.modal-description-name {
   color: rgb(30, 75, 202);
   padding: 15px 10px;
   font-size: 18px;
+}
+
+.modal-description {
+  padding: 10px;
 }
 
 .modal-formfield-title {
@@ -98,7 +102,7 @@
 .modal-keys-formfield {
   padding: 10px 0;
   display: flex;
-  max-height: 300px;
+  max-height: 140px;
   overflow: auto;
   flex-wrap: wrap;
 }

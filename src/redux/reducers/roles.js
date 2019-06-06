@@ -30,7 +30,6 @@ export default function (state = initialState, action) {
     };
 
   case CHANGE_ROLE_SUCCESS:
-  console.log();
   let newRoles = state.roles.map(item => (
     item.id === action.data.id ? action.data : item
   ));

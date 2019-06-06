@@ -1,4 +1,5 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import { Modal, Popup, Input, Icon, Button, Dropdown } from 'semantic-ui-react';
 import { NotificationContainer } from 'react-notifications';
 import AudioPlayer from '../AudioPlayer/AudioPlayer';
@@ -18,7 +19,8 @@ class IntentModal extends React.Component {
       responseDescription: '',
       textTranscription: '',
       audioTranscription: '',
-      examples: []
+      examples: [],
+      categoryId: null
     },
     playedId: null
   };
@@ -38,7 +40,8 @@ class IntentModal extends React.Component {
         responseDescription: this.props.data.responseDescription || '',
         textTranscription: this.props.data.textTranscription || '',
         audioTranscription: this.props.data.audioTranscription || '',
-        examples: this.props.data.examples || []
+        examples: this.props.data.examples || [],
+        categoryId: this.props.data.categoryId
       };
     } else {
       data = {
@@ -46,7 +49,8 @@ class IntentModal extends React.Component {
         responseDescription: '',
         textTranscription: '',
         audioTranscription: '',
-        examples: []
+        examples: [],
+        categoryId: this.props.category,
       };
     }
     if (isModalOpen !== prevState.isModalOpen) {
@@ -57,9 +61,9 @@ class IntentModal extends React.Component {
     // }
   }
 
-  onHandlerFormField = (e, title) => {
+  onHandlerFormField = (value, title) => {
     const { data } = this.state;
-    this.setState({ data: { ...data, [title]: e.target.value } });
+    this.setState({ data: { ...data, [title]: value } });
   };
 
   onTrigerModal = () => {
@@ -111,6 +115,13 @@ class IntentModal extends React.Component {
     }
   };
 
+  getOptions = () => {
+    return this.props.categories.map(item => ({
+      value: item.id,
+      text: item.category,
+    }))
+  }
+
   renderContent = () => {
     const isDisabled = this.isDisabled();
     const { data } = this.state;
@@ -118,6 +129,7 @@ class IntentModal extends React.Component {
       isShowExamples = true,
       isDescriptionChangeable = true
     } = this.props;
+
     return (
       <div className='modal-wrapper'>
         <div className='modal-header'>{this.props.modalTitle}</div>
@@ -127,7 +139,7 @@ class IntentModal extends React.Component {
               <div className='modal-formfield-title'>Название</div>
               <Input
                 onChange={e =>
-                  this.onHandlerFormField(e, 'responseName')
+                  this.onHandlerFormField(e.target.value, 'responseName')
                 }
                 value={data.responseName}
                 className='modal-field'
@@ -136,34 +148,39 @@ class IntentModal extends React.Component {
               />
             </div>
           ) : (
-            <div className='modal-description'>{data.responseName}</div>
+            <div className='modal-description-name'>{data.responseName}</div>
           )}
           {isDescriptionChangeable ? (
             <div className='modal-formfield'>
               <div className='modal-formfield-title'>Описание</div>
-              <Input
+              <TextArea
+                className='modal-formfield-textarea modal-field'
+                placeholder='Данный ответ будет ...'
                 onChange={e =>
-                  this.onHandlerFormField(e, 'responseDescription')
+                  this.onHandlerFormField(e.target.value, 'responseDescription')
                 }
                 value={data.responseDescription}
-                className='modal-field'
-                placeholder='Данный ответ будет ...'
-                disabled={!isDescriptionChangeable}
               />
             </div>
           ) : (
             <div className='modal-description'>{data.responseDescription}</div>
           )}
-          <div className='modal-formfield'>
-            <div className='modal-formfield-title'>Категория</div>
-            <Dropdown
-              onChange={e =>
-                this.onHandlerFormField(e, 'responseDescription')
-              }
-              value={data.responseDescription}
-              className='modal-field'
-            />
-          </div>
+          {isDescriptionChangeable &&
+            <div className='modal-formfield'>
+              <div className='modal-formfield-title'>Категория</div>
+              <Dropdown
+                onChange={(e, data) =>{
+                  this.onHandlerFormField(data.value, 'categoryId')
+                }
+                }
+                value={data.categoryId}
+                fluid
+                selection
+                className='modal-field'
+                options={this.getOptions()}
+              />
+            </div>
+          }
           {isShowExamples && (
             <div className='modal-formfield'>
               <div className='modal-formfield-title'>Ключевые слова</div>
@@ -182,7 +199,7 @@ class IntentModal extends React.Component {
               className='modal-formfield-textarea modal-field'
               placeholder='Текстовый ответ...'
               value={data.textTranscription}
-              onChange={e => this.onHandlerFormField(e, 'textTranscription')}
+              onChange={e => this.onHandlerFormField(e.target.value, 'textTranscription')}
             />
           </div>
           <div className='modal-formfield'>
@@ -205,7 +222,7 @@ class IntentModal extends React.Component {
               className='modal-formfield-textarea modal-field'
               placeholder='Голосовой ответ...'
               value={data.audioTranscription}
-              onChange={e => this.onHandlerFormField(e, 'audioTranscription')}
+              onChange={e => this.onHandlerFormField(e.target.value, 'audioTranscription')}
             />
           </div>
         </div>
@@ -248,4 +265,9 @@ class IntentModal extends React.Component {
   }
 }
 
-export default IntentModal;
+
+const mapStateToProps = ({ categories }) => ({
+  categories: categories.categories,
+});
+
+export default connect(mapStateToProps, null)(IntentModal);
