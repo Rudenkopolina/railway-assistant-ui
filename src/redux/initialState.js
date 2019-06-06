@@ -11,6 +11,12 @@ export const responses = {
   failed: false
 };
 
+export const categories = {
+  categories: [],
+  pending: false,
+  failed: false
+};
+
 export const users = {
   users: [],
   pending: false,

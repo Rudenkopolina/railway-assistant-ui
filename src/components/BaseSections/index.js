@@ -1,8 +1,6 @@
 import React from 'react';
 import { withRouter } from 'react-router-dom';
 import cx from 'classnames';
-import request from '../../services/request';
-import { urls } from '../../config';
 import AnswerTable from './../AnswerTable/AnswerTable';
 import './styles.css';
 
@@ -10,34 +8,20 @@ class BaseSections extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      categoriesList: [],
       activeTab: '',
-      displayCategory: [],
       filterString: this.props
     };
   }
 
   componentWillMount() {
-    request(urls.responses.getCategories, {
-      method: 'GET'
-    }).then(response => {
-      const categoriesList = response.categories.map(
-        category => category.category
-      );
-      const category = categoriesList[0];
-      this.setCategory(category);
-      this.setState({ categoriesList, activeTab: category });
-    });
+    const { categories } = this.props;
+    const category = categories[0].category;
+    this.setCategory(category);
   }
 
   setCategory = category => {
-    const { data } = this.props;
-    const displayCategory = data.filter(item => {
-      return item.categoryName === category;
-    });
     this.setState({
-      activeTab: category,
-      displayCategory
+      activeTab: category
     });
   };
 
@@ -48,7 +32,7 @@ class BaseSections extends React.Component {
     });
     const filteredAnswers = this.getFilteredAnswers(displayCategory);
     return filteredAnswers.length;
-  }
+  };
 
   getFilteredAnswers = displayCategory => {
     const { filterString } = this.props;
@@ -56,7 +40,6 @@ class BaseSections extends React.Component {
     if (filterString) {
       filterStringLowerCase = filterString.toLowerCase();
     }
-
     return filterStringLowerCase
       ? displayCategory.filter(
           answer =>
@@ -78,8 +61,16 @@ class BaseSections extends React.Component {
   };
 
   render() {
-    const { displayCategory, activeTab, categoriesList } = this.state;
+    const { categories, data } = this.props;
+    const { activeTab } = this.state;
+    const categoriesList = categories.map(
+      categoryObject => categoryObject.category
+    );
+    const displayCategory = data.filter(item => {
+      return item.categoryName === activeTab;
+    });
     const filteredAnswers = this.getFilteredAnswers(displayCategory);
+
     return (
       <div>
         <div className='categories-container'>

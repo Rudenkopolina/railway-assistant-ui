@@ -16,6 +16,8 @@ import {
   createResponse
 } from '../../redux/actions/responses';
 
+import {  getCategories} from '../../redux/actions/categories';
+
 class Answer extends React.Component {
   state = {
     activeTab: '',
@@ -37,6 +39,7 @@ class Answer extends React.Component {
         {name: 'База знаний', key: 'reference', requiredRoles: 'ALLOWED_KNOWLEDGEBASE_VIEWING'}
       )
       this.props.getReferenceResponses();
+      this.props.getCategories();
     }
 
     this.setState({ titles, activeTab: titles[0].key })
@@ -69,6 +72,7 @@ class Answer extends React.Component {
         return (
           <Protected requiredRoles='ALLOWED_KNOWLEDGEBASE_VIEWING'>
             <BaseSections
+              categories = {this.props.categories.categories}
               title='reference'
               key='reference'
               data={this.props.data.reference}
@@ -119,7 +123,8 @@ class Answer extends React.Component {
   }
 }
 
-const mapStateToProps = ({ responses, auth }) => ({
+const mapStateToProps = ({ responses, auth, categories }) => ({
+  categories, 
   auth,
   data: {
     common: responses.commonResponses,
@@ -131,6 +136,7 @@ const mapDispatchToProps = dispatch => ({
 	createResponse: (data) => dispatch(createResponse(data)),
   getCommonResponses: () => dispatch(getCommonResponses()),
   getReferenceResponses: () => dispatch(getReferenceResponses()),
+  getCategories: () => dispatch(getCategories()),
   changeResponse: (data, id, title) => dispatch(changeResponse(data, id, title)),
   onDeleteAnswer: id => dispatch(deleteResponse(id))
 });
