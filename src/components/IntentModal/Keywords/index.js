@@ -10,30 +10,31 @@ class Keywords extends React.Component {
     super(props);
     this.state = {
       keys: [],
+      checkedKeys: [],
+      topic: '',
       inputVisible: false,
-      loading: false,
-      inputValue: '',
-      emptyError: false,
-      sameKeysError: { show: false, keyword: '' },
-      keyAlreadyUsed: {
-        show: false,
-        keyword: '',
-        description: ''
-      }
+      inputValue: ''
     };
   }
 
   componentWillReceiveProps(nextProps) {
-    const { data } = nextProps;
+    const { keys, topic } = nextProps;
     this.setState({
-      keys: data
+      keys,
+      topic,
+      checkedKeys: keys
     });
   }
 
-  updateModal = keys => {
-    const { emptyError, sameKeysError, keyAlreadyUsed } = this.state;
-    const isValid = emptyError || sameKeysError.show || keyAlreadyUsed.show;
-    this.props.handleUpdateKeys(keys, isValid);
+  componentDidUpdate() {
+    const { checkedKeys } = this.state;
+    if (this.props.keys !== checkedKeys) {
+      this.updateModal(checkedKeys);
+    }
+  }
+
+  updateModal = checkedKeys => {
+    this.props.handleUpdateKeys(checkedKeys);
   };
 
   handleInputChange = e => {
@@ -47,67 +48,49 @@ class Keywords extends React.Component {
   };
 
   closeInput = () => {
-    this.setState({ inputVisible: false, inputValue: ''});
+    this.setState({ inputVisible: false, inputValue: '' });
   };
 
   removeKey = removedKey => {
-    const keys = this.state.keys.filter(tag => tag !== removedKey);
-    this.setState({ keys });
-    this.onAddKeys(keys);
+    const checkedKeys = this.state.checkedKeys.filter(
+      tag => tag !== removedKey
+    );
+    this.setState({ checkedKeys });
   };
 
-  isKeyUsed = newKeyword => {
-    return request(urls.responses.compareKeyword, {
-      method: 'POST',
-      body: { keyword: newKeyword }
-    }).then(response => {
-      if (response.isUsed) {
-        this.setState({
-          keyAlreadyUsed: {
-            show: response.isUsed,
-            keyword: newKeyword,
-            description: response.responses[0].responseDescription
-          }
-        });
-      } else
-        this.setState({
-          keyAlreadyUsed: {
-            show: response.isUsed,
-            keyword: '',
-            description: ''
-          }
-        });
-    });
-  };
-
-  checkExample = keyword => {
-    const { keys } = this.state;
-    const newKeyword = keyword.trim().toLowerCase();
-    const emptyError = !newKeyword.length;
-    const sameKeysError = !(keys.indexOf(newKeyword) === -1);
-    let loading = false;
-    if (newKeyword) {
-      loading = true;
-      this.isKeyUsed(newKeyword);
+  isKeyUsed = () => {
+    const { inputValue, topic } = this.state;
+    let { keys, checkedKeys } = this.state;
+    if (inputValue) {
+      keys = [...keys, inputValue];
     }
-    this.setState({
-      loading,
-      emptyError,
-      sameKeysError: { show: sameKeysError, keyword: newKeyword }
-    });
-  };
-
-
-  onAddKeys = (newKeyword) => {
-    const { emptyError, sameKeysError, keyAlreadyUsed } = this.state;
+    let checking = inputValue.trim().toLowerCase();
+    if (inputValue && checkedKeys.indexOf(inputValue) === -1) {
+      return request(urls.responses.compareKeyword, {
+        method: 'POST',
+        body: { keyword: inputValue }
+      }).then(response => {
+        if (
+          response.isUsed &&
+          !(response.responses[0].responseDescription === topic)
+        ) {
+          checking = '';
+        }
+        if (checking) {
+          checkedKeys = [...checkedKeys, checking];
+        }
+        this.setState({
+          checkedKeys,
+          keys,
+          inputVisible: false,
+          inputValue: ''
+        });
+      });
+    }
   };
 
   render() {
-    const {
-      keys,
-      inputVisible,
-      inputValue
-    } = this.state;
+    const { keys, inputVisible, inputValue } = this.state;
     return (
       <div>
         {keys.map((key, index) => (
@@ -122,17 +105,17 @@ class Keywords extends React.Component {
           </span>
         ))}
 
-        {inputVisible &&  (
+        {inputVisible && (
           <span style={{ display: 'inline-block', marginBottom: '10px' }}>
             <input
               className='tag'
               ref={this.saveInputRef}
               value={inputValue}
               onChange={this.handleInputChange}
-              onBlur={() => this.checkExample(inputValue)}
+              onBlur={this.isKeyUsed}
               onKeyPress={event => {
                 if (event.key === 'Enter') {
-                  this.checkExample(inputValue);
+                  this.isKeyUsed();
                 }
               }}
             />

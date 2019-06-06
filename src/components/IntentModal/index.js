@@ -19,14 +19,12 @@ class IntentModal extends React.Component {
       audioTranscription: '',
       examples: []
     },
-    keywordsError: false,
     playedId: null
   };
 
-  handleUpdateKeys = (keys, error) => {
+  handleUpdateKeys = (keys) => {
     this.setState({
-      data: { ...this.state.data, examples: keys },
-      keywordsError: error
+      data: { ...this.state.data, examples: keys }
     });
   };
 
@@ -93,8 +91,7 @@ class IntentModal extends React.Component {
       !textTranscription ||
       !audioTranscription ||
       !examples.length ||
-      !isDisabled ||
-      this.state.keywordsError
+      !isDisabled
     );
   };
 
@@ -130,7 +127,8 @@ class IntentModal extends React.Component {
               <div className='modal-formfield-title'>Ключевые слова</div>
               <div className='modal-keys-formfield'>
                 <Keywords
-                  data={data.examples}
+                  keys={data.examples}
+                  topic={data.responseDescription}
                   handleUpdateKeys={this.handleUpdateKeys}
                 />
               </div>
