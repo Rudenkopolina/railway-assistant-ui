@@ -50,7 +50,7 @@ class IntentModal extends React.Component {
         textTranscription: '',
         audioTranscription: '',
         examples: [],
-        categoryId: this.props.category,
+        categoryId: this.props.categoryId,
       };
     }
     if (isModalOpen !== prevState.isModalOpen) {

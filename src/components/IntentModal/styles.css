@@ -102,7 +102,7 @@
 .modal-keys-formfield {
   padding: 10px 0;
   display: flex;
-  max-height: 140px;
+  max-height: 100px;
   overflow: auto;
   flex-wrap: wrap;
 }
