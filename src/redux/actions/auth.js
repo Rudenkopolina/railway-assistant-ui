@@ -13,6 +13,8 @@ export const REGISTER = 'REGISTER';
 export const REGISTER_FAIL = 'REGISTER_FAIL';
 
 export const LOGOUT = 'LOGOUT';
+export const CLEAR_RESPONSES = 'CLEAR_RESPONSES';
+
 
 
 
@@ -45,7 +47,7 @@ export function login(email, password) {
     });
     try {
       const response = await request(urls.auth.login, { method: 'POST',  headers: { "Authorization":'Basic ' + new Buffer.from(email + ':' + password).toString('base64')} });
-      auth.setToken(response.token);
+      auth.setToken(response.token, true);
       dispatch(getCurrentUser());
     } catch (err) {
       dispatch({
@@ -65,7 +67,7 @@ export function register(username, email, password) {
     try {
       const response = await request(urls.auth.signup, { method: 'POST', body: { username, email, password } });
 
-      auth.setToken(response.token);
+      auth.setToken(response.token, true);
 
       dispatch(getCurrentUser());
     } catch (err) {
@@ -79,7 +81,12 @@ export function register(username, email, password) {
 
 export function logout() {
   auth.clearToken('jwtToken');
-  return {
-    type: LOGOUT
+  return async dispatch => {
+    dispatch({
+      type: LOGOUT
+    });
+    dispatch({
+      type: CLEAR_RESPONSES
+    });
   };
 }

@@ -14,8 +14,10 @@ import {
   CREATE_RESPONSE_FAIL,
   DELETE_RESPONSE,
   DELETE_RESPONSE_SUCCESS,
-  DELETE_RESPONSE_FAIL
+  DELETE_RESPONSE_FAIL,
 } from '../actions/responses';
+
+import { LOGOUT } from '../actions/auth';
 
 export default function (state = initialState, action) {
   switch (action.type) {
@@ -80,6 +82,9 @@ export default function (state = initialState, action) {
       pending: false,
       failed: true
     };
+
+  case LOGOUT:
+  return initialState;
 
   default:
     return state;

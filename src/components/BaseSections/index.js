@@ -92,6 +92,7 @@ class BaseSections extends React.Component {
         <AnswerTable
           title='reference'
           key='reference'
+          filterString={this.props.filterString}
           data={filteredAnswers}
           onDeleteAnswer={this.props.onDeleteAnswer}
           changeResponse={this.props.changeResponse}

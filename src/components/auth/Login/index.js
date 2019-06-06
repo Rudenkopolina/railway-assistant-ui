@@ -1,6 +1,6 @@
 import React from 'react';
 import './styles.css';
-import { Input } from 'semantic-ui-react'
+import { Input, Button } from 'semantic-ui-react'
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 
@@ -46,7 +46,6 @@ class Login extends React.Component {
       <div className='login-wrapper'>
       <div className='login-background-image' />
       <div className='login-background' />
-      <div className='login-title'>Assistant Client</div>
         <div className='login-card'>
           <span className='login-header-text'>Пожалуйста, выполните вход</span>
           <Input
@@ -65,9 +64,9 @@ class Login extends React.Component {
             onKeyPress={this.onKeyPress}
           />
           <div className='login-error-message'>{this.state.message}</div>
-          <button onClick={this.handleSubmit}  className='login-submit-button'>
+          <Button primary onClick={this.handleSubmit}>
             Войти
-          </button>
+          </Button>
         </div>
       </div>
     );

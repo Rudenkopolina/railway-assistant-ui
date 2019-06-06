@@ -75,6 +75,7 @@ class AnswerCard extends React.Component {
               {
                 key: 'done',
                 content: 'Удалить',
+                className: 'negative',
                 onClick: event => this.deleteAnswer(event, answer.id)
               }
             ]}
@@ -123,7 +124,7 @@ class AnswerCard extends React.Component {
       <div className='table-raw-wrapper'>
         <div className='answer-card-content'>
           <div className='answer-card-title'>
-            <div className='answer-overflow'>{answer.responseDescription}</div>
+            <div className='answer-overflow'>{answer.responseName}</div>
             {this.renderDelete()}
           </div>
           <div className='answer-card-description'>
