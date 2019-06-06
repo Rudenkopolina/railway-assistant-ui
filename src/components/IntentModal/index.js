@@ -85,6 +85,7 @@ class IntentModal extends React.Component {
   isDisabled = () => {
     const { isShowExamples = true } = this.props;
     const {
+      responseName,
       responseDescription,
       textTranscription,
       audioTranscription,
@@ -96,6 +97,7 @@ class IntentModal extends React.Component {
     });
     if (isShowExamples) {
       return (
+        !responseName ||
         !responseDescription ||
         !textTranscription ||
         !audioTranscription ||
@@ -105,6 +107,7 @@ class IntentModal extends React.Component {
       );
     } else {
       return (
+        !responseName ||
         !responseDescription ||
         !textTranscription ||
         !audioTranscription

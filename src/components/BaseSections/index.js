@@ -8,14 +8,13 @@ class BaseSections extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      activeTab: '',
-      filterString: this.props
+      activeTab: null
     };
   }
 
   componentWillMount() {
     const { categories } = this.props;
-    const category = categories[0].category;
+    const category = categories[0].id;
     this.setCategory(category);
   }
 
@@ -28,7 +27,7 @@ class BaseSections extends React.Component {
   getNumberOfAnswers = category => {
     const { data } = this.props;
     const displayCategory = data.filter(item => {
-      return item.categoryName === category;
+      return item.categoryId === category;
     });
     const filteredAnswers = this.getFilteredAnswers(displayCategory);
     return filteredAnswers.length;
@@ -43,6 +42,9 @@ class BaseSections extends React.Component {
     return filterStringLowerCase
       ? displayCategory.filter(
           answer =>
+          answer.responseName
+          .toLowerCase()
+          .indexOf(filterStringLowerCase) > -1 ||
             answer.responseDescription
               .toLowerCase()
               .indexOf(filterStringLowerCase) > -1 ||
@@ -63,28 +65,25 @@ class BaseSections extends React.Component {
   render() {
     const { categories, data } = this.props;
     const { activeTab } = this.state;
-    const categoriesList = categories.map(
-      categoryObject => categoryObject.category
-    );
     const displayCategory = data.filter(item => {
-      return item.categoryName === activeTab;
+      return item.categoryId === activeTab;
     });
     const filteredAnswers = this.getFilteredAnswers(displayCategory);
 
     return (
       <div>
         <div className='categories-container'>
-          {categoriesList.map((category, index) => (
+          {categories.map((category, index) => (
             <div
               key={index}
               className={cx('category-button', {
-                'category-button-active': activeTab === category
+                'category-button-active': activeTab === category.id
               })}
-              onClick={() => this.setCategory(category)}
+              onClick={() => this.setCategory(category.id)}
             >
-              {category}
+              {category.category}
               <span className='filter-results'>
-                {this.getNumberOfAnswers(category)}
+                {this.getNumberOfAnswers(category.id)}
               </span>
             </div>
           ))}
