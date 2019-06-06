@@ -226,7 +226,7 @@ class IntentModal extends React.Component {
             />
           </div>
         </div>
-        <div className='modal-actions'>
+        <div className='modal-actions actions'>
           <Button
             onClick={this.onTrigerModal}
           >
@@ -250,7 +250,7 @@ class IntentModal extends React.Component {
     return (
       <Modal
         trigger={
-          <Button primary onClick={this.onTrigerModal}>
+          <Button primary basic onClick={this.onTrigerModal}>
             {this.props.buttonText}
           </Button>
         }
