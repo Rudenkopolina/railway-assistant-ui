@@ -2,6 +2,8 @@ import React from 'react';
 import { withRouter } from 'react-router-dom';
 import cx from 'classnames';
 import AnswerTable from './../AnswerTable/AnswerTable';
+import IntentModal from '../../components/IntentModal';
+import Protected from '../../components/common/protected/container'
 import './styles.css';
 
 class BaseSections extends React.Component {
@@ -87,6 +89,16 @@ class BaseSections extends React.Component {
               </span>
             </div>
           ))}
+          <div className='header-button'>
+            <Protected requiredRoles='ALLOWED_KNOWLEDGEBASE_CREATION'>
+              <IntentModal
+                buttonText='Добавить ответ'
+                className='element-mb'
+                modalTitle='Добавить справочный ответ'
+                onSave={(data) => this.props.createResponse(data)}
+              />
+            </Protected>
+          </div>
         </div>
         <AnswerTable
           title='reference'

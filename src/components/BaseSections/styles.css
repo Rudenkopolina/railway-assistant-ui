@@ -28,3 +28,8 @@
     color: #93a3b8;
     font-variant: tabular-nums;
 }
+
+.header-button {
+  margin-left: auto;
+  margin-top: -4px;
+}

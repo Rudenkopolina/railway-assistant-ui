@@ -4,7 +4,6 @@ import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import AnswerTable from '../../components/AnswerTable/AnswerTable';
 import BaseSections from '../../components/BaseSections';
-import IntentModal from '../../components/IntentModal';
 import Protected from '../../components/common/protected/container'
 import './styles.css';
 import Filter from './../../components/Filter';
@@ -78,6 +77,7 @@ class Answer extends React.Component {
               data={this.props.data.reference}
               onDeleteAnswer={this.props.onDeleteAnswer}
               changeResponse={this.props.changeResponse}
+              createResponse={this.props.createResponse}
               filterString={filterString}
             />
           </Protected>
@@ -105,16 +105,6 @@ class Answer extends React.Component {
             <Filter filterString={filterString} onFilterChange={this.onFilterChange} />
             </div>
 
-          </div>
-          <div className='header-button'>
-            <Protected requiredRoles='ALLOWED_KNOWLEDGEBASE_CREATION'>
-              <IntentModal
-                buttonText='Добавить справочный ответ'
-                className='element-mb'
-                modalTitle='Добавить справочный ответ'
-                onSave={(data) => this.props.createResponse(data)}
-              />
-            </Protected>
           </div>
         </div>
         {this.getContent()}
