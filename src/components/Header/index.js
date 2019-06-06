@@ -1,15 +1,7 @@
 import React from 'react';
 import { withRouter } from 'react-router-dom';
-import { Dropdown } from 'semantic-ui-react'
+import { Dropdown, Icon } from 'semantic-ui-react'
 import './styles.css'
-
-const titles = {
-		'/': 'Домашняя страница',
-		'/account': 'Профиль',
-		'/answers':	'Ответы',
-		'/history': 'История',
-		'/users': 'Сотрудники'
-}
 
 class Header extends React.Component {
 	logOut = () => {
@@ -17,10 +9,10 @@ class Header extends React.Component {
 	}
 
 	render() {
-    const title = this.props.match.path;
 		return (
 			<div className='header-wrapper'>
 				<div>
+					<Icon name='user outline' />
 					{this.props.user}
 					<Dropdown item icon='ellipsis horizontal' className='header-menu'>
 						<Dropdown.Menu direction='left' className='header-menu-item'>

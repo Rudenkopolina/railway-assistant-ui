@@ -76,6 +76,7 @@ class IntentModal extends React.Component {
   };
 
   isDisabled = () => {
+    const { isShowExamples = true } = this.props;
     const {
       responseDescription,
       textTranscription,
@@ -86,13 +87,22 @@ class IntentModal extends React.Component {
     examples.forEach(item => {
       isDisabled = isDisabled && !!item.trim();
     });
-    return (
-      !responseDescription ||
-      !textTranscription ||
-      !audioTranscription ||
-      !examples.length ||
-      !isDisabled
-    );
+    if (isShowExamples) {
+      return (
+        !responseDescription ||
+        !textTranscription ||
+        !audioTranscription ||
+        !examples.length ||
+        !isDisabled ||
+        this.state.keywordsError
+      );
+    } else {
+      return (
+        !responseDescription ||
+        !textTranscription ||
+        !audioTranscription
+      );
+    }
   };
 
   renderContent = () => {
