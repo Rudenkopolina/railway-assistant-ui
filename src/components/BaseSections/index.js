@@ -1,6 +1,8 @@
 import React from 'react';
 import { withRouter } from 'react-router-dom';
 import cx from 'classnames';
+import request from '../../services/request';
+import { urls } from '../../config';
 import AnswerTable from './../AnswerTable/AnswerTable';
 import './styles.css';
 
@@ -8,7 +10,7 @@ class BaseSections extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      categoriesList: '',
+      categoriesList: [],
       activeTab: '',
       displayCategory: [],
       filterString: this.props
@@ -16,14 +18,16 @@ class BaseSections extends React.Component {
   }
 
   componentWillMount() {
-    const { data } = this.props;
-    const tempCategories = data.map(i => i.categoryName);
-    const category = tempCategories[0];
-    const categoriesList = tempCategories.filter(
-      (item, index, self) => self.indexOf(item) === index
-    );
-    this.setCategory(category);
-    this.setState({ categoriesList, activeTab: category });
+    request(urls.responses.getCategories, {
+      method: 'GET'
+    }).then(response => {
+      const categoriesList = response.categories.map(
+        category => category.category
+      );
+      const category = categoriesList[0];
+      this.setCategory(category);
+      this.setState({ categoriesList, activeTab: category });
+    });
   }
 
   setCategory = category => {
@@ -47,11 +51,11 @@ class BaseSections extends React.Component {
   }
 
   getFilteredAnswers = displayCategory => {
-      const { filterString } = this.props;
-      let filterStringLowerCase = '';
-      if (filterString) {
-          filterStringLowerCase = filterString.toLowerCase();
-      }
+    const { filterString } = this.props;
+    let filterStringLowerCase = '';
+    if (filterString) {
+      filterStringLowerCase = filterString.toLowerCase();
+    }
 
     return filterStringLowerCase
       ? displayCategory.filter(
@@ -76,7 +80,6 @@ class BaseSections extends React.Component {
   render() {
     const { displayCategory, activeTab, categoriesList } = this.state;
     const filteredAnswers = this.getFilteredAnswers(displayCategory);
-
     return (
       <div>
         <div className='categories-container'>
