@@ -34,6 +34,7 @@ class IntentModal extends React.Component {
     let data = {};
     if (this.props.data) {
       data = {
+        responseName: this.props.data.responseName || '',
         responseDescription: this.props.data.responseDescription || '',
         textTranscription: this.props.data.textTranscription || '',
         audioTranscription: this.props.data.audioTranscription || '',
@@ -41,6 +42,7 @@ class IntentModal extends React.Component {
       };
     } else {
       data = {
+        responseName: '',
         responseDescription: '',
         textTranscription: '',
         audioTranscription: '',
@@ -131,19 +133,18 @@ class IntentModal extends React.Component {
               />
             </div>
           ) : (
-            <div className='modal-description'>{data.responseDescription}</div>
+            <div className='modal-description-name'>{data.responseDescription}</div>
           )}
           {isDescriptionChangeable ? (
             <div className='modal-formfield'>
               <div className='modal-formfield-title'>Описание</div>
-              <Input
+              <TextArea
+                className='modal-formfield-textarea modal-field'
+                placeholder='Данный ответ будет ...'
                 onChange={e =>
                   this.onHandlerFormField(e, 'responseDescription')
                 }
                 value={data.responseDescription}
-                className='modal-field'
-                placeholder='Данный ответ будет ...'
-                disabled={!isDescriptionChangeable}
               />
             </div>
           ) : (
