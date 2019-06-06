@@ -23,10 +23,7 @@ class AnswerTable extends React.Component {
     ) {
       delete answer.audioTranscription;
     }
-    changeResponse(answer, id, title).then(() => {
-      const audio = document.getElementById(`audio-${id}`);
-      audio.load();
-    });
+    changeResponse(answer, id, title);
   };
 
   onPlayAudio = id => {
