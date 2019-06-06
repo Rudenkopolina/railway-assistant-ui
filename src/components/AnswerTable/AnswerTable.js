@@ -1,10 +1,8 @@
 import React from 'react';
 import { withRouter } from 'react-router-dom';
 import AnswerCard from '../AnswerCard/AnswerCard';
+import NoFilteredData from '../NoFilteredData';
 import './styles.css';
-
-const hint =
-  'Для передачи слов-омографов используйте + перед ударной гласной. Например, гот+ов.Чтобы отметить паузу между словами, используйте -.';
 
 class AnswerTable extends React.Component {
   constructor(props){
@@ -76,9 +74,14 @@ class AnswerTable extends React.Component {
 
   render() {
     const { data, title, onDeleteAnswer, filterString } = this.props;
-    if(filterString) {         
+    if(filterString) {
     }
     const displayAnswers = filterString ? this.getFilteredAnswers(data) : data;
+    if (displayAnswers.length === 0) {
+      return (
+        <NoFilteredData filterString={filterString} />
+      )
+    }
     return (
       <div className='answer-table-container'>
         {displayAnswers.map((answer, index) => (
