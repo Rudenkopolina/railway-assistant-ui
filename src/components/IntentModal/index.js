@@ -133,7 +133,7 @@ class IntentModal extends React.Component {
               />
             </div>
           ) : (
-            <div className='modal-description-name'>{data.responseDescription}</div>
+            <div className='modal-description-name'>{data.responseName}</div>
           )}
           {isDescriptionChangeable ? (
             <div className='modal-formfield'>
