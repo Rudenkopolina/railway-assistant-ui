@@ -13,12 +13,12 @@ module.exports = {
 			updateCommonResponse: (id) => `/api/answers/common_responses/${id}`,
 			updateReferenceResponse: (id) => `/api/answers/reference_responses/${id}`,
 			audioUrl: (title, id) => {
-				const token = sessionStorage.getItem('jwtToken');
+				const token = localStorage.getItem('jwtToken');
 				const encoded = encodeURI(`${baseUrl}/api/answers/${title}_responses/${id}/audio/${token.substring(1, token.length - 1)}`);
 				return encoded;
 			},
 			newAudioUrl: text => {
-				const token = sessionStorage.getItem('jwtToken');
+				const token = localStorage.getItem('jwtToken');
 				const encoded = encodeURI(`${baseUrl}/api/speech/textToSpeech?text=${text}&token=${token.substring(1, token.length - 1)}`);
 				return encoded;
 			},
