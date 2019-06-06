@@ -1,5 +1,5 @@
 import React from 'react';
-import { Modal, Popup, Input, Icon, Button } from 'semantic-ui-react';
+import { Modal, Popup, Input, Icon, Button, Dropdown } from 'semantic-ui-react';
 import { NotificationContainer } from 'react-notifications';
 import AudioPlayer from '../AudioPlayer/AudioPlayer';
 import Keywords from './Keywords';
@@ -14,6 +14,7 @@ class IntentModal extends React.Component {
   state = {
     isModalOpen: false,
     data: {
+      responseName: '',
       responseDescription: '',
       textTranscription: '',
       audioTranscription: '',
@@ -118,12 +119,12 @@ class IntentModal extends React.Component {
         <div className='modal-content'>
           {isDescriptionChangeable ? (
             <div className='modal-formfield'>
-              <div className='modal-formfield-title'>Описание</div>
+              <div className='modal-formfield-title'>Название</div>
               <Input
                 onChange={e =>
-                  this.onHandlerFormField(e, 'responseDescription')
+                  this.onHandlerFormField(e, 'responseName')
                 }
-                value={data.responseDescription}
+                value={data.responseName}
                 className='modal-field'
                 placeholder='Справка о...'
                 disabled={!isDescriptionChangeable}
@@ -132,6 +133,32 @@ class IntentModal extends React.Component {
           ) : (
             <div className='modal-description'>{data.responseDescription}</div>
           )}
+          {isDescriptionChangeable ? (
+            <div className='modal-formfield'>
+              <div className='modal-formfield-title'>Описание</div>
+              <Input
+                onChange={e =>
+                  this.onHandlerFormField(e, 'responseDescription')
+                }
+                value={data.responseDescription}
+                className='modal-field'
+                placeholder='Данный ответ будет ...'
+                disabled={!isDescriptionChangeable}
+              />
+            </div>
+          ) : (
+            <div className='modal-description'>{data.responseDescription}</div>
+          )}
+          <div className='modal-formfield'>
+            <div className='modal-formfield-title'>Категория</div>
+            <Dropdown
+              onChange={e =>
+                this.onHandlerFormField(e, 'responseDescription')
+              }
+              value={data.responseDescription}
+              className='modal-field'
+            />
+          </div>
           {isShowExamples && (
             <div className='modal-formfield'>
               <div className='modal-formfield-title'>Ключевые слова</div>
@@ -178,26 +205,19 @@ class IntentModal extends React.Component {
           </div>
         </div>
         <div className='modal-actions'>
-          <div
+          <Button
             onClick={this.onTrigerModal}
-            className='action-button grey-button'
           >
 
             Отменить
-          </div>
-          {isDisabled ? (
-            <Popup
-              content='Все данные должны быть заполнены'
-              position='right center'
-              className='modal-hint'
-              trigger={<div className='action-button-disabled'>Сохранить</div>}
-            />
-          ) : (
-            <div onClick={this.onSendData} className='action-button'>
-
-              Сохранить
-            </div>
-          )}
+          </Button>
+          <Button
+            onClick={this.onSendData}
+            primary
+            disabled={isDisabled}
+          >
+            Сохранить
+          </Button>
         </div>
         <NotificationContainer />
       </div>

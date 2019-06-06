@@ -46,7 +46,6 @@ class Login extends React.Component {
       <div className='login-wrapper'>
       <div className='login-background-image' />
       <div className='login-background' />
-      <div className='login-title'>Assistant Client</div>
         <div className='login-card'>
           <span className='login-header-text'>Пожалуйста, выполните вход</span>
           <Input

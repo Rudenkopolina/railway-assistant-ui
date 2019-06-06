@@ -17,7 +17,7 @@ import {
   DELETE_RESPONSE_FAIL,
 } from '../actions/responses';
 
-import { CLEAR_RESPONSES } from '../actions/auth';
+import { LOGOUT } from '../actions/auth';
 
 export default function (state = initialState, action) {
   switch (action.type) {
@@ -83,7 +83,7 @@ export default function (state = initialState, action) {
       failed: true
     };
 
-  case CLEAR_RESPONSES:
+  case LOGOUT:
   return initialState;
 
   default:
