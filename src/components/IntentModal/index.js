@@ -34,6 +34,7 @@ class IntentModal extends React.Component {
     let data = {};
     if (this.props.data) {
       data = {
+        responseName: this.props.data.responseName || '',
         responseDescription: this.props.data.responseDescription || '',
         textTranscription: this.props.data.textTranscription || '',
         audioTranscription: this.props.data.audioTranscription || '',
@@ -41,6 +42,7 @@ class IntentModal extends React.Component {
       };
     } else {
       data = {
+        responseName: '',
         responseDescription: '',
         textTranscription: '',
         audioTranscription: '',
@@ -79,6 +81,7 @@ class IntentModal extends React.Component {
   isDisabled = () => {
     const { isShowExamples = true } = this.props;
     const {
+      responseName,
       responseDescription,
       textTranscription,
       audioTranscription,
@@ -90,6 +93,7 @@ class IntentModal extends React.Component {
     });
     if (isShowExamples) {
       return (
+        !responseName ||
         !responseDescription ||
         !textTranscription ||
         !audioTranscription ||
@@ -99,6 +103,7 @@ class IntentModal extends React.Component {
       );
     } else {
       return (
+        !responseName ||
         !responseDescription ||
         !textTranscription ||
         !audioTranscription
@@ -131,7 +136,7 @@ class IntentModal extends React.Component {
               />
             </div>
           ) : (
-            <div className='modal-description'>{data.responseDescription}</div>
+            <div className='modal-description'>{data.responseName}</div>
           )}
           {isDescriptionChangeable ? (
             <div className='modal-formfield'>

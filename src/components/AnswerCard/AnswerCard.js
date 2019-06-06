@@ -32,26 +32,18 @@ class AnswerCard extends React.Component {
   };
 
   renderActions = () => {
-    const {
-      answer,
-      index,
-      onUpdateAnswer,
-      isShowExamples,
-      title
-    } = this.props;
+    const { answer, index, onUpdateAnswer, isShowExamples, title } = this.props;
     return (
-
-        <IntentModal
-          key={answer.id}
-          buttonText='Детали'
-          className='card-button'
-          modalTitle={titlesForModal[title]}
-          onSave={data => onUpdateAnswer(data, answer.id, index)}
-          data={answer}
-          isShowExamples={isShowExamples}
-          isDescriptionChangeable={title === 'reference'}
-        />
-
+      <IntentModal
+        key={answer.id}
+        buttonText='Детали'
+        className='card-button'
+        modalTitle={titlesForModal[title]}
+        onSave={data => onUpdateAnswer(data, answer.id, index)}
+        data={answer}
+        isShowExamples={isShowExamples}
+        isDescriptionChangeable={title === 'reference'}
+      />
     );
   };
 
@@ -62,11 +54,7 @@ class AnswerCard extends React.Component {
         {onDeleteAnswer && (
           <Modal
             closeIcon
-            trigger={<Icon
-              size='small'
-              name='trash'
-              className='remove-icon'
-            />}
+            trigger={<Icon size='small' name='trash' className='remove-icon' />}
             closeOnEscape={true}
             size={'mini'}
             content='Вы уверены, что хотите удалить этот ответ? Ответ будет потерян без возможности восстановления.'
@@ -75,7 +63,6 @@ class AnswerCard extends React.Component {
               {
                 key: 'done',
                 content: 'Удалить',
-                className: 'negative',
                 onClick: event => this.deleteAnswer(event, answer.id)
               }
             ]}
@@ -83,7 +70,7 @@ class AnswerCard extends React.Component {
         )}
       </div>
     );
-  }
+  };
 
   // renderKeywords = () => {
   //   const { answer, isShowExamples } = this.props;
@@ -135,10 +122,7 @@ class AnswerCard extends React.Component {
         </div>
         <div className='table-actions'>
           <div className='icon-position'>
-            <AudioPlayer
-              id={answer.id}
-              url={this.getAudioSrc(answer.id)}
-            />
+            <AudioPlayer id={answer.id} url={this.getAudioSrc(answer.id)} />
           </div>
           {this.renderActions()}
         </div>
