@@ -7,9 +7,9 @@ class NoFilteredData extends React.Component {
 		if (filterString) {
 			return (
 				<div className='no-filer-container'>
-					<span>По запросу</span>
-					<span className='filter-sring'>${filterString}</span>
-					<span>ничего не найдено.</span>
+					<span>{'По запросу'}</span>
+					<span className='filter-sring'>{filterString}</span>
+					<span>{'ничего не найдено.'}</span>
 				</div>
 			);
 		} else {

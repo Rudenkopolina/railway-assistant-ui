@@ -7,5 +7,7 @@
 }
 
 .filter-sring {
-  font-weight: 500;
+  font-weight: bold;
+  color: #babcbf;
+  padding: 0 10px;
 }

@@ -71,9 +71,9 @@ class AnswerTable extends React.Component {
 
   render() {
     const { data, title, onDeleteAnswer, filterString } = this.props;
-    if(filterString) {
-    }
+
     const displayAnswers = filterString ? this.getFilteredAnswers(data) : data;
+    console.log(filterString, displayAnswers);
     if (displayAnswers.length === 0) {
       return (
         <NoFilteredData filterString={filterString} />
