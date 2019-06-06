@@ -82,9 +82,9 @@ class Keywords extends React.Component {
         this.setState({
           checkedKeys,
           keys,
-          inputVisible: false,
+          inputVisible: true,
           inputValue: ''
-        });
+        }, () => this.input.focus());
       });
     }
   };

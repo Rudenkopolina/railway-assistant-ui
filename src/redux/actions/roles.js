@@ -1,5 +1,3 @@
-import request from '../../services/request';
-import { urls } from '../../config';
 export const GET_ROLES = 'GET_ROLES';
 export const GET_ROLES_SUCCESS = 'GET_ROLES_SUCCESS';
 export const GET_ROLES_FAIL = 'GET_ROLES_FAIL';
@@ -11,7 +9,6 @@ export const CREATE_ROLE_FAIL = 'CREATE_ROLE_FAIL';
 export const CHANGE_ROLE = 'CHANGE_ROLE';
 export const CHANGE_ROLE_SUCCESS = 'CHANGE_ROLE_SUCCESS';
 export const CHANGE_ROLE_FAIL = 'CHANGE_ROLE_FAIL';
-
 
 export function getAllRoles() {
   return async dispatch => {

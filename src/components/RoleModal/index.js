@@ -1,5 +1,5 @@
 import React from 'react';
-import { Modal, Popup, Input, Dropdown } from 'semantic-ui-react';
+import { Modal, Popup, Input } from 'semantic-ui-react';
 import './styles.css';
 
 const permissions = [

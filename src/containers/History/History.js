@@ -1,5 +1,5 @@
 import React from 'react';
-import {NotificationContainer, NotificationManager} from 'react-notifications';
+import { NotificationContainer } from 'react-notifications';
 import { Dropdown } from 'semantic-ui-react'
 import 'react-notifications/lib/notifications.css';
 import Spinner from '../../components/Spinner';
