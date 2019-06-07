@@ -96,6 +96,7 @@ class BaseSections extends React.Component {
                 className='element-mb'
                 modalTitle='Добавить справочный ответ'
                 onSave={(data) => this.props.createResponse(data)}
+                categoryId={activeTab}
               />
             </Protected>
           </div>
