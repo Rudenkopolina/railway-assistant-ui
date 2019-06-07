@@ -1,7 +1,6 @@
 .categories-container {
   margin: 15px 0 0 20px;
   display: flex;
-  border-bottom: 2px solid #ececf0;
   margin-right: 20px;
 }
 .category-button {

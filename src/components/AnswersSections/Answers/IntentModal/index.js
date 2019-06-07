@@ -7,7 +7,7 @@ import { Modal, Popup, Input, Icon, Button, Dropdown } from 'semantic-ui-react';
 import AudioPlayer from '../AudioPlayer';
 import Keywords from './Keywords';
 
-import { urls } from '../../../config';
+import { urls } from '../../../../config';
 import './styles.css';
 
 const hint =

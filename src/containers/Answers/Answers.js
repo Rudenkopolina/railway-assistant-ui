@@ -2,8 +2,7 @@ import React from 'react';
 import cx from 'classnames';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
-import Answers from '../../components/Answers';
-import AnswersSections from '../../components/Answers/AnswersSections';
+import AnswersSections from '../../components/AnswersSections';
 import Protected from '../../components/common/protected/container';
 import './styles.css';
 import Filter from './../../components/Filter';
@@ -58,37 +57,25 @@ class Answer extends React.Component {
 
   getContent = () => {
     const { activeTab, filterString } = this.state;
-    switch (activeTab) {
-      case 'common':
-        return (
-          <Protected requiredRoles='ALLOWED_ANSWERS_VIEWING'>
-            <Answers
-              title='common'
-              key='common'
-              answers={this.props.data.common}
-              changeResponse={this.props.changeResponse}
-              filterString={filterString}
-            />
-          </Protected>
-        );
-      case 'reference':
-        return (
-          <Protected requiredRoles='ALLOWED_KNOWLEDGEBASE_VIEWING'>
-            <AnswersSections
-              categories={this.props.categories.categories}
-              title='reference'
-              key='reference'
-              answers={this.props.data.reference}
-              onDeleteAnswer={this.props.onDeleteAnswer}
-              changeResponse={this.props.changeResponse}
-              createResponse={this.props.createResponse}
-              filterString={filterString}
-            />
-          </Protected>
-        );
-      default:
-        return;
-    }
+    return (
+      <Protected requiredRoles='ALLOWED_KNOWLEDGEBASE_VIEWING'>
+        <AnswersSections
+          categories={this.props.categories.categories}
+          title={activeTab}
+          key={activeTab}
+          answers={
+            activeTab === 'reference'
+              ? this.props.data.reference
+              : this.props.data.common
+          }
+          onDeleteAnswer={this.props.onDeleteAnswer}
+          changeResponse={this.props.changeResponse}
+          createResponse={this.props.createResponse}
+          filterString={filterString}
+          isReferanseTab={activeTab === 'reference'}
+        />
+      </Protected>
+    );
   };
 
   render() {

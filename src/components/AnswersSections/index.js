@@ -2,9 +2,9 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
 import cx from 'classnames';
-import Answers from '../index';
-import IntentModal from '../IntentModal';
-import Protected from '../../common/protected/container';
+import Answers from './Answers';
+import IntentModal from './Answers/IntentModal';
+import Protected from '../common/protected/container';
 import './styles.css';
 
 class AnswersSections extends React.Component {
@@ -17,8 +17,10 @@ class AnswersSections extends React.Component {
 
   componentWillMount() {
     const { categories } = this.props;
-    const category = categories[0].id;
-    this.setCategory(category);
+    if (!!categories.length) {
+      const category = categories[0].id;
+      this.setCategory(category);
+    }
   }
 
   setCategory = category => {
@@ -65,44 +67,49 @@ class AnswersSections extends React.Component {
   };
 
   render() {
-    const { categories, answers } = this.props;
+    const { categories, answers, isReferanseTab } = this.props;
     const { activeTab } = this.state;
-    const displayCategory = answers.filter(item => {
+    const filterCategory = answers.filter(item => {
       return item.categoryId === activeTab;
     });
+    const displayCategory = isReferanseTab ? filterCategory : answers;
     const filteredAnswers = this.getFilteredAnswers(displayCategory);
+    
+    const tabs = categories.map((category, index) => (
+      <div
+        key={index}
+        className={cx('category-button', {
+          'category-button-active': activeTab === category.id
+        })}
+        onClick={() => this.setCategory(category.id)}
+      >
+        {category.category}
+        <span className='filter-results'>
+          {this.getNumberOfAnswers(category.id)}
+        </span>
+      </div>
+    ));
 
     return (
       <div>
         <div className='categories-container'>
-          {categories.map((category, index) => (
-            <div
-              key={index}
-              className={cx('category-button', {
-                'category-button-active': activeTab === category.id
-              })}
-              onClick={() => this.setCategory(category.id)}
-            >
-              {category.category}
-              <span className='filter-results'>
-                {this.getNumberOfAnswers(category.id)}
-              </span>
+          {isReferanseTab && tabs}
+          {isReferanseTab && (
+            <div className='header-button'>
+              <Protected requiredRoles='ALLOWED_KNOWLEDGEBASE_CREATION'>
+                <IntentModal
+                  buttonText='Добавить ответ'
+                  modalTitle='Добавить справочный ответ'
+                  onSave={data => this.props.createResponse(data)}
+                  categoryId={activeTab}
+                />
+              </Protected>
             </div>
-          ))}
-          <div className='header-button'>
-            <Protected requiredRoles='ALLOWED_KNOWLEDGEBASE_CREATION'>
-              <IntentModal
-                buttonText='Добавить ответ'
-                modalTitle='Добавить справочный ответ'
-                onSave={data => this.props.createResponse(data)}
-                categoryId={activeTab}
-              />
-            </Protected>
-          </div>
+          )}
         </div>
         <Answers
-          title='reference'
-          key='reference'
+          title={this.props.title}
+          key={this.props.key}
           filterString={this.props.filterString}
           answers={filteredAnswers}
           onDeleteAnswer={this.props.onDeleteAnswer}
@@ -121,6 +128,7 @@ AnswersSections.propTypes = {
   onDeleteAnswer: PropTypes.func,
   changeResponse: PropTypes.func,
   createResponse: PropTypes.func,
-  filterString: PropTypes.string
+  filterString: PropTypes.string,
+  isReferanseTab: PropTypes.bool
 };
 export default withRouter(AnswersSections);

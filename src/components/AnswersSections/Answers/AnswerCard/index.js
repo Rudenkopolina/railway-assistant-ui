@@ -5,7 +5,7 @@ import AudioPlayer from '../AudioPlayer';
 import Truncate from 'react-truncate';
 import IntentModal from '../IntentModal';
 import './styles.css';
-import { urls } from '../../../config';
+import { urls } from '../../../../config';
 
 const titlesForModal = {
   common: 'Изменить типовую фразу',
