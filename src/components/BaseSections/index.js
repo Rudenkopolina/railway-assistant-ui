@@ -65,7 +65,7 @@ class BaseSections extends React.Component {
   };
 
   render() {
-    const { categories, answers} = this.props;
+    const { categories, answers } = this.props;
     const { activeTab } = this.state;
     const displayCategory = answers.filter(item => {
       return item.categoryId === activeTab;
@@ -94,7 +94,7 @@ class BaseSections extends React.Component {
               <IntentModal
                 buttonText='Добавить ответ'
                 modalTitle='Добавить справочный ответ'
-                onSave={answers => this.props.createResponse(answers)}
+                onSave={data => this.props.createResponse(data)}
                 categoryId={activeTab}
               />
             </Protected>
