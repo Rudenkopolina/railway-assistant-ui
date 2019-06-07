@@ -61,8 +61,8 @@ class Keywords extends React.Component {
     const { inputValue, topic } = this.state;
     let { checkedKeys } = this.state;
     let newInputValue = '';
-    let checking = inputValue.trim();
-    if (inputValue && checkedKeys.indexOf(inputValue) === -1) {
+    let checking = inputValue.trim().toLowerCase();
+    if (inputValue && checkedKeys.indexOf(checking) === -1) {
       return request(urls.responses.compareKeyword, {
         method: 'POST',
         body: { keyword: inputValue }
