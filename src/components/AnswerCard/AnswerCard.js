@@ -50,7 +50,7 @@ class AnswerCard extends React.Component {
   renderDelete = () => {
     const { answer, onDeleteAnswer } = this.props;
     return (
-      <div className='table-action'>
+      <div className='answer-action'>
         {onDeleteAnswer && (
           <Modal
             closeIcon
@@ -73,43 +73,10 @@ class AnswerCard extends React.Component {
     );
   };
 
-  // renderKeywords = () => {
-  //   const { answer, isShowExamples } = this.props;
-  //   const { isKeywordsShown } = this.state;
-  //   if (isShowExamples) {
-  //     let message;
-  //     let iconName;
-  //     if (isKeywordsShown) {
-  //       message = 'Скрыть ключевые слова';
-  //       iconName = 'angle up';
-  //     } else {
-  //       message = 'Показать ключевые слова';
-  //       iconName = 'angle down';
-  //     }
-  //     return (
-  //       <div className='key-words-container'>
-  //         <div className='key-words-title' onClick={this.toggleKeywordsView}>
-  //           <Icon name={iconName} />
-  //           {message}
-  //         </div>
-  //         {isKeywordsShown && (
-  //           <div className='key-words'>
-  //             {answer.examples.map(item => (
-  //               <span className='key-word' key={item}>
-  //                 {item}
-  //               </span>
-  //             ))}
-  //           </div>
-  //         )}
-  //         </div>
-  //     );
-  //   }
-  // };
-
   render() {
     const { answer } = this.props;
     return (
-      <div className='table-raw-wrapper'>
+      <div className='answer-row-wrapper'>
         <div className='answer-card-content'>
           <div className='answer-card-title'>
             <div className='answer-overflow'>{answer.responseName}</div>
@@ -121,7 +88,7 @@ class AnswerCard extends React.Component {
             </Truncate>
           </div>
         </div>
-        <div className='table-actions'>
+        <div className='answer-actions'>
           <div className='icon-position'>
             <AudioPlayer id={answer.id} url={this.getAudioSrc(answer.id)} />
           </div>

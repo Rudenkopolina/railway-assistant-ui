@@ -1,15 +1,24 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { Modal, Popup, Input, Icon, Button, Dropdown } from 'semantic-ui-react';
+import TextArea from 'react-textarea-autosize';
 import { NotificationContainer } from 'react-notifications';
+import { Modal, Popup, Input, Icon, Button, Dropdown } from 'semantic-ui-react';
 import AudioPlayer from '../AudioPlayer/AudioPlayer';
 import Keywords from './Keywords';
-import TextArea from 'react-textarea-autosize';
+
 import { urls } from '../../config';
 import './styles.css';
 
 const hint =
   'Для передачи слов-омографов используйте + перед ударной гласной. Например, гот+ов.Чтобы отметить паузу между словами, используйте -.';
+const keywordsSent = `Ключевые слова - слова, которые фигурируют в вопросе так, как это спросил бы пользователь.`;
+const keywordsList = [
+  'Ключевое слово должно быть уникальным.',
+  'Вы можете добавлять несколько ключевых слов с разными формулировками и формами, а также синонимы слов.',
+  'Ключевое слово может содержать буквы, цифры, подчеркиванияи дефисы.',
+  'Не включайте пробелы в ключевые слова.',
+  'Ключевое слово не может быть длиннее 64 символов.'
+];
 
 class IntentModal extends React.Component {
   state = {
@@ -56,9 +65,6 @@ class IntentModal extends React.Component {
     if (isModalOpen !== prevState.isModalOpen) {
       this.setState({ data, isDisabled: false });
     }
-    // if (prevState.data.examples.length < data.examples.length && isModalOpen) {
-    //     document.getElementById(`key-${this.state.data.examples.length - 1}`).focus();
-    // }
   }
 
   onHandlerFormField = (value, title) => {
@@ -141,6 +147,16 @@ class IntentModal extends React.Component {
       isShowExamples = true,
       isDescriptionChangeable = true
     } = this.props;
+    const keywordsHint = (
+      <div>
+        <p>{keywordsSent}</p>
+        <ul>
+          {keywordsList.map(key => (
+            <li>{key}</li>
+          ))}
+        </ul>
+      </div>
+    );
 
     return (
       <div className='modal-wrapper'>
@@ -194,7 +210,20 @@ class IntentModal extends React.Component {
           )}
           {isShowExamples && (
             <div className='modal-formfield'>
-              <div className='modal-formfield-title'>Ключевые слова</div>
+              <div className='modal-formfield-title key-title'>
+                Ключевые слова
+                <Popup
+                  content={keywordsHint}
+                  position='right center'
+                  wide='very'
+                  trigger={
+                    <Icon
+                      name='question circle outline'
+                      className='hint-icon'
+                    />
+                  }
+                />
+              </div>
               <div className='modal-keys-formfield'>
                 <Keywords
                   keys={data.examples}
@@ -221,6 +250,7 @@ class IntentModal extends React.Component {
               <Popup
                 content={hint}
                 position='right center'
+                wide='very'
                 trigger={
                   <Icon name='question circle outline' className='hint-icon' />
                 }
@@ -260,7 +290,7 @@ class IntentModal extends React.Component {
             {this.props.buttonText}
           </Button>
         }
-        size='tiny'
+        size='large'
         closeOnDimmerClick={false}
         onClose={this.onTrigerModal}
         open={this.state.isModalOpen}

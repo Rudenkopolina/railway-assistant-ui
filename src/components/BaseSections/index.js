@@ -3,7 +3,7 @@ import { withRouter } from 'react-router-dom';
 import cx from 'classnames';
 import AnswerTable from './../AnswerTable/AnswerTable';
 import IntentModal from '../../components/IntentModal';
-import Protected from '../../components/common/protected/container'
+import Protected from '../../components/common/protected/container';
 import './styles.css';
 
 class BaseSections extends React.Component {
@@ -44,9 +44,8 @@ class BaseSections extends React.Component {
     return filterStringLowerCase
       ? displayCategory.filter(
           answer =>
-          answer.responseName
-          .toLowerCase()
-          .indexOf(filterStringLowerCase) > -1 ||
+            answer.responseName.toLowerCase().indexOf(filterStringLowerCase) >
+              -1 ||
             answer.responseDescription
               .toLowerCase()
               .indexOf(filterStringLowerCase) > -1 ||
@@ -95,7 +94,7 @@ class BaseSections extends React.Component {
                 buttonText='Добавить ответ'
                 className='element-mb'
                 modalTitle='Добавить справочный ответ'
-                onSave={(data) => this.props.createResponse(data)}
+                onSave={data => this.props.createResponse(data)}
                 categoryId={activeTab}
               />
             </Protected>

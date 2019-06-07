@@ -7,16 +7,8 @@ import { stopAudio, playAudio } from '../../redux/actions/audios';
 import './styles.css';
 
 class AudioPlayer extends React.Component {
-
   render() {
-    const {
-      audios,
-      onStopAudio,
-      onPlayAudio,
-      id,
-      url,
-      disabled
-    } = this.props;
+    const { audios, onStopAudio, onPlayAudio, id, url, disabled } = this.props;
     return (
       <Fragment>
         {audios.playedId === id ? (
@@ -47,18 +39,23 @@ class AudioPlayer extends React.Component {
             }
           />
         )}
-    </Fragment>
+      </Fragment>
     );
   }
 }
 
 const mapStateToProps = ({ audios }) => ({
-	audios
+  audios
 });
 
 const mapDispatchToProps = dispatch => ({
-	onPlayAudio: (id, url) => dispatch(playAudio(id, url)),
-	onStopAudio: () => dispatch(stopAudio())
+  onPlayAudio: (id, url) => dispatch(playAudio(id, url)),
+  onStopAudio: () => dispatch(stopAudio())
 });
 
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(AudioPlayer));
+export default withRouter(
+  connect(
+    mapStateToProps,
+    mapDispatchToProps
+  )(AudioPlayer)
+);

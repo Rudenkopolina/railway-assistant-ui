@@ -5,13 +5,12 @@ import NoFilteredData from '../NoFilteredData';
 import './styles.css';
 
 class AnswerTable extends React.Component {
-  constructor(props){
+  constructor(props) {
     super(props);
     this.state = {
       playedId: null
     };
   }
-
 
   onUpdateAnswer = (answer, id, index) => {
     const { title, changeResponse } = this.props;
@@ -47,36 +46,35 @@ class AnswerTable extends React.Component {
     const { filterString } = this.props;
     let filterStringLowerCase = '';
     if (filterString) {
-        filterStringLowerCase = filterString.toLowerCase();    }
+      filterStringLowerCase = filterString.toLowerCase();
+    }
 
-  return filterStringLowerCase
-    ? displayCategory.filter(
-        answer =>
-          answer.responseDescription
-            .toLowerCase()
-            .indexOf(filterStringLowerCase) > -1 ||
-          answer.textTranscription
-            .toLowerCase()
-            .indexOf(filterStringLowerCase) > -1 ||
-          answer.audioTranscription
-            .toLowerCase()
-            .indexOf(filterStringLowerCase) > -1 ||
-          answer.examples.some(
-            example =>
-              example.toLowerCase().indexOf(filterStringLowerCase) > -1
-          )
-      )
-    : displayCategory;
-};
+    return filterStringLowerCase
+      ? displayCategory.filter(
+          answer =>
+            answer.responseDescription
+              .toLowerCase()
+              .indexOf(filterStringLowerCase) > -1 ||
+            answer.textTranscription
+              .toLowerCase()
+              .indexOf(filterStringLowerCase) > -1 ||
+            answer.audioTranscription
+              .toLowerCase()
+              .indexOf(filterStringLowerCase) > -1 ||
+            answer.examples.some(
+              example =>
+                example.toLowerCase().indexOf(filterStringLowerCase) > -1
+            )
+        )
+      : displayCategory;
+  };
 
   render() {
     const { data, title, onDeleteAnswer, filterString } = this.props;
 
     const displayAnswers = filterString ? this.getFilteredAnswers(data) : data;
     if (displayAnswers.length === 0) {
-      return (
-        <NoFilteredData filterString={filterString} />
-      )
+      return <NoFilteredData filterString={filterString} />;
     }
     return (
       <div className='answer-table-container'>

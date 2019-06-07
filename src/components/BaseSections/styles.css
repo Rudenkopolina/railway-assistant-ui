@@ -14,19 +14,16 @@
   cursor: pointer;
   padding: 12px 0;
 }
-/* .category-button:hover {
-  border-bottom: 2px solid #1a69a4;
-} */
 
 .category-button-active {
   border-bottom: 2px solid #1a69a4;
   color: #363f56;
 }
-.filter-results{
-    font-size: 11px;
-    margin-left: 6px;
-    color: #93a3b8;
-    font-variant: tabular-nums;
+.filter-results {
+  font-size: 11px;
+  margin-left: 6px;
+  color: #93a3b8;
+  font-variant: tabular-nums;
 }
 
 .header-button {
