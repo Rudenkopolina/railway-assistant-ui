@@ -62,6 +62,7 @@ class AnswerCard extends React.Component {
               'Отменить',
               {
                 key: 'done',
+                className: 'negative',
                 content: 'Удалить',
                 onClick: event => this.deleteAnswer(event, answer.id)
               }
