@@ -1,52 +1,48 @@
 import React from 'react';
-import { Modal } from 'semantic-ui-react'
+import { Modal, Icon } from 'semantic-ui-react';
 import './styles.css';
 
 class UserCard extends React.Component {
   renderActions = () => {
-    const {
-      user,
-      onDeleteUser
-    } = this.props;
+    const { user, onDeleteUser } = this.props;
     return (
-    <div className='users-table-actions'>
-      <div className="users-table-action">
+      <div className='users-table-actions'>
         <Modal
           closeIcon
-          trigger={<div className='users-table-button'>Удалить</div>}
+          trigger={<Icon size='small' name='trash' className='remove-icon' />}
           closeOnEscape={true}
           size={'mini'}
           content='Это действие нельзя будет отменить. Вы уверены, что хотите удалить этотого сотрудника из базы?'
-          actions={['Отменить', { key: 'done', content: 'Удалить', onClick: () => onDeleteUser(user.id) }]}
+          actions={[
+            'Отменить',
+            {
+              key: 'done',
+              content: 'Удалить',
+              onClick: () => onDeleteUser(user.id)
+            }
+          ]}
         />
       </div>
-    </div>
-    )
-  }
+    );
+  };
 
   render() {
-    const {
-      user,
-      index
-    } = this.props;
+    const { user } = this.props;
     return (
-        <div className="users-table-row-wrapper">
-          <div className="users-table-row">
-            <div className="users-table-number">{index + 1}</div>
-            <div className="users-table-content">
-                {user.name}
-            </div>
-            <div className="users-table-content">
-              <a href={`mailto:${user.username}`} className='link'>
-                {user.username}
-              </a>
-            </div>
-            <div className="users-table-content">
-              {user.privilege}
-            </div>
+      <div className='user-card-raw-wrapper'>
+        <div className='user-card-content'>
+          <div className='user-card-title'>
+            <div className='user-overflow'> {user.name} </div>
             {this.renderActions()}
           </div>
+          <div className='user-role'>{user.privilege}</div>
+          <div className='user-card-description'>
+            <a href={`mailto:${user.username}`} className='link'>
+              {user.username}
+            </a>
+          </div>
         </div>
+      </div>
     );
   }
 }

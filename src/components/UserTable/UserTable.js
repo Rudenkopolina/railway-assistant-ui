@@ -14,10 +14,10 @@ class UserTable extends React.Component {
           || user.privilege.toLowerCase().indexOf(filterStringLowerCase) > -1)
           :
           data;
-    const titles = ['ФИО', 'Логин', 'Роль']
+    // const titles = ['ФИО', 'Логин', 'Роль']
     return (
       <div className='users-table-container'>
-        {
+        {/* {
           <div className="users-title-row">
             {titles.map(item =>
               <div className="users-title-content" key={item}>
@@ -25,7 +25,7 @@ class UserTable extends React.Component {
               </div>
             )}
           </div>
-        }
+        } */}
         {filteredAnswers.map((user, index) => (
           <UserCard
             key={index}

@@ -8,16 +8,8 @@ import Filter from './../../components/Filter';
 import UserModal from '../../components/UserModal';
 import RoleModal from '../../components/RoleModal';
 
-import {
-  getAllUsers,
-  createUser,
-  deleteUser
-} from '../../redux/actions/users';
-import {
-  updateRole,
-  getAllRoles,
-  createRole,
-} from '../../redux/actions/roles';
+import { getAllUsers, createUser, deleteUser } from '../../redux/actions/users';
+import { updateRole, getAllRoles, createRole } from '../../redux/actions/roles';
 
 import './Users.css';
 
@@ -25,25 +17,24 @@ class Users extends React.Component {
   state = {
     activeTab: 'users',
     titles: [
-      {name: 'Сотрудники', key: 'users'},
-      {name: 'Редактор Ролей', key: 'roles'}
+      { name: 'Сотрудники', key: 'users' },
+      { name: 'Редактор Ролей', key: 'roles' }
     ],
-    filterString: '',
-  }
+    filterString: ''
+  };
 
   componentWillMount() {
-      this.props.getAllUsers();
-      this.props.getAllRoles();
+    this.props.getAllUsers();
+    this.props.getAllRoles();
   }
-
 
   onFilterChange = filterString => {
     this.setState({ filterString });
-  }
+  };
 
   changeTab = tab => {
-    this.setState({ activeTab: tab});
-  }
+    this.setState({ activeTab: tab });
+  };
 
   onCreate = (title, data) => {
     switch (title) {
@@ -55,12 +46,11 @@ class Users extends React.Component {
         break;
       default:
     }
-    this.setState({ activeTab: title })
-  }
-
+    this.setState({ activeTab: title });
+  };
 
   getContent = () => {
-    const { activeTab, filterString } =this.state;
+    const { activeTab, filterString } = this.state;
     const { users, onDeleteUser, roles } = this.props;
     switch (activeTab) {
       case 'users':
@@ -70,34 +60,39 @@ class Users extends React.Component {
             filterString={filterString}
             onDeleteUser={onDeleteUser}
           />
-        )
+        );
       case 'roles':
         return (
-          <RoleTable
-            data={roles}
-            onUpdateRole={this.props.onUpdateRole}
-          />
-        )
-      default: return;
+          <RoleTable data={roles} onUpdateRole={this.props.onUpdateRole} />
+        );
+      default:
+        return;
     }
-  }
+  };
 
   render() {
-    const { activeTab, titles, filterString } =this.state;
+    const { activeTab, titles, filterString } = this.state;
     return (
-      <div className="users-container">
-        <div className="users-header">
-          <div className="users-menu">
-            {titles.map(title =>
+      <div className='users-container'>
+        <div className='users-header'>
+          <div className='users-menu'>
+            {titles.map(title => (
               <div
                 key={title.key}
-                className={cx('users-menu-item', { 'users-menu-item-active': activeTab === title.key })}
+                className={cx('users-menu-item', {
+                  'users-menu-item-active': activeTab === title.key
+                })}
                 onClick={() => this.changeTab(title.key)}
               >
                 {title.name}
               </div>
-            )}
-            <Filter filterString={filterString} onFilterChange={this.onFilterChange} />
+            ))}
+            <div className='element-mb'>
+              <Filter
+                filterString={filterString}
+                onFilterChange={this.onFilterChange}
+              />
+            </div>
           </div>
           <div className='users-menu-item'>
             <RoleModal
@@ -126,12 +121,17 @@ const mapStateToProps = ({ users, roles }) => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-	createUser: data => dispatch(createUser(data)),
+  createUser: data => dispatch(createUser(data)),
   getAllUsers: () => dispatch(getAllUsers()),
   onDeleteUser: id => dispatch(deleteUser(id)),
   onUpdateRole: data => dispatch(updateRole(data)),
   getAllRoles: () => dispatch(getAllRoles()),
-  createRole: data => dispatch(createRole(data)),
+  createRole: data => dispatch(createRole(data))
 });
 
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Users));
+export default withRouter(
+  connect(
+    mapStateToProps,
+    mapDispatchToProps
+  )(Users)
+);
