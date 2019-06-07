@@ -1,7 +1,8 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
-import AnswerCard from '../AnswerCard/AnswerCard';
-import NoFilteredData from '../NoFilteredData';
+import AnswerCard from './AnswerCard';
+import NoFilteredData from './NoFilteredData';
 import './styles.css';
 
 class AnswerTable extends React.Component {
@@ -14,11 +15,11 @@ class AnswerTable extends React.Component {
 
   onUpdateAnswer = (answer, id, index) => {
     const { title, changeResponse } = this.props;
-    if (this.props.data[index].textTranscription === answer.textTranscription) {
+    if (this.props.answers[index].textTranscription === answer.textTranscription) {
       delete answer.textTranscription;
     }
     if (
-      this.props.data[index].audioTranscription === answer.audioTranscription
+      this.props.answers[index].audioTranscription === answer.audioTranscription
     ) {
       delete answer.audioTranscription;
     }
@@ -70,9 +71,9 @@ class AnswerTable extends React.Component {
   };
 
   render() {
-    const { data, title, onDeleteAnswer, filterString } = this.props;
+    const { answers, title, onDeleteAnswer, filterString } = this.props;
 
-    const displayAnswers = filterString ? this.getFilteredAnswers(data) : data;
+    const displayAnswers = filterString ? this.getFilteredAnswers(answers) : answers;
     if (displayAnswers.length === 0) {
       return <NoFilteredData filterString={filterString} />;
     }
@@ -96,4 +97,14 @@ class AnswerTable extends React.Component {
     );
   }
 }
+
+AnswerTable.propTypes = {
+  title: PropTypes.string,
+  key: PropTypes.string,
+  filterString: PropTypes.string,
+  answers: PropTypes.array,
+  changeResponse: PropTypes.func,
+  onDeleteAnswer: PropTypes.func
+};
+
 export default withRouter(AnswerTable);

@@ -1,6 +1,6 @@
 import React from 'react';
 import { withRouter } from 'react-router-dom';
-import UserCard from '../UserCard/UserCard';
+import UserCard from './UserCard';
 import './styles.css';
 
 class UserTable extends React.Component {

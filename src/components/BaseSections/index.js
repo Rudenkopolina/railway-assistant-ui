@@ -1,8 +1,9 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
 import cx from 'classnames';
-import AnswerTable from './../AnswerTable/AnswerTable';
-import IntentModal from '../../components/IntentModal';
+import AnswerTable from '../AnswerTable';
+import IntentModal from '../AnswerTable/IntentModal';
 import Protected from '../../components/common/protected/container';
 import './styles.css';
 
@@ -27,8 +28,8 @@ class BaseSections extends React.Component {
   };
 
   getNumberOfAnswers = category => {
-    const { data } = this.props;
-    const displayCategory = data.filter(item => {
+    const { answers } = this.props;
+    const displayCategory = answers.filter(item => {
       return item.categoryId === category;
     });
     const filteredAnswers = this.getFilteredAnswers(displayCategory);
@@ -64,9 +65,9 @@ class BaseSections extends React.Component {
   };
 
   render() {
-    const { categories, data } = this.props;
+    const { categories, answers} = this.props;
     const { activeTab } = this.state;
-    const displayCategory = data.filter(item => {
+    const displayCategory = answers.filter(item => {
       return item.categoryId === activeTab;
     });
     const filteredAnswers = this.getFilteredAnswers(displayCategory);
@@ -92,9 +93,8 @@ class BaseSections extends React.Component {
             <Protected requiredRoles='ALLOWED_KNOWLEDGEBASE_CREATION'>
               <IntentModal
                 buttonText='Добавить ответ'
-                className='element-mb'
                 modalTitle='Добавить справочный ответ'
-                onSave={data => this.props.createResponse(data)}
+                onSave={answers => this.props.createResponse(answers)}
                 categoryId={activeTab}
               />
             </Protected>
@@ -104,7 +104,7 @@ class BaseSections extends React.Component {
           title='reference'
           key='reference'
           filterString={this.props.filterString}
-          data={filteredAnswers}
+          answers={filteredAnswers}
           onDeleteAnswer={this.props.onDeleteAnswer}
           changeResponse={this.props.changeResponse}
         />
@@ -112,4 +112,15 @@ class BaseSections extends React.Component {
     );
   }
 }
+
+BaseSections.propTypes = {
+  categories: PropTypes.array,
+  title: PropTypes.string,
+  key: PropTypes.string,
+  answers: PropTypes.array,
+  onDeleteAnswer: PropTypes.func,
+  changeResponse: PropTypes.func,
+  createResponse: PropTypes.func,
+  filterString: PropTypes.string
+};
 export default withRouter(BaseSections);

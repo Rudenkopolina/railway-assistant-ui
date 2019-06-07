@@ -1,10 +1,11 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { Icon, Modal } from 'semantic-ui-react';
-import AudioPlayer from '../AudioPlayer/AudioPlayer';
+import AudioPlayer from '../AudioPlayer';
 import Truncate from 'react-truncate';
 import IntentModal from '../IntentModal';
 import './styles.css';
-import { urls } from '../../config';
+import { urls } from '../../../config';
 
 const titlesForModal = {
   common: 'Изменить типовую фразу',
@@ -37,10 +38,9 @@ class AnswerCard extends React.Component {
       <IntentModal
         key={answer.id}
         buttonText='Детали'
-        className='card-button'
         modalTitle={titlesForModal[title]}
         onSave={data => onUpdateAnswer(data, answer.id, index)}
-        data={answer}
+        answer={answer}
         isShowExamples={isShowExamples}
         isDescriptionChangeable={title === 'reference'}
       />
@@ -98,5 +98,18 @@ class AnswerCard extends React.Component {
     );
   }
 }
+
+AnswerCard.propTypes = {
+  title: PropTypes.string,
+  answer: PropTypes.object,
+  index: PropTypes.number,
+  isShowExamples: PropTypes.bool,
+  title: PropTypes.string,
+  onDeleteAnswer: PropTypes.func,
+  onPlayAudio: PropTypes.func,
+  onStopAudio: PropTypes.func,
+  playedId: PropTypes.number,
+  onUpdateAnswer: PropTypes.func
+};
 
 export default AnswerCard;

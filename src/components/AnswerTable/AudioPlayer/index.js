@@ -1,9 +1,10 @@
 import React, { Fragment } from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import { Icon, Popup } from 'semantic-ui-react';
 
-import { stopAudio, playAudio } from '../../redux/actions/audios';
+import { stopAudio, playAudio } from '../../../redux/actions/audios';
 import './styles.css';
 
 class AudioPlayer extends React.Component {
@@ -52,6 +53,11 @@ const mapDispatchToProps = dispatch => ({
   onPlayAudio: (id, url) => dispatch(playAudio(id, url)),
   onStopAudio: () => dispatch(stopAudio())
 });
+
+AudioPlayer.propTypes = {
+  id: PropTypes.number,
+  url: PropTypes.string
+};
 
 export default withRouter(
   connect(

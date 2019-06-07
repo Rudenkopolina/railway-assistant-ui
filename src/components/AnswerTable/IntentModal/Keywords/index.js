@@ -1,8 +1,9 @@
 import React from 'react';
-import request from '../../../services/request';
+import PropTypes from 'prop-types';
+import request from '../../../../services/request';
 import Closeicon from '../Closeicon';
 import AddButton from '../AddButton';
-import { urls } from '../../../config';
+import { urls } from '../../../../config';
 import './styles.css';
 
 class Keywords extends React.Component {
@@ -137,5 +138,12 @@ class Keywords extends React.Component {
     );
   }
 }
+
+Keywords.propTypes = {
+  keys: PropTypes.array,
+  topic: PropTypes.string,
+  handleUpdateKeys: PropTypes.func,
+};
+
 
 export default Keywords;

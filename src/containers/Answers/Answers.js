@@ -2,7 +2,7 @@ import React from 'react';
 import cx from 'classnames';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
-import AnswerTable from '../../components/AnswerTable/AnswerTable';
+import AnswerTable from '../../components/AnswerTable';
 import BaseSections from '../../components/BaseSections';
 import Protected from '../../components/common/protected/container';
 import './styles.css';
@@ -65,7 +65,7 @@ class Answer extends React.Component {
             <AnswerTable
               title='common'
               key='common'
-              data={this.props.data.common}
+              answers={this.props.data.common}
               changeResponse={this.props.changeResponse}
               filterString={filterString}
             />
@@ -78,7 +78,7 @@ class Answer extends React.Component {
               categories={this.props.categories.categories}
               title='reference'
               key='reference'
-              data={this.props.data.reference}
+              answers={this.props.data.reference}
               onDeleteAnswer={this.props.onDeleteAnswer}
               changeResponse={this.props.changeResponse}
               createResponse={this.props.createResponse}

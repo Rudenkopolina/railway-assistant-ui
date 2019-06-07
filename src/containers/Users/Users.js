@@ -2,11 +2,11 @@ import React from 'react';
 import cx from 'classnames';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
-import UserTable from '../../components/UserTable/UserTable';
-import RoleTable from '../../components/RoleTable/RoleTable';
+import UserTable from '../../components/UserTable';
+import RoleTable from '../../components/RoleTable';
 import Filter from './../../components/Filter';
-import UserModal from '../../components/UserModal';
-import RoleModal from '../../components/RoleModal';
+import UserModal from '../../components/UserTable/UserModal';
+import RoleModal from '../../components/RoleTable/RoleModal';
 
 import { getAllUsers, createUser, deleteUser } from '../../redux/actions/users';
 import { updateRole, getAllRoles, createRole } from '../../redux/actions/roles';

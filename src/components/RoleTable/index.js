@@ -1,6 +1,6 @@
 import React from 'react';
 import { withRouter } from 'react-router-dom';
-import RoleCard from '../RoleCard/RoleCard';
+import RoleCard from './RoleCard';
 import './styles.css';
 
 const titles = [

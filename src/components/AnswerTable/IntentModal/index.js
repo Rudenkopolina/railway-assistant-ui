@@ -1,12 +1,13 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import TextArea from 'react-textarea-autosize';
 import { NotificationContainer } from 'react-notifications';
 import { Modal, Popup, Input, Icon, Button, Dropdown } from 'semantic-ui-react';
-import AudioPlayer from '../AudioPlayer/AudioPlayer';
+import AudioPlayer from '../AudioPlayer';
 import Keywords from './Keywords';
 
-import { urls } from '../../config';
+import { urls } from '../../../config';
 import './styles.css';
 
 const hint =
@@ -23,7 +24,7 @@ const keywordsList = [
 class IntentModal extends React.Component {
   state = {
     isModalOpen: false,
-    data: {
+    newAnswer: {
       responseName: '',
       responseDescription: '',
       textTranscription: '',
@@ -36,24 +37,24 @@ class IntentModal extends React.Component {
 
   handleUpdateKeys = keys => {
     this.setState({
-      data: { ...this.state.data, examples: keys }
+      newAnswer: { ...this.state.newAnswer, examples: keys }
     });
   };
 
   componentDidUpdate(prevProps, prevState) {
     const { isModalOpen } = this.state;
-    let data = {};
-    if (this.props.data) {
-      data = {
-        responseName: this.props.data.responseName || '',
-        responseDescription: this.props.data.responseDescription || '',
-        textTranscription: this.props.data.textTranscription || '',
-        audioTranscription: this.props.data.audioTranscription || '',
-        examples: this.props.data.examples || [],
-        categoryId: this.props.data.categoryId
+    let newAnswer = {};
+    if (this.props.answer) {
+      newAnswer = {
+        responseName: this.props.answer.responseName || '',
+        responseDescription: this.props.answer.responseDescription || '',
+        textTranscription: this.props.answer.textTranscription || '',
+        audioTranscription: this.props.answer.audioTranscription || '',
+        examples: this.props.answer.examples || [],
+        categoryId: this.props.answer.categoryId
       };
     } else {
-      data = {
+      newAnswer = {
         responseName: '',
         responseDescription: '',
         textTranscription: '',
@@ -63,13 +64,13 @@ class IntentModal extends React.Component {
       };
     }
     if (isModalOpen !== prevState.isModalOpen) {
-      this.setState({ data, isDisabled: false });
+      this.setState({ newAnswer, isDisabled: false });
     }
   }
 
   onHandlerFormField = (value, title) => {
-    const { data } = this.state;
-    this.setState({ data: { ...data, [title]: value } });
+    const { newAnswer } = this.state;
+    this.setState({ newAnswer: { ...newAnswer, [title]: value } });
   };
 
   onTrigerModal = () => {
@@ -78,13 +79,13 @@ class IntentModal extends React.Component {
   };
 
   onSendData = () => {
-    const { data } = this.state;
-    this.props.onSave(data);
+    const { newAnswer } = this.state;
+    this.props.onSave(newAnswer);
     this.setState({ isModalOpen: false });
   };
 
   getAudioSrc = () => {
-    const { audioTranscription } = this.state.data;
+    const { audioTranscription } = this.state.newAnswer;
     return urls.responses.newAudioUrl(audioTranscription);
   };
 
@@ -96,18 +97,18 @@ class IntentModal extends React.Component {
       textTranscription,
       audioTranscription,
       examples
-    } = this.state.data;
+    } = this.state.newAnswer;
 
     let isNothigChanged = true;
     let isDisabled = true;
 
-    if (this.props.data) {
+    if (this.props.answer) {
       isNothigChanged =
-        !(responseName === this.props.data.responseName) ||
-        !(responseDescription === this.props.data.responseDescription) ||
-        !(textTranscription === this.props.data.textTranscription) ||
-        !(audioTranscription === this.props.data.audioTranscription) ||
-        !(examples.length === this.props.data.examples.length);
+        !(responseName === this.props.answer.responseName) ||
+        !(responseDescription === this.props.answer.responseDescription) ||
+        !(textTranscription === this.props.answer.textTranscription) ||
+        !(audioTranscription === this.props.answer.audioTranscription) ||
+        !(examples.length === this.props.answer.examples.length);
     }
     examples.forEach(item => {
       isDisabled = isDisabled && !!item.trim();
@@ -142,7 +143,7 @@ class IntentModal extends React.Component {
 
   renderContent = () => {
     const isDisabled = this.isDisabled();
-    const { data } = this.state;
+    const { newAnswer } = this.state;
     const {
       isShowExamples = true,
       isDescriptionChangeable = true
@@ -151,8 +152,8 @@ class IntentModal extends React.Component {
       <div>
         <p>{keywordsSent}</p>
         <ul>
-          {keywordsList.map(key => (
-            <li>{key}</li>
+          {keywordsList.map((key, i) => (
+            <li key={i}>{key}</li>
           ))}
         </ul>
       </div>
@@ -169,14 +170,14 @@ class IntentModal extends React.Component {
                 onChange={e =>
                   this.onHandlerFormField(e.target.value, 'responseName')
                 }
-                value={data.responseName}
+                value={newAnswer.responseName}
                 className='modal-field'
                 placeholder='Справка о...'
                 disabled={!isDescriptionChangeable}
               />
             </div>
           ) : (
-            <div className='modal-description-name'>{data.responseName}</div>
+            <div className='modal-description-name'>{newAnswer.responseName}</div>
           )}
           {isDescriptionChangeable ? (
             <div className='modal-formfield'>
@@ -187,20 +188,20 @@ class IntentModal extends React.Component {
                 onChange={e =>
                   this.onHandlerFormField(e.target.value, 'responseDescription')
                 }
-                value={data.responseDescription}
+                value={newAnswer.responseDescription}
               />
             </div>
           ) : (
-            <div className='modal-description'>{data.responseDescription}</div>
+            <div className='modal-description'>{newAnswer.responseDescription}</div>
           )}
           {isDescriptionChangeable && (
             <div className='modal-formfield'>
               <div className='modal-formfield-title'>Категория</div>
               <Dropdown
-                onChange={(e, data) => {
-                  this.onHandlerFormField(data.value, 'categoryId');
+                onChange={(e, newAnswer) => {
+                  this.onHandlerFormField(newAnswer.value, 'categoryId');
                 }}
-                value={data.categoryId}
+                value={newAnswer.categoryId}
                 fluid
                 selection
                 className='modal-field'
@@ -226,8 +227,8 @@ class IntentModal extends React.Component {
               </div>
               <div className='modal-keys-formfield'>
                 <Keywords
-                  keys={data.examples}
-                  topic={data.responseDescription}
+                  keys={newAnswer.examples}
+                  topic={newAnswer.responseDescription}
                   handleUpdateKeys={this.handleUpdateKeys}
                 />
               </div>
@@ -238,7 +239,7 @@ class IntentModal extends React.Component {
             <TextArea
               className='modal-formfield-textarea modal-field'
               placeholder='Текстовый ответ...'
-              value={data.textTranscription}
+              value={newAnswer.textTranscription}
               onChange={e =>
                 this.onHandlerFormField(e.target.value, 'textTranscription')
               }
@@ -256,15 +257,15 @@ class IntentModal extends React.Component {
                 }
               />
               <AudioPlayer
-                disabled={!this.state.data.audioTranscription}
-                id='newAudio'
+                disabled={!this.state.newAnswer.audioTranscription}
+                id={1} // ??
                 url={this.getAudioSrc()}
               />
             </div>
             <TextArea
               className='modal-formfield-textarea modal-field'
               placeholder='Голосовой ответ...'
-              value={data.audioTranscription}
+              value={newAnswer.audioTranscription}
               onChange={e =>
                 this.onHandlerFormField(e.target.value, 'audioTranscription')
               }
@@ -304,6 +305,16 @@ class IntentModal extends React.Component {
 const mapStateToProps = ({ categories }) => ({
   categories: categories.categories
 });
+
+IntentModal.propTypes = {
+  buttonText: PropTypes.string,
+  modalTitle: PropTypes.string,
+  onSave: PropTypes.func,
+  answer: PropTypes.object,
+  isShowExamples: PropTypes.bool,
+  isDescriptionChangeable: PropTypes.bool,
+  categoryId: PropTypes.number
+};
 
 export default connect(
   mapStateToProps,
