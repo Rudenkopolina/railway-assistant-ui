@@ -2,12 +2,12 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
 import cx from 'classnames';
-import Answers from '../Answers';
-import IntentModal from '../Answers/IntentModal';
-import Protected from '../../components/common/protected/container';
+import Answers from '../index';
+import IntentModal from '../IntentModal';
+import Protected from '../../common/protected/container';
 import './styles.css';
 
-class BaseSections extends React.Component {
+class AnswersSections extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -113,7 +113,7 @@ class BaseSections extends React.Component {
   }
 }
 
-BaseSections.propTypes = {
+AnswersSections.propTypes = {
   categories: PropTypes.array,
   title: PropTypes.string,
   key: PropTypes.string,
@@ -123,4 +123,4 @@ BaseSections.propTypes = {
   createResponse: PropTypes.func,
   filterString: PropTypes.string
 };
-export default withRouter(BaseSections);
+export default withRouter(AnswersSections);

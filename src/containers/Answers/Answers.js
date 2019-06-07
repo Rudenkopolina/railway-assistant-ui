@@ -3,7 +3,7 @@ import cx from 'classnames';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import Answers from '../../components/Answers';
-import BaseSections from '../../components/BaseSections';
+import AnswersSections from '../../components/Answers/AnswersSections';
 import Protected from '../../components/common/protected/container';
 import './styles.css';
 import Filter from './../../components/Filter';
@@ -74,7 +74,7 @@ class Answer extends React.Component {
       case 'reference':
         return (
           <Protected requiredRoles='ALLOWED_KNOWLEDGEBASE_VIEWING'>
-            <BaseSections
+            <AnswersSections
               categories={this.props.categories.categories}
               title='reference'
               key='reference'
