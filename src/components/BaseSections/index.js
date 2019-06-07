@@ -2,8 +2,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
 import cx from 'classnames';
-import AnswerTable from '../AnswerTable';
-import IntentModal from '../AnswerTable/IntentModal';
+import Answers from '../Answers';
+import IntentModal from '../Answers/IntentModal';
 import Protected from '../../components/common/protected/container';
 import './styles.css';
 
@@ -100,7 +100,7 @@ class BaseSections extends React.Component {
             </Protected>
           </div>
         </div>
-        <AnswerTable
+        <Answers
           title='reference'
           key='reference'
           filterString={this.props.filterString}

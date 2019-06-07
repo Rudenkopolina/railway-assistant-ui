@@ -5,7 +5,7 @@ import AnswerCard from './AnswerCard';
 import NoFilteredData from './NoFilteredData';
 import './styles.css';
 
-class AnswerTable extends React.Component {
+class Answers extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -98,7 +98,7 @@ class AnswerTable extends React.Component {
   }
 }
 
-AnswerTable.propTypes = {
+Answers.propTypes = {
   title: PropTypes.string,
   key: PropTypes.string,
   filterString: PropTypes.string,
@@ -107,4 +107,4 @@ AnswerTable.propTypes = {
   onDeleteAnswer: PropTypes.func
 };
 
-export default withRouter(AnswerTable);
+export default withRouter(Answers);

@@ -2,7 +2,7 @@ import React from 'react';
 import cx from 'classnames';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
-import AnswerTable from '../../components/AnswerTable';
+import Answers from '../../components/Answers';
 import BaseSections from '../../components/BaseSections';
 import Protected from '../../components/common/protected/container';
 import './styles.css';
@@ -62,7 +62,7 @@ class Answer extends React.Component {
       case 'common':
         return (
           <Protected requiredRoles='ALLOWED_ANSWERS_VIEWING'>
-            <AnswerTable
+            <Answers
               title='common'
               key='common'
               answers={this.props.data.common}
