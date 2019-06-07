@@ -10,7 +10,6 @@ class Keywords extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      keys: [],
       checkedKeys: [],
       topic: '',
       inputVisible: false,
@@ -21,7 +20,6 @@ class Keywords extends React.Component {
   componentWillReceiveProps(nextProps) {
     const { keys, topic } = nextProps;
     this.setState({
-      keys,
       topic,
       checkedKeys: keys
     });
@@ -61,11 +59,9 @@ class Keywords extends React.Component {
 
   isKeyUsed = () => {
     const { inputValue, topic } = this.state;
-    let { keys, checkedKeys } = this.state;
-    if (inputValue) {
-      keys = [...keys, inputValue];
-    }
-    let checking = inputValue.trim().toLowerCase();
+    let { checkedKeys } = this.state;
+    let newInputValue = '';
+    let checking = inputValue.trim();
     if (inputValue && checkedKeys.indexOf(inputValue) === -1) {
       return request(urls.responses.compareKeyword, {
         method: 'POST',
@@ -76,25 +72,28 @@ class Keywords extends React.Component {
           !(response.responses[0].responseDescription === topic)
         ) {
           checking = '';
+          newInputValue = inputValue;
         }
         if (checking) {
           checkedKeys = [...checkedKeys, checking];
         }
-        this.setState({
-          checkedKeys,
-          keys,
-          inputVisible: true,
-          inputValue: ''
-        }, () => this.input.focus());
+        this.setState(
+          {
+            checkedKeys,
+            inputVisible: true,
+            inputValue: newInputValue
+          },
+          () => this.input.focus()
+        );
       });
     }
   };
 
   render() {
-    const { keys, inputVisible, inputValue } = this.state;
+    const { checkedKeys, inputVisible, inputValue } = this.state;
     return (
       <div>
-        {keys.map((key, index) => (
+        {checkedKeys.map((key, index) => (
           <span className='span-tag' key={index}>
             <span className='tag'>{key}</span>
             <Closeicon
@@ -142,8 +141,7 @@ class Keywords extends React.Component {
 Keywords.propTypes = {
   keys: PropTypes.array,
   topic: PropTypes.string,
-  handleUpdateKeys: PropTypes.func,
+  handleUpdateKeys: PropTypes.func
 };
-
 
 export default Keywords;
