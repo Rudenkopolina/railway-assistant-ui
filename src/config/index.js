@@ -26,7 +26,9 @@ module.exports = {
 			getReferenceResponse: id => `/api/answers/reference_responses/${id}`,
 			deleteReferenceResponse: id => `/api/answers/reference_responses/${id}`,
 			compareKeyword: '/api/answers/keywords/checkUsage',
-			getCategories: '/api/answers/categories'
+			getCategories: '/api/answers/categories',
+			createCategory:'/api/answers/categories',
+			deleteCategory: id => `/api/answers/categories/${id}`
 		}
 	},
 	baseUrl

@@ -31,28 +31,25 @@ class Keywords extends React.Component {
   };
 
   closeInput = () => {
-    this.setState({ inputVisible: false, inputValue: '' });
+    this.setState({ inputVisible: false, inputValue: '', error: null });
   };
 
-  removeKey = removedKey => {
-    const checkedKeys = this.state.checkedKeys.filter(
-      tag => tag !== removedKey
-    );
-    this.setState({ checkedKeys });
+  removeKey = removedIndex => {
+    const { keys } = this.props;
+    const checkedKeys = keys.filter((tag, index) => index !== removedIndex);
+    this.updateModal(checkedKeys);
   };
 
   isKeyUsed = () => {
-    let { inputValue } = this.state;
+    const { inputValue } = this.state;
     const { answerId, keys } = this.props;
-
-    //let newInputValue = '';
     const keyToCheck = inputValue.trim().toLowerCase();
     const isDuplicate =
       keys.findIndex(key => keyToCheck === key.toLowerCase()) !== -1;
 
     if (isDuplicate) {
       this.setState({
-        error: 'The key is already used'
+        error: 'Такой ключ уже есть'
       });
       return;
     }
@@ -64,12 +61,11 @@ class Keywords extends React.Component {
       }).then(response => {
         if (response.isUsed && !(response.responses[0].id === answerId)) {
           this.setState({
-            error: `The key is already used in ${
+            error: `Ключ уже используется в ${
               response.responses[0].responseDescription
             }`
           });
           return;
-          //newInputValue = inputValue;
         }
 
         this.updateModal([...keys, keyToCheck]);
@@ -97,7 +93,7 @@ class Keywords extends React.Component {
             <Closeicon
               buttonClick={e => {
                 e.preventDefault();
-                this.removeKey(key);
+                this.removeKey(index);
               }}
             />
           </span>
@@ -131,7 +127,7 @@ class Keywords extends React.Component {
             this.showInput(inputValue);
           }}
         />
-        {error}
+        <span className='error-label'> {error}</span>
       </div>
     );
   }
@@ -139,8 +135,8 @@ class Keywords extends React.Component {
 
 Keywords.propTypes = {
   keys: PropTypes.array.isRequired,
-  answerId: PropTypes.string,                              //
-  handleUpdateKeys: PropTypes.func.isRequired
+  handleUpdateKeys: PropTypes.func.isRequired,
+  answerId: PropTypes.number
 };
 
 export default Keywords;

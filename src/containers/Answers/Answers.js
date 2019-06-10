@@ -14,7 +14,7 @@ import {
   createResponse
 } from '../../redux/actions/responses';
 
-import { getCategories } from '../../redux/actions/categories';
+import { getCategories, createCategory, deleteCategory } from '../../redux/actions/categories';
 
 class Answer extends React.Component {
   state = {
@@ -71,6 +71,8 @@ class Answer extends React.Component {
           onDeleteAnswer={this.props.onDeleteAnswer}
           changeResponse={this.props.changeResponse}
           createResponse={this.props.createResponse}
+          onCreateCategory={this.props.createCategory}
+          onDeleteCategory={this.props.deleteCategory}
           filterString={filterString}
           isReferanseTab={isReferanseTab}
         />
@@ -123,6 +125,8 @@ const mapDispatchToProps = dispatch => ({
   getCommonResponses: () => dispatch(getCommonResponses()),
   getReferenceResponses: () => dispatch(getReferenceResponses()),
   getCategories: () => dispatch(getCategories()),
+  createCategory: categoryName => dispatch(createCategory(categoryName)),
+  deleteCategory: id => dispatch(deleteCategory(id)),
   changeResponse: (data, id, title) =>
     dispatch(changeResponse(data, id, title)),
   onDeleteAnswer: id => dispatch(deleteResponse(id))

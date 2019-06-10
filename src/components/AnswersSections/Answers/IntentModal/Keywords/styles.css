@@ -19,6 +19,7 @@
 }
 
 .error-label {
+  font-size: 12px;
   opacity: .85;
   color: #f5222d;
 }

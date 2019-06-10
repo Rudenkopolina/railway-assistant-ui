@@ -18,6 +18,17 @@
   border-bottom: 2px solid #1a69a4;
   color: #363f56;
 }
+
+.categories-action-buttons {
+  display: flex;
+  /* width: 100%; */
+  justify-content: space-between;
+}
+
+.mt-icon {
+  margin-top: -10px;
+}
+
 .filter-results {
   font-size: 11px;
   margin-left: 6px;
@@ -28,4 +39,8 @@
 .header-button {
   margin-left: auto;
   margin-top: -4px;
+}
+
+.add-category-button{
+  align-self: center;
 }

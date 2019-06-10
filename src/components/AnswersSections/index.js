@@ -5,13 +5,15 @@ import cx from 'classnames';
 import Answers from './Answers';
 import IntentModal from './Answers/IntentModal';
 import Protected from '../common/protected/container';
+import { Button, Icon, Modal, Input } from 'semantic-ui-react';
 import './styles.css';
 
 class AnswersSections extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      activeTab: null
+      activeTab: null,
+      inputValue: ''
     };
   }
 
@@ -22,6 +24,12 @@ class AnswersSections extends React.Component {
       this.setCategory(category);
     }
   }
+
+  onInputChange = event => {
+    this.setState({
+      inputValue: event.target.value
+    });
+  };
 
   setCategory = category => {
     this.setState({
@@ -68,13 +76,13 @@ class AnswersSections extends React.Component {
 
   render() {
     const { categories, answers, isReferanseTab } = this.props;
-    const { activeTab } = this.state;
+    const { activeTab, inputValue } = this.state;
     const filterCategory = answers.filter(item => {
       return item.categoryId === activeTab;
     });
     const displayCategory = isReferanseTab ? filterCategory : answers;
     const filteredAnswers = this.getFilteredAnswers(displayCategory);
-    
+
     const tabs = categories.map((category, index) => (
       <div
         key={index}
@@ -87,14 +95,68 @@ class AnswersSections extends React.Component {
         <span className='filter-results'>
           {this.getNumberOfAnswers(category.id)}
         </span>
+        {!this.getNumberOfAnswers(category.id) && (
+          <span className='remove-icon mt-icon'>
+            <Icon
+              name='delete'
+              size='small'
+              onClick={event => {
+                event.preventDefault();
+                this.props.onDeleteCategory(category.id);
+              }}
+            />
+          </span>
+        )}
       </div>
     ));
 
     return (
       <div>
-        <div className='categories-container'>
-          {isReferanseTab && tabs}
-          {isReferanseTab && (
+        {isReferanseTab && (
+          <div className='categories-container'>
+            {tabs}
+            <div className='add-category-button'>
+              <Modal
+                closeIcon
+                trigger={
+                  <Button
+                    content='Добавить'
+                    icon='add'
+                    size='tiny'
+                    primary
+                    basic
+                  />
+                }
+                closeOnEscape={true}
+                size={'mini'}
+                content={
+                  <div className='modal-wrapper'>
+                    <div className='modal-header'>Создать новую категорию</div>
+                    <Input
+                      placeholder='Введите название...'
+                      value={inputValue}
+                      onChange={this.onInputChange}
+                    />
+                  </div>
+                }
+                actions={[
+                  {
+                    basic: true,
+                    content: 'Отменить'
+                  },
+                  {
+                    key: 'done',
+                    primary: true,
+                    basic: true,
+                    content: 'Добавить',
+                    onClick: event => {
+                      event.preventDefault();
+                      this.props.onCreateCategory(inputValue);
+                    }
+                  }
+                ]}
+              />
+            </div>
             <div className='header-button'>
               <Protected requiredRoles='ALLOWED_KNOWLEDGEBASE_CREATION'>
                 <IntentModal
@@ -105,8 +167,8 @@ class AnswersSections extends React.Component {
                 />
               </Protected>
             </div>
-          )}
-        </div>
+          </div>
+        )}
         <Answers
           title={this.props.title}
           key={this.props.key}
@@ -124,13 +186,14 @@ class AnswersSections extends React.Component {
 AnswersSections.propTypes = {
   categories: PropTypes.array.isRequired,
   title: PropTypes.string.isRequired,
-  key: PropTypes.string.isRequired,
   answers: PropTypes.array.isRequired,
   onDeleteAnswer: PropTypes.func.isRequired,
   changeResponse: PropTypes.func.isRequired,
   createResponse: PropTypes.func.isRequired,
   filterString: PropTypes.string.isRequired,
-  isReferanseTab: PropTypes.bool.isRequired
+  isReferanseTab: PropTypes.bool.isRequired,
+  onDeleteCategory: PropTypes.func.isRequired,
+  onCreateCategory: PropTypes.func.isRequired
 };
 
 export default withRouter(AnswersSections);

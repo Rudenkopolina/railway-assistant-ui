@@ -142,7 +142,6 @@ class IntentModal extends React.Component {
   };
 
   renderContent = () => {
-    console.log(`render content for ${this.props.answer}`);
     const isDisabled = this.isDisabled();
     const { modalAnswer } = this.state;
     const {
@@ -150,6 +149,7 @@ class IntentModal extends React.Component {
       isDescriptionChangeable = true,
       answer
     } = this.props;
+    const answerId = answer ? answer.id : null;
     const keywordsHint = (
       <div>
         <p>{keywordsSent}</p>
@@ -177,14 +177,7 @@ class IntentModal extends React.Component {
                 placeholder='Справка о...'
                 disabled={!isDescriptionChangeable}
               />
-            </div>
-          ) : (
-            <div className='modal-description-name'>
-              {modalAnswer.responseName}
-            </div>
-          )}
-          {isDescriptionChangeable ? (
-            <div className='modal-formfield'>
+
               <div className='modal-formfield-title'>Описание</div>
               <TextArea
                 className='modal-formfield-textarea modal-field'
@@ -196,10 +189,16 @@ class IntentModal extends React.Component {
               />
             </div>
           ) : (
-            <div className='modal-description'>
-              {modalAnswer.responseDescription}
-            </div>
+              <div>
+                <div className='modal-description-name'>
+                  {modalAnswer.responseName}
+                </div>
+                <div className='modal-description'>
+                  {modalAnswer.responseDescription}
+                </div>
+              </div>
           )}
+
           {isDescriptionChangeable && (
             <div className='modal-formfield'>
               <div className='modal-formfield-title'>Категория</div>
@@ -215,6 +214,7 @@ class IntentModal extends React.Component {
               />
             </div>
           )}
+
           {isShowExamples && (
             <div className='modal-formfield'>
               <div className='modal-formfield-title key-title'>
@@ -234,12 +234,13 @@ class IntentModal extends React.Component {
               <div className='modal-keys-formfield'>
                 <Keywords
                   keys={modalAnswer.examples}
-                  answerId={answer ? answer.id : null}
+                  answerId={answerId}
                   handleUpdateKeys={this.handleUpdateKeys}
                 />
               </div>
             </div>
           )}
+
           <div className='modal-formfield'>
             <div className='modal-formfield-title'>Текстовый ответ</div>
             <TextArea
@@ -293,7 +294,7 @@ class IntentModal extends React.Component {
     return (
       <Modal
         trigger={
-          <Button primary basic onClick={this.onTrigerModal}>
+          <Button primary size='tiny' basic onClick={this.onTrigerModal}>
             {this.props.buttonText}
           </Button>
         }

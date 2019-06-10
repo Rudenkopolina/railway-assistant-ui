@@ -99,7 +99,6 @@ class Answers extends React.Component {
 
 Answers.propTypes = {
   title: PropTypes.string.isRequired,
-  key: PropTypes.string.isRequired,
   filterString: PropTypes.string.isRequired,
   answers: PropTypes.array.isRequired,
   changeResponse: PropTypes.func.isRequired,

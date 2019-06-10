@@ -107,7 +107,7 @@ AnswerCard.propTypes = {
   onDeleteAnswer: PropTypes.func.isRequired,
   onPlayAudio: PropTypes.func.isRequired,
   onStopAudio: PropTypes.func.isRequired,
-  playedId: PropTypes.number.isRequired,
+  playedId: PropTypes.number,
   onUpdateAnswer: PropTypes.func.isRequired
 };
 
