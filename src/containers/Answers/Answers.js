@@ -57,22 +57,22 @@ class Answer extends React.Component {
 
   getContent = () => {
     const { activeTab, filterString } = this.state;
+    const isReferanseTab = activeTab === 'reference';
+    const answers = isReferanseTab
+      ? this.props.data.reference
+      : this.props.data.common;    
     return (
       <Protected requiredRoles='ALLOWED_KNOWLEDGEBASE_VIEWING'>
         <AnswersSections
           categories={this.props.categories.categories}
           title={activeTab}
           key={activeTab}
-          answers={
-            activeTab === 'reference'
-              ? this.props.data.reference
-              : this.props.data.common
-          }
+          answers={answers}
           onDeleteAnswer={this.props.onDeleteAnswer}
           changeResponse={this.props.changeResponse}
           createResponse={this.props.createResponse}
           filterString={filterString}
-          isReferanseTab={activeTab === 'reference'}
+          isReferanseTab={isReferanseTab}
         />
       </Protected>
     );

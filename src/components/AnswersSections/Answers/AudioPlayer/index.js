@@ -55,8 +55,8 @@ const mapDispatchToProps = dispatch => ({
 });
 
 AudioPlayer.propTypes = {
-  id: PropTypes.number,
-  url: PropTypes.string
+  id: PropTypes.number.isRequired,
+  url: PropTypes.string.isRequired
 };
 
 export default withRouter(

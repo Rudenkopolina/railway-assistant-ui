@@ -100,16 +100,15 @@ class AnswerCard extends React.Component {
 }
 
 AnswerCard.propTypes = {
-  title: PropTypes.string,
-  answer: PropTypes.object,
-  index: PropTypes.number,
-  isShowExamples: PropTypes.bool,
-  title: PropTypes.string,
-  onDeleteAnswer: PropTypes.func,
-  onPlayAudio: PropTypes.func,
-  onStopAudio: PropTypes.func,
-  playedId: PropTypes.number,
-  onUpdateAnswer: PropTypes.func
+  title: PropTypes.string.isRequired,
+  answer: PropTypes.object.isRequired,
+  index: PropTypes.number.isRequired,
+  isShowExamples: PropTypes.bool.isRequired,
+  onDeleteAnswer: PropTypes.func.isRequired,
+  onPlayAudio: PropTypes.func.isRequired,
+  onStopAudio: PropTypes.func.isRequired,
+  playedId: PropTypes.number.isRequired,
+  onUpdateAnswer: PropTypes.func.isRequired
 };
 
 export default AnswerCard;

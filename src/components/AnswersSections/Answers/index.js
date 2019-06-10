@@ -71,8 +71,7 @@ class Answers extends React.Component {
   };
 
   render() {
-    const { answers, title, onDeleteAnswer, filterString } = this.props;
-
+    const { answers, title, onDeleteAnswer, filterString, isReferanseTab } = this.props;
     const displayAnswers = filterString ? this.getFilteredAnswers(answers) : answers;
     if (displayAnswers.length === 0) {
       return <NoFilteredData filterString={filterString} />;
@@ -84,7 +83,7 @@ class Answers extends React.Component {
             key={answer.id}
             answer={answer}
             index={index}
-            isShowExamples={title === 'reference'}
+            isShowExamples={isReferanseTab}
             title={title}
             onDeleteAnswer={onDeleteAnswer}
             onPlayAudio={this.onPlayAudio}
@@ -99,12 +98,15 @@ class Answers extends React.Component {
 }
 
 Answers.propTypes = {
-  title: PropTypes.string,
-  key: PropTypes.string,
-  filterString: PropTypes.string,
-  answers: PropTypes.array,
-  changeResponse: PropTypes.func,
-  onDeleteAnswer: PropTypes.func
+  title: PropTypes.string.isRequired,
+  key: PropTypes.string.isRequired,
+  filterString: PropTypes.string.isRequired,
+  answers: PropTypes.array.isRequired,
+  changeResponse: PropTypes.func.isRequired,
+  onDeleteAnswer: PropTypes.func.isRequired,
+  isReferanseTab: PropTypes.bool.isRequired
 };
+
+
 
 export default withRouter(Answers);

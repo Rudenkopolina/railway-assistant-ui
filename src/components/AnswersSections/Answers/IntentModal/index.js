@@ -24,7 +24,7 @@ const keywordsList = [
 class IntentModal extends React.Component {
   state = {
     isModalOpen: false,
-    newAnswer: {
+    modalAnswer: {
       responseName: '',
       responseDescription: '',
       textTranscription: '',
@@ -37,15 +37,15 @@ class IntentModal extends React.Component {
 
   handleUpdateKeys = keys => {
     this.setState({
-      newAnswer: { ...this.state.newAnswer, examples: keys }
+      modalAnswer: { ...this.state.modalAnswer, examples: keys }
     });
   };
 
   componentDidUpdate(prevProps, prevState) {
     const { isModalOpen } = this.state;
-    let newAnswer = {};
+    let modalAnswer = {};
     if (this.props.answer) {
-      newAnswer = {
+      modalAnswer = {
         responseName: this.props.answer.responseName || '',
         responseDescription: this.props.answer.responseDescription || '',
         textTranscription: this.props.answer.textTranscription || '',
@@ -54,7 +54,7 @@ class IntentModal extends React.Component {
         categoryId: this.props.answer.categoryId
       };
     } else {
-      newAnswer = {
+      modalAnswer = {
         responseName: '',
         responseDescription: '',
         textTranscription: '',
@@ -64,13 +64,13 @@ class IntentModal extends React.Component {
       };
     }
     if (isModalOpen !== prevState.isModalOpen) {
-      this.setState({ newAnswer, isDisabled: false });
+      this.setState({ modalAnswer, isDisabled: false });
     }
   }
 
   onHandlerFormField = (value, title) => {
-    const { newAnswer } = this.state;
-    this.setState({ newAnswer: { ...newAnswer, [title]: value } });
+    const { modalAnswer } = this.state;
+    this.setState({ modalAnswer: { ...modalAnswer, [title]: value } });
   };
 
   onTrigerModal = () => {
@@ -79,13 +79,13 @@ class IntentModal extends React.Component {
   };
 
   onSendData = () => {
-    const { newAnswer } = this.state;
-    this.props.onSave(newAnswer);
+    const { modalAnswer } = this.state;
+    this.props.onSave(modalAnswer);
     this.setState({ isModalOpen: false });
   };
 
   getAudioSrc = () => {
-    const { audioTranscription } = this.state.newAnswer;
+    const { audioTranscription } = this.state.modalAnswer;
     return urls.responses.newAudioUrl(audioTranscription);
   };
 
@@ -97,7 +97,7 @@ class IntentModal extends React.Component {
       textTranscription,
       audioTranscription,
       examples
-    } = this.state.newAnswer;
+    } = this.state.modalAnswer;
 
     let isNothigChanged = true;
     let isDisabled = true;
@@ -142,11 +142,13 @@ class IntentModal extends React.Component {
   };
 
   renderContent = () => {
+    console.log(`render content for ${this.props.answer}`);
     const isDisabled = this.isDisabled();
-    const { newAnswer } = this.state;
+    const { modalAnswer } = this.state;
     const {
       isShowExamples = true,
-      isDescriptionChangeable = true
+      isDescriptionChangeable = true,
+      answer
     } = this.props;
     const keywordsHint = (
       <div>
@@ -170,14 +172,16 @@ class IntentModal extends React.Component {
                 onChange={e =>
                   this.onHandlerFormField(e.target.value, 'responseName')
                 }
-                value={newAnswer.responseName}
+                value={modalAnswer.responseName}
                 className='modal-field'
                 placeholder='Справка о...'
                 disabled={!isDescriptionChangeable}
               />
             </div>
           ) : (
-            <div className='modal-description-name'>{newAnswer.responseName}</div>
+            <div className='modal-description-name'>
+              {modalAnswer.responseName}
+            </div>
           )}
           {isDescriptionChangeable ? (
             <div className='modal-formfield'>
@@ -188,20 +192,22 @@ class IntentModal extends React.Component {
                 onChange={e =>
                   this.onHandlerFormField(e.target.value, 'responseDescription')
                 }
-                value={newAnswer.responseDescription}
+                value={modalAnswer.responseDescription}
               />
             </div>
           ) : (
-            <div className='modal-description'>{newAnswer.responseDescription}</div>
+            <div className='modal-description'>
+              {modalAnswer.responseDescription}
+            </div>
           )}
           {isDescriptionChangeable && (
             <div className='modal-formfield'>
               <div className='modal-formfield-title'>Категория</div>
               <Dropdown
-                onChange={(e, newAnswer) => {
-                  this.onHandlerFormField(newAnswer.value, 'categoryId');
+                onChange={(e, modalAnswer) => {
+                  this.onHandlerFormField(modalAnswer.value, 'categoryId');
                 }}
-                value={newAnswer.categoryId}
+                value={modalAnswer.categoryId}
                 fluid
                 selection
                 className='modal-field'
@@ -227,8 +233,8 @@ class IntentModal extends React.Component {
               </div>
               <div className='modal-keys-formfield'>
                 <Keywords
-                  keys={newAnswer.examples}
-                  topic={newAnswer.responseDescription}
+                  keys={modalAnswer.examples}
+                  answerId={answer ? answer.id : null}
                   handleUpdateKeys={this.handleUpdateKeys}
                 />
               </div>
@@ -239,7 +245,7 @@ class IntentModal extends React.Component {
             <TextArea
               className='modal-formfield-textarea modal-field'
               placeholder='Текстовый ответ...'
-              value={newAnswer.textTranscription}
+              value={modalAnswer.textTranscription}
               onChange={e =>
                 this.onHandlerFormField(e.target.value, 'textTranscription')
               }
@@ -257,7 +263,7 @@ class IntentModal extends React.Component {
                 }
               />
               <AudioPlayer
-                disabled={!this.state.newAnswer.audioTranscription}
+                disabled={!this.state.modalAnswer.audioTranscription}
                 id={1} // ??
                 url={this.getAudioSrc()}
               />
@@ -265,7 +271,7 @@ class IntentModal extends React.Component {
             <TextArea
               className='modal-formfield-textarea modal-field'
               placeholder='Голосовой ответ...'
-              value={newAnswer.audioTranscription}
+              value={modalAnswer.audioTranscription}
               onChange={e =>
                 this.onHandlerFormField(e.target.value, 'audioTranscription')
               }
@@ -307,9 +313,9 @@ const mapStateToProps = ({ categories }) => ({
 });
 
 IntentModal.propTypes = {
-  buttonText: PropTypes.string,
-  modalTitle: PropTypes.string,
-  onSave: PropTypes.func,
+  buttonText: PropTypes.string.isRequired,
+  modalTitle: PropTypes.string.isRequired,
+  onSave: PropTypes.func.isRequired,
   answer: PropTypes.object,
   isShowExamples: PropTypes.bool,
   isDescriptionChangeable: PropTypes.bool,

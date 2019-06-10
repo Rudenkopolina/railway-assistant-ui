@@ -114,6 +114,7 @@ class AnswersSections extends React.Component {
           answers={filteredAnswers}
           onDeleteAnswer={this.props.onDeleteAnswer}
           changeResponse={this.props.changeResponse}
+          isReferanseTab={isReferanseTab}
         />
       </div>
     );
@@ -121,14 +122,15 @@ class AnswersSections extends React.Component {
 }
 
 AnswersSections.propTypes = {
-  categories: PropTypes.array,
-  title: PropTypes.string,
-  key: PropTypes.string,
-  answers: PropTypes.array,
-  onDeleteAnswer: PropTypes.func,
-  changeResponse: PropTypes.func,
-  createResponse: PropTypes.func,
-  filterString: PropTypes.string,
-  isReferanseTab: PropTypes.bool
+  categories: PropTypes.array.isRequired,
+  title: PropTypes.string.isRequired,
+  key: PropTypes.string.isRequired,
+  answers: PropTypes.array.isRequired,
+  onDeleteAnswer: PropTypes.func.isRequired,
+  changeResponse: PropTypes.func.isRequired,
+  createResponse: PropTypes.func.isRequired,
+  filterString: PropTypes.string.isRequired,
+  isReferanseTab: PropTypes.bool.isRequired
 };
+
 export default withRouter(AnswersSections);
