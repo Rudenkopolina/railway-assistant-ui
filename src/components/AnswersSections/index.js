@@ -4,16 +4,16 @@ import { withRouter } from 'react-router-dom';
 import cx from 'classnames';
 import Answers from './Answers';
 import IntentModal from './Answers/IntentModal';
+import NewCategoryModal from './NewCategoryModal';
 import Protected from '../common/protected/container';
-import { Button, Icon, Modal, Input } from 'semantic-ui-react';
+import { Icon } from 'semantic-ui-react';
 import './styles.css';
 
 class AnswersSections extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      activeTab: null,
-      inputValue: ''
+      activeTab: null
     };
   }
 
@@ -25,16 +25,15 @@ class AnswersSections extends React.Component {
     }
   }
 
-  onInputChange = event => {
-    this.setState({
-      inputValue: event.target.value
-    });
-  };
-
   setCategory = category => {
     this.setState({
       activeTab: category
     });
+  };
+
+  deleteCategory = (event, id) => {
+    event.preventDefault();
+    this.props.onDeleteCategory(id);
   };
 
   getNumberOfAnswers = category => {
@@ -76,7 +75,7 @@ class AnswersSections extends React.Component {
 
   render() {
     const { categories, answers, isReferanseTab } = this.props;
-    const { activeTab, inputValue } = this.state;
+    const { activeTab } = this.state;
     const filterCategory = answers.filter(item => {
       return item.categoryId === activeTab;
     });
@@ -100,10 +99,7 @@ class AnswersSections extends React.Component {
             <Icon
               name='delete'
               size='small'
-              onClick={event => {
-                event.preventDefault();
-                this.props.onDeleteCategory(category.id);
-              }}
+              onClick={event => this.deleteCategory(event, category.id)}
             />
           </span>
         )}
@@ -115,48 +111,7 @@ class AnswersSections extends React.Component {
         {isReferanseTab && (
           <div className='categories-container'>
             {tabs}
-            <div className='add-category-button'>
-              <Modal
-                closeIcon
-                trigger={
-                  <Button
-                    content='Добавить'
-                    icon='add'
-                    size='tiny'
-                    primary
-                    basic
-                  />
-                }
-                closeOnEscape={true}
-                size={'mini'}
-                content={
-                  <div className='modal-wrapper'>
-                    <div className='modal-header'>Создать новую категорию</div>
-                    <Input
-                      placeholder='Введите название...'
-                      value={inputValue}
-                      onChange={this.onInputChange}
-                    />
-                  </div>
-                }
-                actions={[
-                  {
-                    basic: true,
-                    content: 'Отменить'
-                  },
-                  {
-                    key: 'done',
-                    primary: true,
-                    basic: true,
-                    content: 'Добавить',
-                    onClick: event => {
-                      event.preventDefault();
-                      this.props.onCreateCategory(inputValue);
-                    }
-                  }
-                ]}
-              />
-            </div>
+            <NewCategoryModal onCreateCategory={this.props.onCreateCategory} />
             <div className='header-button'>
               <Protected requiredRoles='ALLOWED_KNOWLEDGEBASE_CREATION'>
                 <IntentModal
