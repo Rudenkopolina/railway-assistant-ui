@@ -25,9 +25,9 @@ class AnswersSections extends React.Component {
     }
   }
 
-  setCategory = category => {
+  setCategory = categoryId => {
     this.setState({
-      activeTab: category
+      activeTab: categoryId
     });
   };
 
