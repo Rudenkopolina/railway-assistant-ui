@@ -47,11 +47,12 @@ class AddCategoryModal extends React.Component {
           }
           actions={[
             {
+              key: 'cancel',
               basic: true,
               content: 'Отменить'
             },
             {
-              key: 'done',
+              key: 'add',
               primary: true,
               basic: true,
               content: 'Добавить',

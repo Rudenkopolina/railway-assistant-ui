@@ -3,8 +3,11 @@
   display: flex;
   margin-right: 20px;
 }
-.category-button {
+
+.category-button-container{
   display: flex;
+}
+.category-button {
   font-size: 14px;
   margin-right: 20px;
   margin-bottom: -2px;
@@ -25,8 +28,8 @@
   justify-content: space-between;
 }
 
-.mt-icon {
-  margin-top: -10px;
+.ml-icon {
+  margin-left: -15px;
 }
 
 .filter-results {

@@ -32,8 +32,15 @@ class AnswersSections extends React.Component {
   };
 
   deleteCategory = (event, id) => {
+    const { categories } = this.props;
+    const { activeTab } = this.state;
     event.preventDefault();
     this.props.onDeleteCategory(id);
+    if (id === activeTab) {
+      this.setState({
+        activeTab: categories[0].id
+      });
+    }
   };
 
   getNumberOfAnswers = category => {
@@ -83,19 +90,20 @@ class AnswersSections extends React.Component {
     const filteredAnswers = this.getFilteredAnswers(displayCategory);
 
     const tabs = categories.map((category, index) => (
-      <div
-        key={index}
-        className={cx('category-button', {
-          'category-button-active': activeTab === category.id
-        })}
-        onClick={() => this.setCategory(category.id)}
-      >
-        {category.category}
-        <span className='filter-results'>
-          {this.getNumberOfAnswers(category.id)}
-        </span>
+      <span key={index} className='category-button-container'>
+        <div
+          className={cx('category-button', {
+            'category-button-active': activeTab === category.id
+          })}
+          onClick={() => this.setCategory(category.id)}
+        >
+          {category.category}
+          <span className='filter-results'>
+            {this.getNumberOfAnswers(category.id)}
+          </span>
+        </div>
         {!this.getNumberOfAnswers(category.id) && (
-          <span className='remove-icon mt-icon'>
+          <span className='remove-icon ml-icon'>
             <Icon
               name='delete'
               size='small'
@@ -103,7 +111,7 @@ class AnswersSections extends React.Component {
             />
           </span>
         )}
-      </div>
+      </span>
     ));
 
     return (
