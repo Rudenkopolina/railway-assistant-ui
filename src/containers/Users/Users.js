@@ -5,27 +5,41 @@ import { withRouter } from 'react-router-dom';
 import UserTable from '../../components/UserTable';
 import RoleTable from '../../components/RoleTable';
 import Filter from './../../components/Filter';
+import Protected from '../../components/common/protected/container';
 import UserModal from '../../components/UserTable/UserModal';
-import RoleModal from '../../components/RoleTable/RoleModal';
-
+// import RoleModal from '../../components/RoleTable/RoleModal';
 import { getAllUsers, createUser, deleteUser } from '../../redux/actions/users';
 import { deletePrivilege, getPrivileges, createPrivilege } from '../../redux/actions/privileges';
 
 import './Users.css';
 
 class Users extends React.Component {
-  state = {
-    activeTab: 'users',
-    titles: [
-      { name: 'Сотрудники', key: 'users' },
-      { name: 'Редактор Ролей', key: 'roles' }
-    ],
-    filterString: ''
+  state = {  
+      activeTab: '',
+      titles: [],
+      filterString: ''
   };
 
   componentWillMount() {
-    this.props.getAllUsers();
-    this.props.getPrivileges();
+    const { user } = this.props.auth;
+    const titles = [];
+    if (user.permissions.ALLOWED_USERS_VIEWING) {
+      titles.push({
+        name: 'Сотрудники',
+        key: 'users',
+        requiredRoles: 'ALLOWED_USERS_VIEWING'
+      });
+      this.props.getAllUsers();
+    }
+    if (user.permissions.ALLOWED_ROLES_EDITING) {
+      titles.push({
+        name: 'Редактор Ролей',
+        key: 'roles',
+        requiredRoles: 'ALLOWED_ROLES_EDITING'
+      });
+      this.props.getPrivileges();
+    }
+    this.setState({ titles, activeTab: titles[0].key });
   }
 
   onFilterChange = filterString => {
@@ -51,19 +65,23 @@ class Users extends React.Component {
 
   getContent = () => {
     const { activeTab, filterString } = this.state;
-    const { users, onDeleteUser, roles } = this.props;
+    const { users, deleteUser, privileges } = this.props;
     switch (activeTab) {
       case 'users':
         return (
+          <Protected requiredRoles='ALLOWED_USERS_VIEWING'>
           <UserTable
-            users={users}
+            users={users.users}
             filterString={filterString}
-            onDeleteUser={onDeleteUser}
+            onDeleteUser={deleteUser}
           />
+          </Protected>
         );
       case 'roles':
         return (
-          <RoleTable data={roles} onUpdateRole={this.props.onUpdateRole} />
+          <Protected requiredRoles='ALLOWED_ROLES_EDITING'>
+          <RoleTable data={privileges.privileges} onUpdateRole={this.props.onUpdateRole} />
+          </Protected>
         );
       default:
         return;
@@ -95,13 +113,13 @@ class Users extends React.Component {
             </div>
           </div>
           <div className='users-menu-item element-mb'>
-            <RoleModal
+            {/* <RoleModal
               buttonText='Cоздать роль'
               onSave={(data) => this.onCreate('roles', data)}
-            />
+            /> */}
             <UserModal
               buttonText='Добавить сотрудника'
-              onSave={(data) => this.onCreate('users', data)}
+              onSave={user => this.props.createUser(user)}
             />
           </div>
         </div>
@@ -111,15 +129,14 @@ class Users extends React.Component {
   }
 }
 
-const mapStateToProps = ({ users, privileges }) => ({
-  users: users.users,
-  privileges: privileges
+const mapStateToProps = ({ users, auth, privileges }) => ({
+  users, privileges, auth
 });
 
 const mapDispatchToProps = dispatch => ({
   createUser: data => dispatch(createUser(data)),
   getAllUsers: () => dispatch(getAllUsers()),
-  onDeleteUser: id => dispatch(deleteUser(id)),
+  deleteUser: id => dispatch(deleteUser(id)),
   onUpdateRole: data => dispatch(deletePrivilege(data)),
   getPrivileges: () => dispatch(getPrivileges()),
   createPrivilege: data => dispatch(createPrivilege(data))

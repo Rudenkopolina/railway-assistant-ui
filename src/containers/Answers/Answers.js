@@ -4,7 +4,6 @@ import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import AnswersSections from '../../components/AnswersSections';
 import Protected from '../../components/common/protected/container';
-import './styles.css';
 import Filter from './../../components/Filter';
 import {
   getCommonResponses,
@@ -13,8 +12,9 @@ import {
   deleteResponse,
   createResponse
 } from '../../redux/actions/responses';
-
 import { getCategories, createCategory, deleteCategory } from '../../redux/actions/categories';
+
+import './styles.css';
 
 class Answer extends React.Component {
   state = {

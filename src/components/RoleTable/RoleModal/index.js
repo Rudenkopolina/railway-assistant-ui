@@ -79,8 +79,8 @@ class RoleModal extends React.Component {
           </div>
           <div className='modal-formfield'>
             <div className='modal-formfield-title'>Права:</div>
-            {permissions.map(item => (
-              <div className='role-modal-labeld-checkbox'>
+            {permissions.map((item, index) => (
+              <div key={index} className='role-modal-labeld-checkbox'>
                 <input
                   type='checkbox'
                   className='role-table-checkbox'

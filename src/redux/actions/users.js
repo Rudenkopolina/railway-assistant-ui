@@ -1,5 +1,6 @@
 import request from '../../services/request';
-import { urls } from '../../config';export const GET_USERS = 'GET_USERS';
+import { urls } from '../../config';
+export const GET_USERS = 'GET_USERS';
 export const GET_USERS_SUCCESS = 'GET_USERS_SUCCESS';
 export const GET_USERS_FAIL = 'GET_USERS_FAIL';
 
@@ -40,8 +41,8 @@ export function createUser(user) {
     try {
       const response = await request(urls.responses.createUser, {
         method: 'POST',
-        body: { user }
-      }); // {...user}
+        body: { ...user }
+      });
       dispatch({
         type: CREATE_USER_SUCCESS,
         users: response.users
@@ -61,6 +62,7 @@ export function deleteUser(id) {
     });
 
     try {
+      console.log('im here!', id)   
       await request(urls.responses.deleteUser(id), { method: 'DELETE' });
       dispatch({
         type: DELETE_USER_SUCCESS,

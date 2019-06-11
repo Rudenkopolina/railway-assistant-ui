@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Modal, Popup, Input, Dropdown, Button } from 'semantic-ui-react';
+import { Modal, Input, Dropdown, Button } from 'semantic-ui-react';
 import './styles.css';
 
 const options = [
@@ -8,192 +8,149 @@ const options = [
   { text: 'Редактор ответов', value: 'Редактор ответов' },
   { text: 'Редактор базы знаний', value: 'Редактор базы знаний' },
   { text: 'Главный редактор', value: 'Главный редактор' }
-]
+];
 
 class UserModal extends React.Component {
   state = {
-          isModalOpen: false,
-          data: {
-              name: '',
-              username: '',
-              password: '',
-              privilege: options[0].text
-          },
-          isShowUserMessage: false
-      }
+    isModalOpen: false,
+    data: {
+      username: '',
+      password: '',
+      privilegeId: 1,
+      surname: '',
+      patronymic: '',
+      name: ''
+    },
+    isShowUserMessage: false
+  };
 
-    onHandlerFormField = (e, title) => {
-        const { data } = this.state;
-        this.setState({ data: { ...data, [title]: e.target.value } })
-    }
+  onHandlerFormField = (e, title) => {
+    const { data } = this.state;
+    this.setState({ data: { ...data, [title]: e.target.value } });
+  };
 
-    changeIntent = data => {
-      this.setState({ data: {...this.state.data, privilege: data.value} });
-    }
+  changeIntent = data => {
+    this.setState({ data: { ...this.state.data, privilege: data.value } });
+  };
 
-    onTrigerModal = () => {
-        const { isModalOpen } = this.state;
-        this.setState({ isModalOpen: !isModalOpen });
-    }
+  onTrigerModal = () => {
+    const { isModalOpen } = this.state;
+    this.setState({ isModalOpen: !isModalOpen });
+  };
 
-    onSendData = () => {
-        const { data } = this.state;
-        this.props.onSave(data);
-        this.setState({
-          isModalOpen: false,
-          data: {
-              name: '',
-              username: '',
-              password: '',
-              privilege: options[0].text
-          },
-          isShowUserMessage: false
-        })
-    }
+  onSendData = () => {
+    const { data } = this.state;
+    this.props.onSave(data);
+    this.setState({
+      isModalOpen: false,
+      data: {
+        username: '',
+        password: '',
+        privilegeId: null,
+        surname: '',
+        patronymic: '',
+        name: ''
+      },
+      isShowUserMessage: false
+    });
+  };
 
     generatePassword = () => {
-      const length = 12;
-      const charset = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-      let password = "";
-      for (let i = 0, n = charset.length; i < length; ++i) {
-          password += charset.charAt(Math.floor(Math.random() * n));
-      }
-        this.setState({ data: {...this.state.data, password } })
-    }
+        const length = 12;
+        const charset =
+            'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+        let password = '';
+        for (let i = 0, n = charset.length; i < length; ++i) {
+            password += charset.charAt(Math.floor(Math.random() * n));
+        }
+        this.setState({ data: { ...this.state.data, password } });
+    };
 
     isDisabled = () => {
-        const {
-            name,
-            username,
-            password,
-            privilege
-        } = this.state.data;
-        return !name || !username || !password || !privilege;
-    }
+        const { username, password, surname, patronymic, name } = this.state.data;
+        return !name || !username || !password || surname || patronymic;
+    };
 
-    generateLatter = () => {
-      this.setState({ isShowUserMessage: true })
-    }
+    generateLetter = () => {
+        this.setState({ isShowUserMessage: true });
+    };
 
-    renderContent = () => {
-        const isDisabled = this.isDisabled();
-        const { data, isShowUserMessage } = this.state;
-        const messageToUser = `
-        Уважаемый ${data.name}, вы были зарегистрированы в системе.
-        Ваш логин для входа: ${data.username}
-        Ваш пароль для входа: ${data.password}
-        `;
-        return (
-            <div className="modal-wrapper">
-                <div className="modal-header">
-                    {this.props.buttonText}
+  renderContent = () => {
+    const isDisabled = this.isDisabled();
+    const { data, isShowUserMessage } = this.state;
+    const messageToUser = <span>
+        <div>Уважаемый {data.surname} {data.name} {data.patronymic}, вы были зарегистрированы в системе.</div>
+        <div>Ваш логин для входа: {data.username}</div>
+        <div>Ваш пароль для входа: {data.password}</div>
+    </span>
+    return (
+        <div className='modal-wrapper'>
+            <div className='new-user-modal-header'>{this.props.buttonText}</div>
+            <div className='personal-data'>
+                <div className='input-section'>
+                    <div className='input-title'>Фамилия:</div>
+                    <Input placeholder='Фамилия...' value={data.surname} onChange={e => this.onHandlerFormField(e, 'surname')} />
                 </div>
-                <div
-                  className="modal-subheader"
-                  onClick={this.generateLatter}
-                  disabled={isDisabled}
-                >
-                    Сгенерировать письмо для сотрудника
+                <div className='input-section'>
+                    <div className='input-title'>Имя:</div>
+                    <Input placeholder='Имя...' value={data.name} onChange={e => this.onHandlerFormField(e, 'name')} />
                 </div>
-                <div className="modal-content">
-                  <div className="modal-formfield">
-                    <div className="modal-formfield-title">Фамилия Имя Отчество</div>
-                    <Input
-                        onChange={(e) => this.onHandlerFormField(e, 'name')}
-                        value={data.name}
-                        className="modal-field"
-                        placeholder='Иванов Иван Иванович'
-                    />
-                  </div>
-                  <div className="modal-formfield">
-                    <div className="modal-formfield-title">Роль</div>
-                      <Dropdown
-                        className='modal-dropdown'
-                        search
-                        selection
-                        options={options}
-                        defaultValue={options[0].text}
-                        onChange={(e, data) => this.changeIntent(data)}
-                      />
-                  </div>
-                  <div className="modal-formfield">
-                    <div className="modal-formfield-title">Логин или почта</div>
-                    <Input
-                        onChange={(e) => this.onHandlerFormField(e, 'username')}
-                        value={data.username}
-                        className="modal-field"
-                        placeholder='example@gmail.com'
-                    />
-                  </div>
-                  <div className="modal-formfield">
-                    <div className="modal-formfield-title sapce-between">
-                      Пароль
-                      <span className='clickable-text' onClick={this.generatePassword}>
-                        Сгенерировать
-                      </span>
-                    </div>
-                    <Input
-                        onChange={(e) => this.onHandlerFormField(e, 'password')}
-                        value={data.password}
-                        className="modal-field"
-                        placeholder='examplePassword123'
-                    />
-                  </div>
+                <div className='input-section'>
+                    <div className='input-title'>Отчество:</div>
+                    <Input placeholder='Отчество...' value={data.patronymic} onChange={e => this.onHandlerFormField(e, 'patronymic')} />
                 </div>
-                {isShowUserMessage &&
-                  <div className='message-to-user'>
-                    {messageToUser}
-                  </div>
-                }
-                <div className="modal-actions">
-                    <div
-                        onClick={this.onTrigerModal}
-                        className="action-button grey-button"
-                    > Отменить
+                <div className='input-section'>
+                    <div className='input-title'>Логин или почта</div>
+                    <Input placeholder='example@gmail.com' value={data.username} onChange={e => this.onHandlerFormField(e, 'username')} />
                 </div>
-                {isDisabled ? (
-                    <Popup
-                        content='Все данные должны быть заполнены'
-                        position="right center"
-                        className='modal-hint'
-                        trigger={
-                            <div className="action-button-disabled">Сохранить</div>
-                        }
-                    />
-                  ) : (
-                    <div
-                        onClick={this.onSendData}
-                        className="action-button"
-                    >
-                    Сохранить
-                    </div>
-                  )}
+                <div className='input-section'>
+                    <div className='input-title'>Пароль</div>
+                    <Input placeholder='examplePassword123' value={data.password} onChange={e => this.onHandlerFormField(e, 'password')} />
+                </div>
+                <div className='input-section'>
+                <div className='input-title'>Сгенерировать пароль:</div>
+                <Button icon='shield' primary basic size='medium' onClick={this.generatePassword} />
                 </div>
             </div>
-        )
-    }
+            <div className='new-user-section'>
+                <div className='input-title'>Роль</div>
+                <Dropdown fluid search selection options={options} defaultValue={options[0].text} onChange={(e, data) => this.changeIntent(data)} />
+            </div>
+            <div className='new-user-section'>
+                <Button icon='envelope' primary basic size='medium' onClick={this.generateLetter} />
+                <span className='input-title'>Сгенерировать письмо для сотрудника</span>
+            </div>
+            {isShowUserMessage && (<div className='new-user-section message-to-user'>{messageToUser}</div>)}
+            <div className='new-user-modal-actions'>
+                <Button primary basic onClick={this.onTrigerModal}>Отменить</Button>
+                <Button primary basic onClick={this.onSendData}>Сохранить</Button>
+            </div>
+        </div>
+    );
+  };
 
-    render() {
-        return (
-            <Modal
-                trigger={
-                    <Button primary size='tiny' basic onClick={this.onTrigerModal}>
-                        {this.props.buttonText}
-                    </Button>}
-                size="tiny"
-                closeOnDimmerClick={false}
-                onClose={this.onTrigerModal}
-                open={this.state.isModalOpen}
-                content={this.renderContent()}
-                closeIcon
-            />
-        );
-    }
+  render() {
+    return (
+      <Modal
+        trigger={
+          <Button primary size='tiny' basic onClick={this.onTrigerModal}>
+            {this.props.buttonText}
+          </Button>
+        }
+        size='small'
+        closeOnDimmerClick={false}
+        onClose={this.onTrigerModal}
+        open={this.state.isModalOpen}
+        content={this.renderContent()}
+        closeIcon
+      />
+    );
+  }
 }
 
 UserModal.propTypes = {
-    buttonText: PropTypes.string.isRequired,
-    onSave: PropTypes.func.isRequired
-}
+  buttonText: PropTypes.string.isRequired,
+  onSave: PropTypes.func.isRequired
+};
 
 export default UserModal;

@@ -1,35 +1,40 @@
-.modal-dropdown {
-  border: 2px solid #cbd0d7 !important;
-  border-radius: 20px !important;
-  width: 100%;
-}
-
-.clickable-text {
-  color: #5385fe;
-  cursor: pointer;
-  text-decoration: underline;
-}
-
-.sapce-between {
+.personal-data {
   display: flex;
   justify-content: space-between;
+  flex-flow: row wrap;
+  margin-bottom: 20px;
 }
 
-.modal-subheader {
-  color: #5385fe;
-  cursor: pointer;
-  text-decoration: underline;
-  margin: 10px;
+.new-user-modal-header {
+  font-size: 18px;
+  color: #363f56;
+  font-weight: 500;
+  margin-bottom: 20px;
+}
+.input-section {
+  margin: 5px;
+  min-width: 180px;
+}
+.new-user-section {
+  margin: 5px;
+  margin-bottom: 30px;
 }
 
-.modal-subheader[disabled] {
-  pointer-events: none;
-  color: #d4edff;
+.input-title {
+  font-size: 13px;
+  color: rgba(0, 0, 0, 0.85);
+  margin-bottom: 7px;
+}
+
+.new-user-modal-actions {
+  display: flex;
+  justify-content: flex-end;
 }
 
 .message-to-user {
-  white-space: pre;
-  border: 1px solid rgba(82, 133, 254, 0.64);
+  padding: 10px;
+  color: #2185d0;
+  background: #f0f5ff;
+  border: 1px solid #adc6ff;
   border-radius: 4px;
-  margin: 10px;
 }
