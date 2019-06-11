@@ -23,11 +23,17 @@ export const users = {
   failed: false
 };
 
-export const roles = {
-  roles: [],
+export const privileges = {
+  privileges: [],
   pending: false,
   failed: false
-};
+}
+
+export const permissions = {
+  permissions: [],
+  pending: false,
+  failed: false
+}
 
 export const audios = {
   playedId: null,
@@ -38,6 +44,7 @@ export default {
   auth,
   responses,
   users,
-  roles,
+  permissions,
+  privileges,
   audios
 };

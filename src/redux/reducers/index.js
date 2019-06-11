@@ -1,9 +1,10 @@
 import { combineReducers } from 'redux';
 
 import auth from './auth';
-import responses from './responses';
 import users from './users';
-import roles from './roles';
+import privileges from'./privileges';
+import permissions from './permissions';
+import responses from './responses';
 import audios from './audios';
 import categories from './categories';
 
@@ -11,7 +12,8 @@ export default combineReducers({
   auth,
   responses,
   users,
-  roles,
+  permissions,
+  privileges,
   audios,
   categories
 });

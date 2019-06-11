@@ -29,7 +29,7 @@
 }
 
 .ml-icon {
-  margin-left: -15px;
+  margin: 0 5px 0 -15px;
 }
 
 .filter-results {
@@ -46,4 +46,5 @@
 
 .add-category-button{
   align-self: center;
+  margin-left: 10px;
 }

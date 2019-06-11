@@ -27,8 +27,13 @@ module.exports = {
 			deleteReferenceResponse: id => `/api/answers/reference_responses/${id}`,
 			compareKeyword: '/api/answers/keywords/checkUsage',
 			getCategories: '/api/answers/categories',
-			createCategory:'/api/answers/categories',
-			deleteCategory: id => `/api/answers/categories/${id}`
+			createCategory: '/api/answers/categories',
+			deleteCategory: id => `/api/answers/categories/${id}`,
+			getUsers: '/api/users',
+			createUser: '/api/users',
+			deleteUser: id => `api/users/${id}`,
+			getPrivileges: '/api/privileges',
+			getPermissions: '/api/permissions'
 		}
 	},
 	baseUrl

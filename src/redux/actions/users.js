@@ -10,7 +10,6 @@ export const DELETE_USER = 'DELETE_USER';
 export const DELETE_USER_SUCCESS = 'DELETE_USER_SUCCESS';
 export const DELETE_USER_FAIL = 'DELETE_USER_FAIL';
 
-
 export function getAllUsers() {
   return async dispatch => {
     dispatch({
@@ -18,19 +17,12 @@ export function getAllUsers() {
     });
 
     try {
-      // const res = await request(urls.responses.commonResponses);
-      const demoData = [
-        { username: 'rudenkopolina@gmail.com', name: 'ФИО', privilege: "Super Admin", id: 1 },
-        { username: 'rudenkopolina@icloud.com', name: 'Фамилия', privilege: 'Главный администратор', id: 2 },
-        { username: 'polina1997@mail.ru', name: 'Фамилия Имя Отчество', privilege: 'Редактор ответов', id: 3 },
-        { username: 'mmf.rudenkope@bsu.by', name: 'ДлиннаяФамилия Имя Отчество', privilege: 'Редактор базы знаний', id: 4 },
-        { username: 'rudenkopolina@yandex.com', name: 'ОченьДлиннаяФамилия Имя Отчество', privilege: 'Главный редактор', id: 5 },
-      ]
+      const response = await request(urls.responses.getUsers);
+
       dispatch({
         type: GET_USERS_SUCCESS,
-        users: demoData
+        users: response.users
       });
-
     } catch (err) {
       dispatch({
         type: GET_USERS_FAIL
@@ -39,18 +31,20 @@ export function getAllUsers() {
   };
 }
 
-export function createUser(data) {
+export function createUser(user) {
   return async dispatch => {
     dispatch({
       type: CREATE_USER
     });
     try {
-      // const response = await request(urls.responses.createReferenceResponse, { method: 'POST',  body: { ...data } });
+      const response = await request(urls.responses.createUser, {
+        method: 'POST',
+        body: { user }
+      }); // {...user}
       dispatch({
         type: CREATE_USER_SUCCESS,
-        user: {...data, id: Math.floor(Math.random()*100) }
+        users: response.users
       });
-
     } catch (err) {
       dispatch({
         type: CREATE_USER_FAIL
@@ -66,12 +60,11 @@ export function deleteUser(id) {
     });
 
     try {
-      // await request(urls.responses.deleteReferenceResponse(id), { method: 'DELETE' });
+      await request(urls.responses.deleteUser(id), { method: 'DELETE' });
       dispatch({
         type: DELETE_USER_SUCCESS,
         deleteId: id
       });
-
     } catch (err) {
       dispatch({
         type: DELETE_USER_FAIL
