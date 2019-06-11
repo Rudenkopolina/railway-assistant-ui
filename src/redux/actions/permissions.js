@@ -1,3 +1,5 @@
+import request from '../../services/request';
+import { urls } from '../../config';
 export const GET_PERMISSIONS = 'GET_PERMISSIONS';
 export const GET_PERMISSIONS_SUCCESS = 'GET_PERMISSIONS';
 export const GET_PERMISSIONS_FAIL = 'GET_PERMISSIONS';

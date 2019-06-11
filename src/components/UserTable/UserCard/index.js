@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { Modal, Icon } from 'semantic-ui-react';
 import './styles.css';
 
@@ -46,5 +47,10 @@ class UserCard extends React.Component {
     );
   }
 }
+
+UserCard.propTypes = {       
+  user: PropTypes.object.isRequired,
+  onDeleteUser: PropTypes.func.isRequired
+};
 
 export default UserCard;

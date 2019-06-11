@@ -9,7 +9,7 @@ import UserModal from '../../components/UserTable/UserModal';
 import RoleModal from '../../components/RoleTable/RoleModal';
 
 import { getAllUsers, createUser, deleteUser } from '../../redux/actions/users';
-import { updateRole, getAllRoles, createRole } from '../../redux/actions/roles';
+import { deletePrivilege, getPrivileges, createPrivilege } from '../../redux/actions/privileges';
 
 import './Users.css';
 
@@ -25,7 +25,7 @@ class Users extends React.Component {
 
   componentWillMount() {
     this.props.getAllUsers();
-    this.props.getAllRoles();
+    this.props.getPrivileges();
   }
 
   onFilterChange = filterString => {
@@ -42,7 +42,7 @@ class Users extends React.Component {
         this.props.createUser(data);
         break;
       case 'roles':
-        this.props.createRole(data);
+        this.props.createPrivilege(data);
         break;
       default:
     }
@@ -56,7 +56,7 @@ class Users extends React.Component {
       case 'users':
         return (
           <UserTable
-            data={users}
+            users={users}
             filterString={filterString}
             onDeleteUser={onDeleteUser}
           />
@@ -94,17 +94,13 @@ class Users extends React.Component {
               />
             </div>
           </div>
-          <div className='users-menu-item'>
+          <div className='users-menu-item element-mb'>
             <RoleModal
-              buttonText='создать роль'
-              className='role-table-button'
-              modalTitle='Создать роль'
+              buttonText='Cоздать роль'
               onSave={(data) => this.onCreate('roles', data)}
             />
             <UserModal
               buttonText='Добавить сотрудника'
-              className='action-button'
-              modalTitle='Добавить сотрудника'
               onSave={(data) => this.onCreate('users', data)}
             />
           </div>
@@ -115,18 +111,18 @@ class Users extends React.Component {
   }
 }
 
-const mapStateToProps = ({ users, roles }) => ({
+const mapStateToProps = ({ users, privileges }) => ({
   users: users.users,
-  roles: roles.roles
+  privileges: privileges
 });
 
 const mapDispatchToProps = dispatch => ({
   createUser: data => dispatch(createUser(data)),
   getAllUsers: () => dispatch(getAllUsers()),
   onDeleteUser: id => dispatch(deleteUser(id)),
-  onUpdateRole: data => dispatch(updateRole(data)),
-  getAllRoles: () => dispatch(getAllRoles()),
-  createRole: data => dispatch(createRole(data))
+  onUpdateRole: data => dispatch(deletePrivilege(data)),
+  getPrivileges: () => dispatch(getPrivileges()),
+  createPrivilege: data => dispatch(createPrivilege(data))
 });
 
 export default withRouter(

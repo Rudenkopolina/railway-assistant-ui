@@ -1,5 +1,6 @@
 import React from 'react';
-import { Modal, Popup, Input, Dropdown } from 'semantic-ui-react';
+import PropTypes from 'prop-types';
+import { Modal, Popup, Input, Dropdown, Button } from 'semantic-ui-react';
 import './styles.css';
 
 const options = [
@@ -85,7 +86,7 @@ class UserModal extends React.Component {
         return (
             <div className="modal-wrapper">
                 <div className="modal-header">
-                    {this.props.modalTitle}
+                    {this.props.buttonText}
                 </div>
                 <div
                   className="modal-subheader"
@@ -176,11 +177,9 @@ class UserModal extends React.Component {
         return (
             <Modal
                 trigger={
-                    <div onClick={this.onTrigerModal}
-                        className={this.props.className}
-                    > {this.props.buttonText}
-                    </div>
-                }
+                    <Button primary size='tiny' basic onClick={this.onTrigerModal}>
+                        {this.props.buttonText}
+                    </Button>}
                 size="tiny"
                 closeOnDimmerClick={false}
                 onClose={this.onTrigerModal}
@@ -190,6 +189,11 @@ class UserModal extends React.Component {
             />
         );
     }
+}
+
+UserModal.propTypes = {
+    buttonText: PropTypes.string.isRequired,
+    onSave: PropTypes.func.isRequired
 }
 
 export default UserModal;

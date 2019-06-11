@@ -1,3 +1,5 @@
+import request from '../../services/request';
+import { urls } from '../../config';
 export const GET_PRIVILEGES = 'GET_PRIVILEGES';
 export const GET_PRIVILEGES_SUCCESS = 'GET_PRIVILEGES_SUCCESS';
 export const GET_PRIVILEGES_FAIL = 'GET_PRIVILEGES_FAIL';
@@ -20,7 +22,7 @@ export function getPrivileges() {
       const response = await request(urls.responses.getPrivileges);
 
       dispatch({
-        type: GET_PRIVELEGES_SUCCESS,
+        type: GET_PRIVILEGES_SUCCESS,
         privileges: response.privileges
       });
     } catch (err) {
@@ -31,45 +33,45 @@ export function getPrivileges() {
   };
 }
 
-// export function createPrivilege(data) {
-//   return async dispatch => {
-//     dispatch({
-//       type: CREATE_PRIVILEGES
-//     });
-//     try {
-//       const response = await request(urls.responses.createPrivilege, {
-//         method: 'POST',
-//         body: { ...data }
-//       });
-//       dispatch({
-//         type: CREATE_PRIVILEGES_SUCCESS,
-//         privilege: response.privileges
-//       });
-//     } catch (err) {
-//       dispatch({
-//         type: CREATE_PRIVILEGES_FAIL
-//       });
-//     }
-//   };
-// }
+export function createPrivilege(data) {
+  return async dispatch => {
+    dispatch({
+      type: CREATE_PRIVILEGES
+    });
+    try {
+      const response = await request(urls.responses.createPrivilege, {
+        method: 'POST',
+        body: { ...data }
+      });
+      dispatch({
+        type: CREATE_PRIVILEGES_SUCCESS,
+        privilege: response.privileges
+      });
+    } catch (err) {
+      dispatch({
+        type: CREATE_PRIVILEGES_FAIL
+      });
+    }
+  };
+}
 
-// export function deletePrivilege(data) {
-//   return async dispatch => {
-//     dispatch({
-//       type: CHANGE_PRIVILEGES
-//     });
+export function deletePrivilege(id) {
+  return async dispatch => {
+    dispatch({
+      type: CHANGE_PRIVILEGES
+    });
 
-//     try {
-//       await request(urls.responses.deletePrivilege(id), { method: 'DELETE' });
-//       dispatch({
-//         type: CHANGE_PRIVILEGES_SUCCESS,
-//         deleteId: id
-//       });
-//     } catch (err) {
-//       console.log(err);
-//       dispatch({
-//         type: CHANGE_PRIVILEGES_FAIL
-//       });
-//     }
-//   };
-// }
+    try {
+      await request(urls.responses.deletePrivilege(id), { method: 'DELETE' });
+      dispatch({
+        type: CHANGE_PRIVILEGES_SUCCESS,
+        deleteId: id
+      });
+    } catch (err) {
+      console.log(err);
+      dispatch({
+        type: CHANGE_PRIVILEGES_FAIL
+      });
+    }
+  };
+}
