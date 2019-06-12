@@ -27,13 +27,13 @@ export const privileges = {
   privileges: [],
   pending: false,
   failed: false
-}
+};
 
 export const permissions = {
   permissions: [],
   pending: false,
   failed: false
-}
+};
 
 export const audios = {
   playedId: null,

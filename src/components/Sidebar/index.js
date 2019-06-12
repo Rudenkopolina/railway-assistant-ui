@@ -12,8 +12,9 @@ const pageList = [
 	{ key: '/account', value: 'Профиль', icon: 'user outline', requiredRoles: ''},
 	{ key: '/answers', value: 'Ответы', icon: 'comments outline', requiredRoles: ['ALLOWED_ANSWERS_VIEWING', 'ALLOWED_KNOWLEDGEBASE_VIEWING']},
 	{ key: '/history', value: 'История', icon: 'history', requiredRoles: 'ALLOWED_HISTORY_EDITING'},
-	{ key: '/users', value: 'Сотрудники', icon: 'group', requiredRoles: 'ALLOWED_USERS_CREATION'}
-]
+	{ key: '/users', value: 'Сотрудники', icon: 'group', requiredRoles: 'ALLOWED_USERS_CREATION'},
+	{ key: '/statistics', value: 'Статистика использования', icon: 'dashboard', requiredRoles: 'ALLOWED_USAGE_STATISTICS_VIEWING'}
+];
 
 class Sidebar extends React.Component {
 	render() {

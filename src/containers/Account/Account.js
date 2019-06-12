@@ -10,7 +10,7 @@ class Account extends React.Component {
 	logOut = () => {
 		this.props.logout();
 		sessionStorage.removeItem('jwtToken');
-	}
+	};
 
 	render() {
 		const { user } = this.props;
