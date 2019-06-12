@@ -31,7 +31,7 @@ module.exports = {
 			deleteCategory: id => `/api/answers/categories/${id}`,
 			getUsers: '/api/users',
 			createUser: '/api/users',
-			deleteUser: id => `api/users/${id}`,
+			deleteUser: id => `/api/users/${id}`,
 			getPrivileges: '/api/privileges',
 			getPermissions: '/api/permissions'
 		}
