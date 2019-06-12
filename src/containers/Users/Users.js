@@ -33,11 +33,11 @@ class Users extends React.Component {
       this.props.getAllUsers();
     }
     if (user.permissions.ALLOWED_ROLES_EDITING) {
-      titles.push({
-        name: 'Редактор Ролей',
-        key: 'roles',
-        requiredRoles: 'ALLOWED_ROLES_EDITING'
-      });
+      // titles.push({
+      //   name: 'Редактор Ролей',
+      //   key: 'roles',
+      //   requiredRoles: 'ALLOWED_ROLES_EDITING'
+      // });
       this.props.getPrivileges();
       this.props.getPermissions();
     }
