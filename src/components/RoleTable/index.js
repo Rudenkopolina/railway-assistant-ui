@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
 import RoleCard from './RoleCard';
 import './styles.css';
@@ -15,23 +16,22 @@ const titles = [
 
 class RoleTable extends React.Component {
   render() {
-    const { data, onUpdateRole } = this.props;
+    const { roles, onUpdateRole, permissions } = this.props;
     return (
       <div className='role-table-container'>
         {
-          <div className="role-title-row">
-            {titles.map(item =>
-              <div className="role-title-content" key={item}>
-                {item}
+          <div>
+            {permissions.map(item =>
+              <div key={item.id}>
+                {item.permission}
               </div>
             )}
           </div>
         }
-        {data.map((item, index) => (
+        {roles.map((item, index) => (
           <RoleCard
             key={index}
-            data={item}
-            index={index}
+            role={item}
             onSave={onUpdateRole}
           />
         ))}
@@ -39,4 +39,9 @@ class RoleTable extends React.Component {
     );
   }
 }
+RoleTable.propTypes = {
+  roles: PropTypes.array.isRequired, 
+  permissions: PropTypes.array.isRequired,
+  onUpdateRole: PropTypes.func.isRequired
+};
 export default withRouter(RoleTable);

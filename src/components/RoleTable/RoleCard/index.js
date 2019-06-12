@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import './styles.css';
 
 const permissions = [
@@ -12,19 +13,19 @@ const permissions = [
 
 class RoleCard extends React.Component {
   state = {
-    data: this.props.data,
+    role: this.props.role,
   }
 
   renderActions = () => {
-    const { permissions } = this.props.data;
-    const isPermissionsChanged = JSON.stringify(this.state.data.permissions.sort()) !== JSON.stringify(permissions.sort());
+    const { permissions } = this.props.role;
+    const isPermissionsChanged = JSON.stringify(this.state.role.permissions.sort()) !== JSON.stringify(permissions.sort());
     return (
     <div className='role-table-actions'>
       <div className="role-table-action no-button">
       {isPermissionsChanged &&
         <div
         className="action-button"
-        onClick={() => this.props.onSave(this.state.data)}
+        onClick={() => this.props.onSave(this.state.role)}
         >
           Сохранить
         </div>
@@ -35,30 +36,30 @@ class RoleCard extends React.Component {
   }
 
   handleCheckbox = value => {
-    let newPermissions = this.state.data.permissions;
-    if (this.state.data.permissions.includes(value)) {
+    let newPermissions = this.state.role.permissions;
+    if (this.state.role.permissions.includes(value)) {
       newPermissions = newPermissions.filter(item => item !== value);
     } else {
       newPermissions = [...newPermissions, value];
     }
-    this.setState({ data: {...this.state.data, permissions: newPermissions}});
+    this.setState({ role: {...this.state.role, permissions: newPermissions}});
   }
 
   render() {
-    const { data } = this.state;
+    const { role } = this.props;
     return (
         <div className="role-table-row-wrapper">
           <div className="role-table-row">
-            <div className="role-table-number">{this.props.index + 1}</div>
+            <div className="role-table-number">{role.id}</div>
             <div className="role-table-content">
-                {data.name}
+                {role.type}
             </div>
-            {permissions.map(item =>
-              <div className="role-table-content checkbox-container" key={item}>
+            {role.permissions.map((item, index) =>
+              <div className="role-table-content checkbox-container" key={index}>
                 <input
                   type="checkbox"
                   className='role-table-checkbox'
-                  checked={data.permissions.includes(item)}
+                  checked={role.permissions.includes(item)}
                   onChange={() => this.handleCheckbox(item)}
                 />
               </div>
@@ -68,6 +69,10 @@ class RoleCard extends React.Component {
         </div>
     );
   }
+}
+RoleCard.propTypes = {
+  role: PropTypes.object.isRequired,
+  onSave: PropTypes.func.isRequired
 }
 
 export default RoleCard;

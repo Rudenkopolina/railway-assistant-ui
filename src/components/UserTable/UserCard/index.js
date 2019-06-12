@@ -37,11 +37,12 @@ class UserCard extends React.Component {
 
   render() {
     const { user } = this.props;
+    console.log(user)
     return (
       <div className='user-card-raw-wrapper'>
         <div className='user-card-content'>
           <div className='user-card-title'>
-            <div className='user-overflow'> {user.name} </div>
+            <div className='user-overflow'> {user.surname} {user.name} </div>
             {this.renderActions()}
           </div>
           <div className='user-role'>{user.privilege}</div>

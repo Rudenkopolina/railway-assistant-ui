@@ -62,7 +62,6 @@ export function deleteUser(id) {
     });
 
     try {
-      console.log('im here!', id)   
       await request(urls.responses.deleteUser(id), { method: 'DELETE' });
       dispatch({
         type: DELETE_USER_SUCCESS,

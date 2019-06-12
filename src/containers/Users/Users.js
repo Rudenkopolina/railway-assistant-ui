@@ -10,6 +10,7 @@ import UserModal from '../../components/UserTable/UserModal';
 // import RoleModal from '../../components/RoleTable/RoleModal';
 import { getAllUsers, createUser, deleteUser } from '../../redux/actions/users';
 import { deletePrivilege, getPrivileges, createPrivilege } from '../../redux/actions/privileges';
+import { getPermissions } from '../../redux/actions/permissions';
 
 import './Users.css';
 
@@ -38,6 +39,7 @@ class Users extends React.Component {
         requiredRoles: 'ALLOWED_ROLES_EDITING'
       });
       this.props.getPrivileges();
+      this.props.getPermissions();
     }
     this.setState({ titles, activeTab: titles[0].key });
   }
@@ -65,7 +67,7 @@ class Users extends React.Component {
 
   getContent = () => {
     const { activeTab, filterString } = this.state;
-    const { users, deleteUser, privileges } = this.props;
+    const { users, deleteUser, privileges, permissions } = this.props;
     switch (activeTab) {
       case 'users':
         return (
@@ -80,7 +82,7 @@ class Users extends React.Component {
       case 'roles':
         return (
           <Protected requiredRoles='ALLOWED_ROLES_EDITING'>
-          <RoleTable data={privileges.privileges} onUpdateRole={this.props.onUpdateRole} />
+          <RoleTable roles={privileges.privileges} onUpdateRole={this.props.onUpdateRole} permissions={permissions.permissions} />
           </Protected>
         );
       default:
@@ -118,7 +120,7 @@ class Users extends React.Component {
               onSave={(data) => this.onCreate('roles', data)}
             /> */}
             <UserModal
-              buttonText='Добавить сотрудника'
+              buttonText='Добавить сотрудника' roles={this.props.privileges.privileges}
               onSave={user => this.props.createUser(user)}
             />
           </div>
@@ -129,8 +131,8 @@ class Users extends React.Component {
   }
 }
 
-const mapStateToProps = ({ users, auth, privileges }) => ({
-  users, privileges, auth
+const mapStateToProps = ({ users, auth, privileges, permissions }) => ({
+  users, privileges, auth, permissions
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -139,6 +141,7 @@ const mapDispatchToProps = dispatch => ({
   deleteUser: id => dispatch(deleteUser(id)),
   onUpdateRole: data => dispatch(deletePrivilege(data)),
   getPrivileges: () => dispatch(getPrivileges()),
+  getPermissions: () => dispatch(getPermissions()),
   createPrivilege: data => dispatch(createPrivilege(data))
 });
 

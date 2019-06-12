@@ -46,5 +46,6 @@ export default {
   users,
   permissions,
   privileges,
-  audios
+  audios,
+  categories
 };

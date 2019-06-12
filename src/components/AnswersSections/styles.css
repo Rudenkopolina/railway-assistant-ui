@@ -41,7 +41,7 @@
 
 .header-button {
   margin-left: auto;
-  margin-top: -4px;
+  align-self: center;
 }
 
 .add-category-button{

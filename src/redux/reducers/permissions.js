@@ -19,7 +19,7 @@ export default function(state = initialState, action) {
       return {
         ...state,
         pending: false,
-        permissions: action.privileges
+        permissions: action.permissions
       };
 
     case GET_PERMISSIONS_FAIL:

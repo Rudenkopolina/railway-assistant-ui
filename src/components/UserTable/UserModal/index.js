@@ -3,13 +3,6 @@ import PropTypes from 'prop-types';
 import { Modal, Input, Dropdown, Button } from 'semantic-ui-react';
 import './styles.css';
 
-const options = [
-  { text: 'Главный администратор', value: 'Главный администратор' },
-  { text: 'Редактор ответов', value: 'Редактор ответов' },
-  { text: 'Редактор базы знаний', value: 'Редактор базы знаний' },
-  { text: 'Главный редактор', value: 'Главный редактор' }
-];
-
 class UserModal extends React.Component {
   state = {
     isModalOpen: false,
@@ -29,8 +22,8 @@ class UserModal extends React.Component {
     this.setState({ data: { ...data, [title]: e.target.value } });
   };
 
-  changeIntent = data => {
-    this.setState({ data: { ...this.state.data, privilege: data.value } });
+  changeIntent = (event, data) => {
+    this.setState({ data: {...data, privilegeId: data.value }});
   };
 
   onTrigerModal = () => {
@@ -46,7 +39,7 @@ class UserModal extends React.Component {
       data: {
         username: '',
         password: '',
-        privilegeId: null,
+        privilegeId: 1,
         surname: '',
         patronymic: '',
         name: ''
@@ -76,7 +69,8 @@ class UserModal extends React.Component {
     };
 
   renderContent = () => {
-    const isDisabled = this.isDisabled();
+    // const isDisabled = this.isDisabled();
+    const options = this.props.roles.map(role => ({text: role.type, value: role.id}))
     const { data, isShowUserMessage } = this.state;
     const messageToUser = <span>
         <div>Уважаемый {data.surname} {data.name} {data.patronymic}, вы были зарегистрированы в системе.</div>
@@ -114,7 +108,7 @@ class UserModal extends React.Component {
             </div>
             <div className='new-user-section'>
                 <div className='input-title'>Роль</div>
-                <Dropdown fluid search selection options={options} defaultValue={options[0].text} onChange={(e, data) => this.changeIntent(data)} />
+                <Dropdown fluid search selection options={options} value={data.privilegeId} onChange={this.changeIntent} />
             </div>
             <div className='new-user-section'>
                 <Button icon='envelope' primary basic size='medium' onClick={this.generateLetter} />
@@ -149,6 +143,7 @@ class UserModal extends React.Component {
 }
 
 UserModal.propTypes = {
+  roles: PropTypes.array.isRequired,
   buttonText: PropTypes.string.isRequired,
   onSave: PropTypes.func.isRequired
 };
