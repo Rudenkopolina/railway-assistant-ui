@@ -1,11 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Icon, Modal } from 'semantic-ui-react';
+import {Icon, Modal} from 'semantic-ui-react';
 import AudioPlayer from '../AudioPlayer';
 import Truncate from 'react-truncate';
 import IntentModal from '../IntentModal';
 import './styles.css';
-import { urls } from '../../../../config';
+import {urls} from '../../../../config';
 
 const titlesForModal = {
   common: 'Изменить типовую фразу',
@@ -14,7 +14,8 @@ const titlesForModal = {
 
 class AnswerCard extends React.Component {
   state = {
-    isKeywordsShown: false
+    isKeywordsShown: false,
+    chosen: false
   };
 
   deleteAnswer = (event, answer) => {
@@ -23,17 +24,24 @@ class AnswerCard extends React.Component {
   };
 
   toggleKeywordsView = () => {
-    const { isKeywordsShown } = this.state;
-    this.setState({ isKeywordsShown: !isKeywordsShown });
+    const {isKeywordsShown} = this.state;
+    this.setState({isKeywordsShown: !isKeywordsShown});
   };
 
   getAudioSrc = id => {
-    const { title } = this.props;
+    const {title} = this.props;
     return urls.responses.audioUrl(title, id);
   };
 
+  checkAnswer = async () => {
+    if (this.props.title === "reference") {
+      await this.setState({"chosen": !this.state.chosen});
+      this.props.onResponseSelected(this._reactInternalFiber.key, this.state.chosen);
+    }
+  };
+
   renderActions = () => {
-    const { answer, index, onUpdateAnswer, isShowExamples, title } = this.props;
+    const {answer, index, onUpdateAnswer, isShowExamples, title} = this.props;
     return (
       <IntentModal
         key={answer.id}
@@ -48,13 +56,13 @@ class AnswerCard extends React.Component {
   };
 
   renderDelete = () => {
-    const { answer, onDeleteAnswer } = this.props;
+    const {answer, onDeleteAnswer} = this.props;
     return (
       <div className='answer-action'>
         {onDeleteAnswer && (
           <Modal
             closeIcon
-            trigger={<Icon size='small' name='trash' className='remove-icon' />}
+            trigger={<Icon size='small' name='trash' className='remove-icon'/>}
             closeOnEscape={true}
             size={'mini'}
             content='Вы уверены, что хотите удалить этот ответ? Ответ будет потерян без возможности восстановления.'
@@ -74,9 +82,10 @@ class AnswerCard extends React.Component {
   };
 
   render() {
-    const { answer } = this.props;
+    const {answer} = this.props;
     return (
-      <div className='answer-row-wrapper'>
+      <div className={this.state.chosen ? 'answer-row-wrapper-selected' : 'answer-row-wrapper'}
+           onClick={this.checkAnswer}>
         <div className='answer-card-content'>
           <div className='answer-card-title'>
             <div className='answer-overflow'>{answer.responseName}</div>
@@ -90,7 +99,7 @@ class AnswerCard extends React.Component {
         </div>
         <div className='answer-actions'>
           <div className='icon-position'>
-            <AudioPlayer id={answer.id} url={this.getAudioSrc(answer.id)} />
+            <AudioPlayer id={answer.id} url={this.getAudioSrc(answer.id)}/>
           </div>
           {this.renderActions()}
         </div>
@@ -108,7 +117,8 @@ AnswerCard.propTypes = {
   onPlayAudio: PropTypes.func.isRequired,
   onStopAudio: PropTypes.func.isRequired,
   playedId: PropTypes.number,
-  onUpdateAnswer: PropTypes.func.isRequired
+  onUpdateAnswer: PropTypes.func.isRequired,
+  onResponseSelected: PropTypes.func.isRequired
 };
 
 export default AnswerCard;

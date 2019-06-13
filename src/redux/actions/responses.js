@@ -1,5 +1,6 @@
 import request from '../../services/request';
 import { urls } from '../../config';
+
 export const GET_COMMON_RESPONSES = 'GET_COMMON_RESPONSES';
 export const GET_COMMON_RESPONSES_SUCCESS = 'GET_COMMON_RESPONSES_SUCCESS';
 export const GET_COMMON_RESPONSES_FAIL = 'GET_COMMON_RESPONSES_FAIL';
@@ -20,6 +21,9 @@ export const DELETE_RESPONSE = 'DELETE_RESPONSE';
 export const DELETE_RESPONSE_SUCCESS = 'DELETE_RESPONSE_SUCCESS';
 export const DELETE_RESPONSE_FAIL = 'DELETE_RESPONSE_FAIL';
 
+export const MOVE_CATEGORIES = 'MOVE_CATEGORIES';
+export const MOVE_CATEGORIES_SUCCESS = 'MOVE_CATEGORIES_SUCCESS';
+export const MOVE_CATEGORIES_FAIL = 'MOVE_CATEGORIES_FAIL';
 
 export function getCommonResponses() {
   return async dispatch => {
@@ -125,6 +129,30 @@ export function deleteResponse(id) {
     } catch (err) {
       dispatch({
         type: DELETE_RESPONSE_FAIL
+      });
+    }
+  };
+}
+
+export function moveResponsesToCategory(categoryId, responseIds) {
+  return async dispatch => {
+    dispatch({
+      type: MOVE_CATEGORIES
+    });
+
+    try {
+      const response = await request(urls.responses.moveToCategory(categoryId), {
+        method: 'POST',
+        body: { "responseIds": responseIds }
+      });
+      dispatch({
+        type: MOVE_CATEGORIES_SUCCESS,
+        "categoryId": categoryId,
+        "movedResponseIds": responseIds
+      });
+    } catch (err) {
+      dispatch({
+        type: MOVE_CATEGORIES_FAIL
       });
     }
   };

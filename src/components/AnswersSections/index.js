@@ -6,14 +6,16 @@ import Answers from './Answers';
 import IntentModal from './Answers/IntentModal';
 import NewCategoryModal from './NewCategoryModal';
 import Protected from '../common/protected/container';
-import { Icon } from 'semantic-ui-react';
+import {Icon} from 'semantic-ui-react';
 import './styles.css';
+import ChooseCategoryModal from "./ChooseCategoryModal";
 
 class AnswersSections extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      activeTab: null
+      activeTab: null,
+      chosenResponses: []
     };
   }
 
@@ -26,9 +28,12 @@ class AnswersSections extends React.Component {
   }
 
   setCategory = categoryId => {
-    this.setState({
-      activeTab: categoryId
-    });
+    if (categoryId != this.state.activeTab) {
+      this.setState({"chosenResponses": []});
+      this.setState({
+        activeTab: categoryId
+      });
+    }
   };
 
   deleteCategory = (event, id) => {
@@ -41,6 +46,22 @@ class AnswersSections extends React.Component {
         activeTab: categories[0].id
       });
     }
+  };
+
+  onResponseSelected = async (id, state) => {
+    state ? await this.state.chosenResponses.push(id) : await this.state.chosenResponses.splice(this.state.chosenResponses.indexOf(id), 1);
+    this.setState({"chosenResponses": this.state.chosenResponses});
+  };
+
+  drawMoveButton = () => {
+    if (this.state.chosenResponses.length > 0) {
+      return (<ChooseCategoryModal onChooseCategory={this.onMove} categories={this.props.categories} />)
+    }
+  };
+
+  onMove = (categoryId) => {
+    this.props.onMoveResponse(categoryId, this.state.chosenResponses);
+    this.setCategory(categoryId);
   };
 
   getNumberOfAnswers = category => {
@@ -120,6 +141,7 @@ class AnswersSections extends React.Component {
           <div className='categories-container'>
             {tabs}
             <NewCategoryModal onCreateCategory={this.props.onCreateCategory} />
+            {this.drawMoveButton()}
             <div className='header-button'>
               <Protected requiredRoles='ALLOWED_KNOWLEDGEBASE_CREATION'>
                 <IntentModal
@@ -140,6 +162,7 @@ class AnswersSections extends React.Component {
           onDeleteAnswer={this.props.onDeleteAnswer}
           changeResponse={this.props.changeResponse}
           isReferanseTab={isReferanseTab}
+          onResponseSelected={this.onResponseSelected}
         />
       </div>
     );
@@ -156,7 +179,8 @@ AnswersSections.propTypes = {
   filterString: PropTypes.string.isRequired,
   isReferanseTab: PropTypes.bool.isRequired,
   onDeleteCategory: PropTypes.func.isRequired,
-  onCreateCategory: PropTypes.func.isRequired
+  onCreateCategory: PropTypes.func.isRequired,
+  onMoveResponse: PropTypes.func.isRequired
 };
 
 export default withRouter(AnswersSections);

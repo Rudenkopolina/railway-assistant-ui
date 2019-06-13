@@ -15,6 +15,9 @@ import {
   DELETE_RESPONSE,
   DELETE_RESPONSE_SUCCESS,
   DELETE_RESPONSE_FAIL,
+  MOVE_CATEGORIES,
+  MOVE_CATEGORIES_SUCCESS,
+  MOVE_CATEGORIES_FAIL
 } from '../actions/responses';
 
 import { LOGOUT } from '../actions/auth';
@@ -23,6 +26,12 @@ export default function (state = initialState, action) {
   switch (action.type) {
 	case GET_COMMON_RESPONSES:
 	case GET_REFERENCE_RESPONSES:
+	case MOVE_CATEGORIES:
+    return {
+      ...state,
+      pending: true,
+      failed: false
+    };
   case CHANGE_RESPONSE:
   case CREATE_RESPONSE:
   case DELETE_RESPONSE:
@@ -71,12 +80,30 @@ export default function (state = initialState, action) {
       pending: false,
       referenceResponses: action.responses
     };
+  case MOVE_CATEGORIES_SUCCESS:
+    state.referenceResponses.forEach(res => {
+      if (action.movedResponseIds.find((el) => el == res.id)) {
+        res.categoryId = action.categoryId;
+      }
+    });
 
+    return {
+      ...state,
+      pending: false,
+      failed: false,
+      referenceResponses: state.referenceResponses
+    };
 	case GET_REFERENCE_RESPONSES_FAIL:
 	case GET_COMMON_RESPONSES_FAIL:
   case CHANGE_RESPONSE_FAIL:
   case CREATE_RESPONSE_FAIL:
   case DELETE_RESPONSE_FAIL:
+    return {
+      ...state,
+      pending: false,
+      failed: true
+    };
+  case MOVE_CATEGORIES_FAIL:
     return {
       ...state,
       pending: false,

@@ -10,9 +10,10 @@ import {
   getReferenceResponses,
   changeResponse,
   deleteResponse,
-  createResponse
+  createResponse,
+  moveResponsesToCategory
 } from '../../redux/actions/responses';
-import { getCategories, createCategory, deleteCategory } from '../../redux/actions/categories';
+import {getCategories, createCategory, deleteCategory} from '../../redux/actions/categories';
 
 import './styles.css';
 
@@ -75,6 +76,7 @@ class Answer extends React.Component {
           onDeleteCategory={this.props.deleteCategory}
           filterString={filterString}
           isReferanseTab={isReferanseTab}
+          onMoveResponse={this.props.moveToCategory}
         />
       </Protected>
     );
@@ -129,7 +131,8 @@ const mapDispatchToProps = dispatch => ({
   deleteCategory: id => dispatch(deleteCategory(id)),
   changeResponse: (data, id, title) =>
     dispatch(changeResponse(data, id, title)),
-  onDeleteAnswer: id => dispatch(deleteResponse(id))
+  onDeleteAnswer: id => dispatch(deleteResponse(id)),
+  moveToCategory: (categoryId, responseIds) => dispatch(moveResponsesToCategory(categoryId, responseIds))
 });
 
 export default withRouter(

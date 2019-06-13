@@ -29,6 +29,7 @@ module.exports = {
 			getCategories: '/api/answers/categories',
 			createCategory: '/api/answers/categories',
 			deleteCategory: id => `/api/answers/categories/${id}`,
+			moveToCategory: id => `/api/answers/categories/${id}`,
 			getUsers: '/api/users',
 			createUser: '/api/users',
 			deleteUser: id => `/api/users/${id}`,

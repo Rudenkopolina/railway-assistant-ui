@@ -43,6 +43,10 @@ class Answers extends React.Component {
     this.setState({ playedId: null });
   };
 
+  onResponseSelected = (id, state) => {
+    this.props.onResponseSelected(id, state);
+  };
+
   getFilteredAnswers = displayCategory => {
     const { filterString } = this.props;
     let filterStringLowerCase = '';
@@ -90,6 +94,7 @@ class Answers extends React.Component {
             onStopAudio={this.onStopAudio}
             playedId={this.state.playedId}
             onUpdateAnswer={this.onUpdateAnswer}
+            onResponseSelected={this.onResponseSelected}
           />
         ))}
       </div>
@@ -103,7 +108,8 @@ Answers.propTypes = {
   answers: PropTypes.array.isRequired,
   changeResponse: PropTypes.func.isRequired,
   onDeleteAnswer: PropTypes.func.isRequired,
-  isReferanseTab: PropTypes.bool.isRequired
+  isReferanseTab: PropTypes.bool.isRequired,
+  onResponseSelected: PropTypes.func.isRequired
 };
 
 
