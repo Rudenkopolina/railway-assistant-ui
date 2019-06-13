@@ -40,6 +40,12 @@ export const audios = {
   audioUrl: null
 };
 
+export const usageStatistics = {
+  speechToText: [],
+  textToSpeech: [],
+  textProcessor: []
+};
+
 export default {
   auth,
   responses,
@@ -47,5 +53,6 @@ export default {
   permissions,
   privileges,
   audios,
-  categories
+  categories,
+  usageStatistics
 };

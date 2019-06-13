@@ -1,10 +1,27 @@
 import React from 'react';
 import { Icon } from 'semantic-ui-react';
+import { connect } from 'react-redux';
 import Protected from '../../components/common/protected/container';
 import './UsageStatistics.css'
 import UsageStatisticsChart from "../../components/UsageStatisticsChart";
+import { withRouter } from 'react-router-dom';
+import {
+	getSpeechToTextStatistics,
+	getTextProcessorStatistics,
+	getTextToSpeechStatistics
+} from "../../redux/actions/usageStatistics";
 
 class UsageStatistics extends React.Component {
+
+	componentWillMount() {
+		const { user } = this.props.auth;
+		if (user.permissions.ALLOWED_USAGE_STATISTICS_VIEWING) {
+			this.props.getSpeechToTextStatistics();
+			this.props.getTextToSpeechStatistics();
+			this.props.getTextProcessorStatistics();
+		}
+	}
+
 	render() {
 		return (
 			<div className='statistics-wrapper container'>
@@ -18,7 +35,7 @@ class UsageStatistics extends React.Component {
 						</div>
 
 						<div className='statistics-card-content'>
-							<UsageStatisticsChart stats=""/>
+							<UsageStatisticsChart stats={{"statistics": this.props.usageStatistics.speechToText}}/>
 						</div>
 
 					</div>
@@ -31,7 +48,7 @@ class UsageStatistics extends React.Component {
 						</div>
 
 						<div className='statistics-card-content'>
-							<UsageStatisticsChart stats=""/>
+							<UsageStatisticsChart stats={{"statistics": this.props.usageStatistics.textToSpeech}}/>
 						</div>
 
 					</div>
@@ -44,7 +61,7 @@ class UsageStatistics extends React.Component {
 						</div>
 
 						<div className='statistics-card-content'>
-							<UsageStatisticsChart stats=""/>
+							<UsageStatisticsChart stats={{"statistics": this.props.usageStatistics.textProcessor}}/>
 						</div>
 
 					</div>
@@ -55,4 +72,20 @@ class UsageStatistics extends React.Component {
 	}
 }
 
-export default UsageStatistics;
+const mapStateToProps = ({ auth, usageStatistics }) => ({
+	auth, usageStatistics
+});
+
+const mapDispatchToProps = dispatch => ({
+	getSpeechToTextStatistics: () => dispatch(getSpeechToTextStatistics()),
+	getTextToSpeechStatistics: () => dispatch(getTextToSpeechStatistics()),
+	getTextProcessorStatistics: () => dispatch(getTextProcessorStatistics()),
+});
+
+
+export default withRouter(
+	connect(
+		mapStateToProps,
+		mapDispatchToProps
+	)(UsageStatistics)
+);

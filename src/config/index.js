@@ -33,7 +33,10 @@ module.exports = {
 			createUser: '/api/users',
 			deleteUser: id => `/api/users/${id}`,
 			getPrivileges: '/api/privileges',
-			getPermissions: '/api/permissions'
+			getPermissions: '/api/permissions',
+			getSpeechToTextStatistics: '/api/statistics/speechToText',
+			getTextToSpeechStatistics: '/api/statistics/textToSpeech',
+			getTextProcessorStatistics: '/api/statistics/textProcessor'
 		}
 	},
 	baseUrl
