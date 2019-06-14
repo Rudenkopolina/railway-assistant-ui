@@ -55,7 +55,7 @@ class AnswersSections extends React.Component {
 
   drawMoveButton = () => {
     if (this.state.chosenResponses.length > 0) {
-      return (<ChooseCategoryModal onChooseCategory={this.onMove} categories={this.props.categories} />)
+      return (<ChooseCategoryModal onChooseCategory={this.onMove} categories={this.props.categories} chosenResponsesCount={this.state.chosenResponses.length} />);
     }
   };
 

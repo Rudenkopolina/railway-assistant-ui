@@ -31,7 +31,7 @@ class UsageStatistics extends React.Component {
 
 						<div className='statistics-card-title'>
 							<Icon name='microphone' className='statistics-icon' size='small'/>
-							Преобразование голоса в текст
+							Преобразователь голоса в текст, количество запросов:
 						</div>
 
 						<div className='statistics-card-content'>
@@ -44,7 +44,7 @@ class UsageStatistics extends React.Component {
 						<div className='statistics-card-title'>
 
 							<Icon name='content' className='statistics-icon' size='small'/>
-							Преобразование текста в голос
+							Преобразователь текста в голос, количество запросов:
 						</div>
 
 						<div className='statistics-card-content'>
@@ -57,7 +57,7 @@ class UsageStatistics extends React.Component {
 
 						<div className='statistics-card-title'>
 							<Icon name='file alternate outline' className='statistics-icon' size='small'/>
-							Обработчик сообщений
+							Обработчик текстовых сообщений, количество запросов:
 						</div>
 
 						<div className='statistics-card-content'>

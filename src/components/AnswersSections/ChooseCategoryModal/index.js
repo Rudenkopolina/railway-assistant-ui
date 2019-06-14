@@ -12,6 +12,7 @@ class ChooseCategoryModal extends React.Component {
 
   render() {
     const { inputValue } = this.state;
+    const quantity = this.props.chosenResponsesCount;
     return (
       <div className='add-category-button'>
         <Modal
@@ -23,7 +24,7 @@ class ChooseCategoryModal extends React.Component {
           size={'mini'}
           content={
             <div className='modal-wrapper'>
-              <div className='modal-header'>Выберите категорию для перемещения ответов</div>
+              <div className='modal-header'>Выбрано ответов: {quantity}<br/>Выберите категорию для перемещения:</div>
               <Dropdown fluid search selection value={this.state.chosenCategoryId} onChange={(event, data) => this.setState({"chosenCategoryId": data.value})} options={this.props.categories.map(category => ({text: category.category, value: category.id}))} />
             </div>
           }
@@ -49,7 +50,8 @@ class ChooseCategoryModal extends React.Component {
 
 ChooseCategoryModal.propTypes = {
   onChooseCategory: PropTypes.func.isRequired,
-  categories: PropTypes.array.isRequired
+  categories: PropTypes.array.isRequired,
+  chosenResponsesCount: PropTypes.number
 };
 
 export default ChooseCategoryModal;
