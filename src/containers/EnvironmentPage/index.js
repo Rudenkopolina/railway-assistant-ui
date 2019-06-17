@@ -24,18 +24,23 @@ class EnvironmentPage extends React.Component {
 		}
 	};
 
+	drawElement = (environment) => {
+    return (
+			<div className='environment-card'>
+        <Icon name={this.getIconByType(environment.type)} className='environment-icon' size='big'/>
+        <div className='environment-title'>
+          {environment.account.name}
+        </div>
+        <div className='environment-description'>
+          {this.getDescriptionByType(environment)}
+        </div>
+      </div>)
+  };
+
 	drawCards = () => {
-		return(this.props.environment.environment.map((environment, index) => {
-				return <div className='environment-card'>
-									<Icon name={this.getIconByType(environment.type)} className='environment-icon' size='big'/>
-									<div className='environment-title'>
-										{environment.account.name}
-									</div>
-									<div className='environment-description'>
-										{this.getDescriptionByType(environment)}
-									</div>
-							</div>;
-			}));
+    return(this.props.environment.environment.map((environment, index) => {
+      return this.drawElement(environment);
+    }));
 	};
 
 	componentWillMount() {
