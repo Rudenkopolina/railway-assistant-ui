@@ -37,7 +37,8 @@ module.exports = {
 			getPermissions: '/api/permissions',
 			getSpeechToTextStatistics: '/api/statistics/speechToText',
 			getTextToSpeechStatistics: '/api/statistics/textToSpeech',
-			getTextProcessorStatistics: '/api/statistics/textProcessor'
+			getTextProcessorStatistics: '/api/statistics/textProcessor',
+			getEnvironment: '/api/group/environment'
 		}
 	},
 	baseUrl

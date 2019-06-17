@@ -11,6 +11,7 @@ import Account from '../containers/Account/Account';
 import Layout from '../containers/Layout';
 import Users from '../containers/Users/Users';
 import UsageStatistics from '../containers/UsageStatistics/UsageStatistics';
+import EnvironmentPage from "../containers/EnvironmentPage";
 
 function Routes() {
 	return (
@@ -47,6 +48,12 @@ function Routes() {
 				requiredRoles='ALLOWED_USAGE_STATISTICS_VIEWING'
 				path={'/statistics'}
 				component={() => <Layout><UsageStatistics/></Layout>}
+				saveUrlOnFail
+			/>
+
+			<ProtectedRoute
+				path={'/group/environment'}
+				component={() => <Layout><EnvironmentPage/></Layout> }
 				saveUrlOnFail
 			/>
 

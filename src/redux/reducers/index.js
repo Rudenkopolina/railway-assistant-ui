@@ -8,6 +8,7 @@ import responses from './responses';
 import audios from './audios';
 import categories from './categories';
 import usageStatistics from './usageStatistics';
+import environment from './environment';
 
 export default combineReducers({
   auth,
@@ -17,5 +18,6 @@ export default combineReducers({
   privileges,
   audios,
   categories,
-  usageStatistics
+  usageStatistics,
+  environment
 });

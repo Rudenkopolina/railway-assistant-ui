@@ -46,6 +46,10 @@ export const usageStatistics = {
   textProcessor: []
 };
 
+export const environment = {
+  environment: []
+};
+
 export default {
   auth,
   responses,
@@ -54,5 +58,6 @@ export default {
   privileges,
   audios,
   categories,
-  usageStatistics
+  usageStatistics,
+  environment
 };
