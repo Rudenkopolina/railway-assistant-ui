@@ -9,8 +9,9 @@ const pageList = [
 	{ key: '/answers', value: 'Ответы', icon: 'comments outline', requiredRoles: ['ALLOWED_ANSWERS_VIEWING', 'ALLOWED_KNOWLEDGEBASE_VIEWING']},
 	{ key: '/history', value: 'История', icon: 'history', requiredRoles: 'ALLOWED_HISTORY_EDITING'},
 	{ key: '/users', value: 'Сотрудники', icon: 'group', requiredRoles: 'ALLOWED_USERS_CREATION'},
-	{ key: '/statistics', value: 'Статистика использования', icon: 'dashboard', requiredRoles: 'ALLOWED_USAGE_STATISTICS_VIEWING'},
-	{ key: '/group/environment', value: 'Подключённое окружение', icon: 'plug', requiredRoles: ''}
+	{ key: '/statistics', value: 'Статистика использования', icon: 'dashboard', requiredRoles: ['ALLOWED_USAGE_STATISTICS_VIEWING', 'ALLOWED_CONVERSATION_STATISTICS_VIEWING']},
+	{ key: '/group/environment', value: 'Подключённое окружение', icon: 'plug', requiredRoles: ''},
+	{ key: '/logs/conversations', value: 'История разговоров', icon: 'history', requiredRoles: 'ALLOWED_LOGS_VIEWING'},
 ];
 
 class HomePage extends React.Component {

@@ -1,30 +1,32 @@
 import React from 'react';
-import { Icon } from 'semantic-ui-react';
 import { connect } from 'react-redux';
-import Protected from '../../components/common/protected/container';
-import './UsageStatistics.css'
-import UsageStatisticsChart from "../../components/UsageStatisticsChart";
+import './LogsConversations.css'
 import { withRouter } from 'react-router-dom';
 import {
 	getSpeechToTextStatistics,
 	getTextProcessorStatistics,
 	getTextToSpeechStatistics
 } from "../../redux/actions/usageStatistics";
+import cx from "classnames";
+import Filter from "../Answers/Answers";
 
-class UsageStatistics extends React.Component {
+class LogsConversations extends React.Component {
 
 	componentWillMount() {
-		const { user } = this.props.auth;
+		/*const { user } = this.props.auth;
 		if (user.permissions.ALLOWED_USAGE_STATISTICS_VIEWING) {
 			this.props.getSpeechToTextStatistics();
 			this.props.getTextToSpeechStatistics();
 			this.props.getTextProcessorStatistics();
-		}
+		}*/
 	}
 
 	render() {
 		return (
-			<div className='statistics-wrapper container'>
+			<div className='conversations-table-container container'>
+
+			</div>
+			/*<div className='statistics-wrapper container'>
 				<div className='statistics-cards-wrapper'>
 
 					<div className='statistics-card'>
@@ -67,7 +69,7 @@ class UsageStatistics extends React.Component {
 					</div>
 
 				</div>
-			</div>
+			</div>*/
 		);
 	}
 }
@@ -87,5 +89,5 @@ export default withRouter(
 	connect(
 		mapStateToProps,
 		mapDispatchToProps
-	)(UsageStatistics)
+	)(LogsConversations)
 );

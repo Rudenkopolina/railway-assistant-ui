@@ -49,3 +49,35 @@
 .statistics-icon {
   cursor: default;
 }
+
+.statistics-header {
+  display: flex;
+  margin: 0 20px;
+  height: 50px;
+  border-bottom: 2px solid #ececf0;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.statistics-menu {
+  display: flex;
+}
+
+.statistics-menu-item {
+  display: flex;
+  font-size: 18px;
+  margin-right: 20px;
+  margin-bottom: -2px;
+  color: #93a3b8;
+  font-weight: 500;
+  cursor: pointer;
+  padding: 12px 0 0 0;
+}
+
+.statistics-menu-item-active {
+  border-bottom: 2px solid #1a69a4;
+  color: #363f56;
+}
+.element-mb {
+  margin-bottom: 8px;
+}

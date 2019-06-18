@@ -10,8 +10,9 @@ import History from '../containers/History/History';
 import Account from '../containers/Account/Account';
 import Layout from '../containers/Layout';
 import Users from '../containers/Users/Users';
-import UsageStatistics from '../containers/UsageStatistics/UsageStatistics';
+import UsageStatistics from '../containers/Statistics/Statistics';
 import EnvironmentPage from "../containers/EnvironmentPage";
+import LogsConversations from "../containers/LogsConversations/LogsConversations";
 
 function Routes() {
 	return (
@@ -54,6 +55,13 @@ function Routes() {
 			<ProtectedRoute
 				path={'/group/environment'}
 				component={() => <Layout><EnvironmentPage/></Layout> }
+				saveUrlOnFail
+			/>
+
+			<ProtectedRoute
+				requiredRoles='ALLOWED_LOGS_VIEWING'
+				path={'/logs/conversations'}
+				component={() => <Layout><LogsConversations/></Layout>}
 				saveUrlOnFail
 			/>
 

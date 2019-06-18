@@ -10,7 +10,7 @@ class UsageStatisticsChart extends React.Component {
 		const { stats } = this.props;
 		let data = [];
 		stats.statistics.forEach(record => {
-			data.push([record.date, record.records]);
+			data.push([record.date, parseInt(record.records)]);
 		});
 		return (
 			<Chart
@@ -22,8 +22,8 @@ class UsageStatisticsChart extends React.Component {
 					}
 				]}
 				axes={[
-					{ primary: true, type: "ordinal", position: "bottom" },
-					{ type: "linear", position: "left" }
+					{ primary: true, type: "ordinal", position: "bottom"},
+					{ type: "linear", position: "left", scaleIntegersOnly: true,}
 				]}
 				tooltip
 			/>

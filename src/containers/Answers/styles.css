@@ -8,6 +8,7 @@
 .answer-header {
   display: flex;
   margin: 0 20px;
+  height: 50px;
   border-bottom: 2px solid #ececf0;
   justify-content: space-between;
 }

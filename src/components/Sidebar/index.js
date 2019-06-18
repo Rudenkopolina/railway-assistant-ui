@@ -14,7 +14,8 @@ const pageList = [
 	{ key: '/history', value: 'История', icon: 'history', requiredRoles: 'ALLOWED_HISTORY_EDITING'},
 	{ key: '/users', value: 'Сотрудники', icon: 'group', requiredRoles: 'ALLOWED_USERS_CREATION'},
 	{ key: '/statistics', value: 'Статистика использования', icon: 'dashboard', requiredRoles: 'ALLOWED_USAGE_STATISTICS_VIEWING'},
-	{ key: '/group/environment', value: 'Подключённое окружение', icon: 'plug', requiredRoles: ''}
+	{ key: '/group/environment', value: 'Подключённое окружение', icon: 'plug', requiredRoles: ''},
+	{ key: '/logs/conversations', value: 'История разговоров', icon: 'history', requiredRoles: 'ALLOWED_LOGS_VIEWING'}
 ];
 
 class Sidebar extends React.Component {

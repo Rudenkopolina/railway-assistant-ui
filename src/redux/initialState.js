@@ -50,6 +50,11 @@ export const environment = {
   environment: []
 };
 
+export const conversationStatistics = {
+  distinctConversations: [],
+  stepsConversations: []
+};
+
 export default {
   auth,
   responses,
@@ -59,5 +64,6 @@ export default {
   audios,
   categories,
   usageStatistics,
-  environment
+  environment,
+  conversationStatistics
 };

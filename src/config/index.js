@@ -38,6 +38,8 @@ module.exports = {
 			getSpeechToTextStatistics: '/api/statistics/speechToText',
 			getTextToSpeechStatistics: '/api/statistics/textToSpeech',
 			getTextProcessorStatistics: '/api/statistics/textProcessor',
+			getDistinctConversationsStatistics: '/api/statistics/conversations/distinct',
+			getStepsConversationsStatistics: '/api/statistics/conversations/steps',
 			getEnvironment: '/api/group/environment'
 		}
 	},
