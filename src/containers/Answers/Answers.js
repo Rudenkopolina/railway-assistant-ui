@@ -5,6 +5,7 @@ import { withRouter } from 'react-router-dom';
 import AnswersSections from '../../components/AnswersSections';
 import Protected from '../../components/common/protected/container';
 import Filter from './../../components/Filter';
+import {NotificationContainer, NotificationManager} from 'react-notifications';
 import {
   getCommonResponses,
   getReferenceResponses,
@@ -16,6 +17,8 @@ import {
 import {getCategories, createCategory, deleteCategory} from '../../redux/actions/categories';
 
 import './styles.css';
+import request from "../../services/request";
+import {urls} from "../../config";
 
 class Answer extends React.Component {
   state = {
@@ -56,12 +59,24 @@ class Answer extends React.Component {
     this.setState({ activeTab: tab });
   };
 
+  createResponse = async data => {
+    this.props.createResponse(data).then(() => {
+      let lastResponse = this.props.data.reference[this.props.data.reference.length - 1];
+      NotificationManager.info(`Начинается обработка ответа #${lastResponse.id}!`, "Информация");
+      request(urls.responses.checkResponse(lastResponse.id)).then((result) => {
+        if (result.status) {
+          NotificationManager.success(`Ответ #${lastResponse.id} успешно обработан!`, "Успешно");
+        }
+      });
+    });
+  };
+
   getContent = () => {
     const { activeTab, filterString } = this.state;
     const isReferanseTab = activeTab === 'reference';
     const answers = isReferanseTab
       ? this.props.data.reference
-      : this.props.data.common;    
+      : this.props.data.common;
     return (
       <Protected requiredRoles={['ALLOWED_KNOWLEDGEBASE_VIEWING', 'ALLOWED_ANSWERS_VIEWING']}>
         <AnswersSections
@@ -71,7 +86,7 @@ class Answer extends React.Component {
           answers={answers}
           onDeleteAnswer={this.props.onDeleteAnswer}
           changeResponse={this.props.changeResponse}
-          createResponse={this.props.createResponse}
+          createResponse={this.createResponse}
           onCreateCategory={this.props.createCategory}
           onDeleteCategory={this.props.deleteCategory}
           filterString={filterString}

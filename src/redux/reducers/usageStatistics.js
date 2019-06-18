@@ -16,7 +16,7 @@ export default function(state = initialState, action) {
     case GET_SPEECH_TO_TEXT_STATISTICS:
       return {
         ...state,
-        pending: false,
+        pending: true,
         speechToText: []
       };
     case GET_SPEECH_TO_TEXT_STATISTICS_SUCCESS:
@@ -34,7 +34,7 @@ export default function(state = initialState, action) {
     case GET_TEXT_TO_SPEECH_STATISTICS:
       return {
         ...state,
-        pending: false,
+        pending: true,
         textToSpeech: []
       };
     case GET_TEXT_TO_SPEECH_STATISTICS_SUCCESS:

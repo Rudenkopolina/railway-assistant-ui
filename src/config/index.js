@@ -40,7 +40,8 @@ module.exports = {
 			getTextProcessorStatistics: '/api/statistics/textProcessor',
 			getDistinctConversationsStatistics: '/api/statistics/conversations/distinct',
 			getStepsConversationsStatistics: '/api/statistics/conversations/steps',
-			getEnvironment: '/api/group/environment'
+			getEnvironment: '/api/group/environment',
+			checkResponse: id => `/api/text/check/${id}`
 		}
 	},
 	baseUrl
