@@ -37,7 +37,6 @@ class UserCard extends React.Component {
 
   render() {
     const { user } = this.props;
-    console.log(user)
     return (
       <div className='user-card-raw-wrapper'>
         <div className='user-card-content'>

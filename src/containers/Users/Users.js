@@ -121,7 +121,9 @@ class Users extends React.Component {
             /> */}
             <UserModal
               buttonText='Добавить сотрудника' roles={this.props.privileges.privileges}
-              onSave={user => this.props.createUser(user)}
+              onSave={user => {
+                this.props.createUser(user);
+              }}
             />
           </div>
         </div>

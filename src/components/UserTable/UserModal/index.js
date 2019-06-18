@@ -22,8 +22,9 @@ class UserModal extends React.Component {
     this.setState({ data: { ...data, [title]: e.target.value } });
   };
 
-  changeIntent = (event, data) => {
-    this.setState({ data: {...data, privilegeId: data.value }});
+  changeIntent = (event, value) => {
+    const { data } = this.state;
+    this.setState({ data: {...data, privilegeId: value.value }});
   };
 
   onTrigerModal = () => {
