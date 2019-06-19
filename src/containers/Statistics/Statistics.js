@@ -70,11 +70,11 @@ class Statistics extends React.Component {
 									<Table celled>
 										<Table.Body>
 											<Table.Row className='statistics-table-row'>
-												<Table.Cell><div className='statistics-table-first-column-cell'>1 день</div></Table.Cell>
+												<Table.Cell><div className='statistics-table-first-column-cell'>24 часа</div></Table.Cell>
 												<Table.Cell><div className='statistics-table-second-column-cell'>{this.props.conversationStatistics.distinctConversations.oneDay}</div></Table.Cell>
 											</Table.Row>
 											<Table.Row className='statistics-table-row'>
-												<Table.Cell><div className='statistics-table-first-column-cell'>3 дня</div></Table.Cell>
+												<Table.Cell><div className='statistics-table-first-column-cell'>72 часа</div></Table.Cell>
 												<Table.Cell><div className='statistics-table-second-column-cell'>{this.props.conversationStatistics.distinctConversations.threeDays}</div></Table.Cell>
 											</Table.Row>
 											<Table.Row className='statistics-table-row'>
@@ -110,11 +110,11 @@ class Statistics extends React.Component {
 									<Table celled>
 										<Table.Body>
 											<Table.Row className='statistics-table-row'>
-												<Table.Cell><div className='statistics-table-first-column-cell'>1 день</div></Table.Cell>
+												<Table.Cell><div className='statistics-table-first-column-cell'>24 часа</div></Table.Cell>
 												<Table.Cell><div className='statistics-table-second-column-cell'>{this.props.conversationStatistics.stepsConversations.oneDay}</div></Table.Cell>
 											</Table.Row>
 											<Table.Row className='statistics-table-row'>
-												<Table.Cell><div className='statistics-table-first-column-cell'>3 дня</div></Table.Cell>
+												<Table.Cell><div className='statistics-table-first-column-cell'>72 часа</div></Table.Cell>
 												<Table.Cell><div className='statistics-table-second-column-cell'>{this.props.conversationStatistics.stepsConversations.threeDays}</div></Table.Cell>
 											</Table.Row>
 											<Table.Row className='statistics-table-row'>
@@ -149,11 +149,11 @@ class Statistics extends React.Component {
 									<Table celled>
 										<Table.Body>
 											<Table.Row className='statistics-table-row'>
-												<Table.Cell><div className='statistics-table-first-column-cell'>1 день</div></Table.Cell>
+												<Table.Cell><div className='statistics-table-first-column-cell'>24 часа</div></Table.Cell>
 												<Table.Cell><div className='statistics-table-second-column-cell'>{this.props.conversationStatistics.durationConversations.oneDay}</div></Table.Cell>
 											</Table.Row>
 											<Table.Row className='statistics-table-row'>
-												<Table.Cell><div className='statistics-table-first-column-cell'>3 дня</div></Table.Cell>
+												<Table.Cell><div className='statistics-table-first-column-cell'>72 часа</div></Table.Cell>
 												<Table.Cell><div className='statistics-table-second-column-cell'>{this.props.conversationStatistics.durationConversations.threeDays}</div></Table.Cell>
 											</Table.Row>
 											<Table.Row className='statistics-table-row'>
