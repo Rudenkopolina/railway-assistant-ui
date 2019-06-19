@@ -17,7 +17,7 @@ class UsageStatisticsChart extends React.Component {
 				className='usage-statistics-chart-content'
 				data={[
 					{
-						label: "Usages",
+						label: this.props.label,
 						data: data.reverse()
 					}
 				]}
@@ -32,7 +32,8 @@ class UsageStatisticsChart extends React.Component {
 }
 
 UsageStatisticsChart.propTypes = {
-	stats: PropTypes.object.isRequired
+	stats: PropTypes.object.isRequired,
+	label: PropTypes.string.isRequired
 };
 
 export default withRouter(UsageStatisticsChart);

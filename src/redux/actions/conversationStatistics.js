@@ -9,6 +9,10 @@ export const GET_STEPS_CONVERSATIONS_STATISTICS = 'GET_STEPS_CONVERSATIONS_STATI
 export const GET_STEPS_CONVERSATIONS_STATISTICS_SUCCESS = 'GET_STEPS_CONVERSATIONS_STATISTICS_SUCCESS';
 export const GET_STEPS_CONVERSATIONS_STATISTICS_FAIL = 'GET_STEPS_CONVERSATIONS_STATISTICS_FAIL';
 
+export const GET_DURATION_CONVERSATIONS_STATISTICS = 'GET_DURATION_CONVERSATIONS_STATISTICS';
+export const GET_DURATION_CONVERSATIONS_STATISTICS_SUCCESS = 'GET_DURATION_CONVERSATIONS_STATISTICS_SUCCESS';
+export const GET_DURATION_CONVERSATIONS_STATISTICS_FAIL = 'GET_DURATION_CONVERSATIONS_STATISTICS_FAIL';
+
 export function getDistinctConversationsStatistics() {
   return async dispatch => {
     dispatch({
@@ -20,7 +24,13 @@ export function getDistinctConversationsStatistics() {
 
       dispatch({
         type: GET_DISTINCT_CONVERSATIONS_STATISTICS_SUCCESS,
-        distinctConversations: response.statistics
+        distinctConversations: {
+          statistics: response.statistics,
+          oneDay: response.oneDay,
+          threeDays: response.threeDays,
+          fifteenDays: response.fifteenDays,
+          thirtyDays: response.thirtyDays
+        }
       });
     } catch (err) {
       dispatch({
@@ -41,11 +51,44 @@ export function getStepsConversationsStatistics() {
 
       dispatch({
         type: GET_STEPS_CONVERSATIONS_STATISTICS_SUCCESS,
-        stepsConversations: response.statistics
+        stepsConversations: {
+          statistics: response.statistics,
+          oneDay: response.oneDay,
+          threeDays: response.threeDays,
+          fifteenDays: response.fifteenDays,
+          thirtyDays: response.thirtyDays
+        }
       });
     } catch (err) {
       dispatch({
         type: GET_STEPS_CONVERSATIONS_STATISTICS_FAIL
+      });
+    }
+  };
+}
+
+export function getDurationConversationsStatistics() {
+  return async dispatch => {
+    dispatch({
+      type: GET_DURATION_CONVERSATIONS_STATISTICS
+    });
+
+    try {
+      const response = await request(urls.responses.getDurationConversationsStatistics);
+
+      dispatch({
+        type: GET_DURATION_CONVERSATIONS_STATISTICS_SUCCESS,
+        durationConversations: {
+          statistics: response.statistics,
+          oneDay: response.oneDay,
+          threeDays: response.threeDays,
+          fifteenDays: response.fifteenDays,
+          thirtyDays: response.thirtyDays
+        }
+      });
+    } catch (err) {
+      dispatch({
+        type: GET_DURATION_CONVERSATIONS_STATISTICS_FAIL
       });
     }
   };

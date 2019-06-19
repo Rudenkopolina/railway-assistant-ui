@@ -51,8 +51,27 @@ export const environment = {
 };
 
 export const conversationStatistics = {
-  distinctConversations: [],
-  stepsConversations: []
+  distinctConversations: {
+    statistics: [],
+    oneDay: 0,
+    threeDays: 0,
+    fifteenDays: 0,
+    thirtyDays: 0
+  },
+  stepsConversations: {
+    statistics: [],
+    oneDay: 0,
+    threeDays: 0,
+    fifteenDays: 0,
+    thirtyDays: 0
+  },
+  durationConversations: {
+    statistics: [],
+    oneDay: 0,
+    threeDays: 0,
+    fifteenDays: 0,
+    thirtyDays: 0
+  }
 };
 
 export default {

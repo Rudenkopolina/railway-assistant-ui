@@ -1,5 +1,5 @@
 import React from 'react';
-import { Icon } from 'semantic-ui-react';
+import {Icon, Table} from 'semantic-ui-react';
 import { connect } from 'react-redux';
 import Protected from '../../components/common/protected/container';
 import './Statistics.css'
@@ -12,6 +12,7 @@ import {
 } from "../../redux/actions/usageStatistics";
 import {
 	getDistinctConversationsStatistics,
+	getDurationConversationsStatistics,
 	getStepsConversationsStatistics
 } from "../../redux/actions/conversationStatistics";
 import cx from "classnames";
@@ -31,6 +32,7 @@ class Statistics extends React.Component {
 			});
 			this.props.getDistinctConversationsStatistics();
 			this.props.getStepsConversationsStatistics();
+			this.props.getDurationConversationsStatistics();
 		}
 
 		if (user.permissions.ALLOWED_USAGE_STATISTICS_VIEWING) {
@@ -49,6 +51,7 @@ class Statistics extends React.Component {
 
 	getContent = () => {
 		const { activeTab } = this.state;
+		console.log(this.props.conversationStatistics);
 		switch (activeTab) {
 			case 'conversation_statistics':
 				return (
@@ -62,7 +65,34 @@ class Statistics extends React.Component {
 							</div>
 
 							<div className='statistics-card-content'>
-								<UsageStatisticsChart stats={{"statistics": this.props.conversationStatistics.distinctConversations}}/>
+
+								<div className='statistics-card-content-table'>
+									<Table celled>
+										<Table.Body>
+											<Table.Row className='statistics-table-row'>
+												<Table.Cell><div className='statistics-table-first-column-cell'>1 день</div></Table.Cell>
+												<Table.Cell><div className='statistics-table-second-column-cell'>{this.props.conversationStatistics.distinctConversations.oneDay}</div></Table.Cell>
+											</Table.Row>
+											<Table.Row className='statistics-table-row'>
+												<Table.Cell><div className='statistics-table-first-column-cell'>3 дня</div></Table.Cell>
+												<Table.Cell><div className='statistics-table-second-column-cell'>{this.props.conversationStatistics.distinctConversations.threeDays}</div></Table.Cell>
+											</Table.Row>
+											<Table.Row className='statistics-table-row'>
+												<Table.Cell><div className='statistics-table-first-column-cell'>15 дней</div></Table.Cell>
+												<Table.Cell><div className='statistics-table-second-column-cell'>{this.props.conversationStatistics.distinctConversations.fifteenDays}</div></Table.Cell>
+											</Table.Row>
+											<Table.Row className='statistics-table-row'>
+												<Table.Cell><div className='statistics-table-first-column-cell'>30 дней</div></Table.Cell>
+												<Table.Cell><div className='statistics-table-second-column-cell'>{this.props.conversationStatistics.distinctConversations.thirtyDays}</div></Table.Cell>
+											</Table.Row>
+										</Table.Body>
+									</Table>
+								</div>
+
+								<div className='statistics-card-content-diagram'>
+									<UsageStatisticsChart stats={{"statistics": this.props.conversationStatistics.distinctConversations.statistics}} label="Обращений"/>
+								</div>
+
 							</div>
 
 						</div>
@@ -75,7 +105,73 @@ class Statistics extends React.Component {
 							</div>
 
 							<div className='statistics-card-content'>
-								<UsageStatisticsChart stats={{"statistics": this.props.conversationStatistics.stepsConversations}}/>
+
+								<div className='statistics-card-content-table'>
+									<Table celled>
+										<Table.Body>
+											<Table.Row className='statistics-table-row'>
+												<Table.Cell><div className='statistics-table-first-column-cell'>1 день</div></Table.Cell>
+												<Table.Cell><div className='statistics-table-second-column-cell'>{this.props.conversationStatistics.stepsConversations.oneDay}</div></Table.Cell>
+											</Table.Row>
+											<Table.Row className='statistics-table-row'>
+												<Table.Cell><div className='statistics-table-first-column-cell'>3 дня</div></Table.Cell>
+												<Table.Cell><div className='statistics-table-second-column-cell'>{this.props.conversationStatistics.stepsConversations.threeDays}</div></Table.Cell>
+											</Table.Row>
+											<Table.Row className='statistics-table-row'>
+												<Table.Cell><div className='statistics-table-first-column-cell'>15 дней</div></Table.Cell>
+												<Table.Cell><div className='statistics-table-second-column-cell'>{this.props.conversationStatistics.stepsConversations.fifteenDays}</div></Table.Cell>
+											</Table.Row>
+											<Table.Row className='statistics-table-row'>
+												<Table.Cell><div className='statistics-table-first-column-cell'>30 дней</div></Table.Cell>
+												<Table.Cell><div className='statistics-table-second-column-cell'>{this.props.conversationStatistics.stepsConversations.thirtyDays}</div></Table.Cell>
+											</Table.Row>
+										</Table.Body>
+									</Table>
+								</div>
+
+								<div className='statistics-card-content-diagram'>
+									<UsageStatisticsChart stats={{"statistics": this.props.conversationStatistics.stepsConversations.statistics}} label="Шагов"/>
+								</div>
+
+							</div>
+						</div>
+
+						<div className='statistics-card'>
+
+							<div className='statistics-card-title'>
+								<Icon name='clock outline' className='statistics-icon' size='small'/>
+								Средняя длительность обращения:
+							</div>
+
+							<div className='statistics-card-content'>
+
+								<div className='statistics-card-content-table'>
+									<Table celled>
+										<Table.Body>
+											<Table.Row className='statistics-table-row'>
+												<Table.Cell><div className='statistics-table-first-column-cell'>1 день</div></Table.Cell>
+												<Table.Cell><div className='statistics-table-second-column-cell'>{this.props.conversationStatistics.durationConversations.oneDay}</div></Table.Cell>
+											</Table.Row>
+											<Table.Row className='statistics-table-row'>
+												<Table.Cell><div className='statistics-table-first-column-cell'>3 дня</div></Table.Cell>
+												<Table.Cell><div className='statistics-table-second-column-cell'>{this.props.conversationStatistics.durationConversations.threeDays}</div></Table.Cell>
+											</Table.Row>
+											<Table.Row className='statistics-table-row'>
+												<Table.Cell><div className='statistics-table-first-column-cell'>15 дней</div></Table.Cell>
+												<Table.Cell><div className='statistics-table-second-column-cell'>{this.props.conversationStatistics.durationConversations.fifteenDays}</div></Table.Cell>
+											</Table.Row>
+											<Table.Row className='statistics-table-row'>
+												<Table.Cell><div className='statistics-table-first-column-cell'>30 дней</div></Table.Cell>
+												<Table.Cell><div className='statistics-table-second-column-cell'>{this.props.conversationStatistics.durationConversations.thirtyDays}</div></Table.Cell>
+											</Table.Row>
+										</Table.Body>
+									</Table>
+								</div>
+
+								<div className='statistics-card-content-diagram'>
+									<UsageStatisticsChart stats={{"statistics": this.props.conversationStatistics.durationConversations.statistics}} label="Секунд"/>
+								</div>
+
 							</div>
 
 						</div>
@@ -94,7 +190,9 @@ class Statistics extends React.Component {
 							</div>
 
 							<div className='statistics-card-content'>
-								<UsageStatisticsChart stats={{"statistics": this.props.usageStatistics.speechToText}}/>
+
+								<UsageStatisticsChart stats={{"statistics": this.props.usageStatistics.speechToText}} label="Запросов"/>
+
 							</div>
 
 						</div>
@@ -107,7 +205,9 @@ class Statistics extends React.Component {
 							</div>
 
 							<div className='statistics-card-content'>
-								<UsageStatisticsChart stats={{"statistics": this.props.usageStatistics.textToSpeech}}/>
+
+								<UsageStatisticsChart stats={{"statistics": this.props.usageStatistics.textToSpeech}} label="Запросов"/>
+
 							</div>
 
 						</div>
@@ -120,9 +220,10 @@ class Statistics extends React.Component {
 							</div>
 
 							<div className='statistics-card-content'>
-								<UsageStatisticsChart stats={{"statistics": this.props.usageStatistics.textProcessor}}/>
-							</div>
 
+								<UsageStatisticsChart stats={{"statistics": this.props.usageStatistics.textProcessor}} label="Запросов"/>
+
+							</div>
 						</div>
 
 					</Protected>
@@ -173,7 +274,8 @@ const mapDispatchToProps = dispatch => ({
 	getTextToSpeechStatistics: () => dispatch(getTextToSpeechStatistics()),
 	getTextProcessorStatistics: () => dispatch(getTextProcessorStatistics()),
 	getDistinctConversationsStatistics: () => dispatch(getDistinctConversationsStatistics()),
-	getStepsConversationsStatistics: () => dispatch(getStepsConversationsStatistics())
+	getStepsConversationsStatistics: () => dispatch(getStepsConversationsStatistics()),
+	getDurationConversationsStatistics: () => dispatch(getDurationConversationsStatistics())
 });
 
 

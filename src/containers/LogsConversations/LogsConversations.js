@@ -7,8 +7,7 @@ import {
 	getTextProcessorStatistics,
 	getTextToSpeechStatistics
 } from "../../redux/actions/usageStatistics";
-import cx from "classnames";
-import Filter from "../Answers/Answers";
+import {Icon, Label, Menu, Table} from 'semantic-ui-react'
 
 class LogsConversations extends React.Component {
 
@@ -21,10 +20,29 @@ class LogsConversations extends React.Component {
 		}*/
 	}
 
+	handlePageChange() {
+		console.log("changed");
+	}
+
 	render() {
 		return (
 			<div className='conversations-table-container container'>
-
+				<Table celled>
+					<Table.Header>
+						<Table.Row>
+							<Table.HeaderCell>Дата</Table.HeaderCell>
+							<Table.HeaderCell>Сессия</Table.HeaderCell>
+							<Table.HeaderCell>Шагов</Table.HeaderCell>
+						</Table.Row>
+					</Table.Header>
+					<Table.Body>
+						<Table.Row>
+							<Table.Cell>2019-06-18</Table.Cell>
+							<Table.Cell>fsadf23</Table.Cell>
+							<Table.Cell>16</Table.Cell>
+						</Table.Row>
+					</Table.Body>
+				</Table>
 			</div>
 			/*<div className='statistics-wrapper container'>
 				<div className='statistics-cards-wrapper'>

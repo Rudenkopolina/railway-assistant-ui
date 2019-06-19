@@ -22,6 +22,7 @@
   display: flex;
   justify-content: left;
   align-items: center;
+  width: 100%;
 }
 
 .statistics-title {
@@ -40,10 +41,33 @@
   width: 97%;
 }
 
-
 .statistics-card-content {
+  display: flex;
+  flex-direction: row;
   width: 100%;
   height: calc(100% - 25px);
+}
+
+.statistics-card-content-table {
+  width: 30%;
+  height: 100%;
+}
+
+.statistics-card-content-diagram {
+  width: 70%;
+  height: 100%;
+}
+
+.statistics-table-first-column-cell {
+  text-align: center;
+}
+
+.statistics-table-second-column-cell {
+  text-align: center;
+}
+
+.statistics-table-row {
+  height: 63.75px;
 }
 
 .statistics-icon {
