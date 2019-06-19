@@ -48,18 +48,44 @@ class ProtectedContainerComponent extends Component {
   userIsAuthorized() {
     const currentUser = this.props.auth.user;
     let { requiredRoles } = this.props;
+    let { requiredAnyRoles } = this.props;
 
-    if (!requiredRoles) {
+    //If nothing is provided.
+    if (!requiredRoles && !requiredAnyRoles) {
       return true;
     }
-    if (!Array.isArray(requiredRoles)) {
-      requiredRoles = [requiredRoles];
+
+    if (!requiredRoles && requiredAnyRoles) {
+
+      if (!Array.isArray(requiredAnyRoles)) {
+        requiredAnyRoles = [requiredAnyRoles];
+      }
+
+      let result = false;
+      requiredAnyRoles.forEach(item => {
+        if (currentUser.permissions[item]) {
+          result = true;
+        }
+      });
+
+      return result;
+
+    } else {
+
+      if (!Array.isArray(requiredRoles)) {
+        requiredRoles = [requiredRoles];
+      }
+
+      let result = true;
+      requiredRoles.forEach(item => {
+        if (!currentUser.permissions[item]) {
+           result = false;
+        }
+      });
+
+      return result;
+
     }
-    let result = false;
-    requiredRoles.forEach(item => {
-      result = result || currentUser.permissions[item];
-    })
-    return result;
   }
 
   renderLoadingIndicator() {

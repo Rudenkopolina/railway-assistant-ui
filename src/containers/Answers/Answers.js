@@ -78,7 +78,7 @@ class Answer extends React.Component {
       ? this.props.data.reference
       : this.props.data.common;
     return (
-      <Protected requiredRoles={['ALLOWED_KNOWLEDGEBASE_VIEWING', 'ALLOWED_ANSWERS_VIEWING']}>
+      <Protected requiredAnyRoles={['ALLOWED_KNOWLEDGEBASE_VIEWING', 'ALLOWED_ANSWERS_VIEWING']}>
         <AnswersSections
           categories={this.props.categories.categories}
           title={activeTab}

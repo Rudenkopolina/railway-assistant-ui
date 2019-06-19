@@ -10,10 +10,10 @@ import './styles.css'
 const pageList = [
 	{ key: '/', value: 'Домашняя страница', icon: 'home', requiredRoles: ''},
 	{ key: '/account', value: 'Профиль', icon: 'user outline', requiredRoles: ''},
-	{ key: '/answers', value: 'Ответы', icon: 'comments outline', requiredRoles: ['ALLOWED_ANSWERS_VIEWING', 'ALLOWED_KNOWLEDGEBASE_VIEWING']},
+	{ key: '/answers', value: 'Ответы', icon: 'comments outline', requiredAnyRoles: ['ALLOWED_ANSWERS_VIEWING', 'ALLOWED_KNOWLEDGEBASE_VIEWING']},
 	{ key: '/history', value: 'История', icon: 'history', requiredRoles: 'ALLOWED_HISTORY_EDITING'},
 	{ key: '/users', value: 'Сотрудники', icon: 'group', requiredRoles: 'ALLOWED_USERS_CREATION'},
-	{ key: '/statistics', value: 'Статистика использования', icon: 'dashboard', requiredRoles: 'ALLOWED_USAGE_STATISTICS_VIEWING'},
+	{ key: '/statistics', value: 'Статистика использования', icon: 'dashboard', requiredAnyRoles: ['ALLOWED_USAGE_STATISTICS_VIEWING', 'ALLOWED_CONVERSATION_STATISTICS_VIEWING']},
 	{ key: '/group/environment', value: 'Подключённое окружение', icon: 'plug', requiredRoles: ''},
 	{ key: '/logs/conversations', value: 'История разговоров', icon: 'history', requiredRoles: 'ALLOWED_LOGS_VIEWING'}
 ];
@@ -24,7 +24,7 @@ class Sidebar extends React.Component {
 		return (
 			<div className='sidebar-wrapper'>
 				{pageList.map(item =>
-					<Protected requiredRoles={item.requiredRoles} key={item.key}>
+					<Protected requiredRoles={item.requiredRoles} requiredAnyRoles={item.requiredAnyRoles} key={item.key}>
 						<Link to={item.key} className={cx({ 'sidebar-active-item': title === item.key })}>
 							<Popup
 								content={item.value}

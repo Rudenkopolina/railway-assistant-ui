@@ -2,10 +2,10 @@ import React from 'react';
 import { Route } from 'react-router-dom';
 import Protected from '../container';
 
-function ProtectedRouteComponent({ component: Component, requiredRoles, ...props }) {
+function ProtectedRouteComponent({ component: Component, requiredRoles, requiredAnyRoles, ...props }) {
   return (
     <Route {...props} render={() => (
-      <Protected requiredRoles={requiredRoles} saveUrlOnFail redirectOnFail="/login">
+      <Protected requiredRoles={requiredRoles} requiredAnyRoles={requiredAnyRoles} saveUrlOnFail redirectOnFail="/login">
         <Component {...props} />
       </Protected>
     )} />

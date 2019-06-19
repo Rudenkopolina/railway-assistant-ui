@@ -46,7 +46,7 @@ function Routes() {
 			/>
 
 			<ProtectedRoute
-				requiredRoles='ALLOWED_USAGE_STATISTICS_VIEWING'
+				requiredAnyRoles={['ALLOWED_USAGE_STATISTICS_VIEWING', 'ALLOWED_CONVERSATION_STATISTICS_VIEWING']}
 				path={'/statistics'}
 				component={() => <Layout><UsageStatistics/></Layout>}
 				saveUrlOnFail
