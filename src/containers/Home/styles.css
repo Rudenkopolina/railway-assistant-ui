@@ -1,8 +1,11 @@
 .home-wrapper {
-  width: 100%;
+  width: 70%;
+}
+
+.home {
   display: flex;
+  align-items: center;
   flex-direction: column;
-  padding: 100px;
 }
 
 .card {
@@ -15,7 +18,7 @@
   display: flex;
   align-items: center;
   flex-direction: column;
-  color: #cbd0d7;
+  color: #a8adb4;
   box-shadow: 0px 0px 20px 0px #c4c7ca42;
 }
 

@@ -17,18 +17,20 @@ const pageList = [
 class HomePage extends React.Component {
 	render() {
 		return (
-			<div className='home-wrapper container'>
-				<div className='cards-wrapper'>
-					{pageList.map(item =>
-						<Protected requiredRoles={item.requiredRoles} key={item.key}>
-							<Link to={item.key}>
-								<div className='card'>
-								<Icon name={item.icon} className='home-icon' size='big'/>
-									{item.value}
-								</div>
-							</Link>
-						</Protected>
-					)}
+			<div className='home container'>
+				<div className='home-wrapper'>
+					<div className='cards-wrapper'>
+						{pageList.map(item =>
+							<Protected requiredRoles={item.requiredRoles} key={item.key}>
+								<Link to={item.key}>
+									<div className='card'>
+										<Icon name={item.icon} className='home-icon' size='big'/>
+										{item.value}
+									</div>
+								</Link>
+							</Protected>
+						)}
+					</div>
 				</div>
 			</div>
 		);
