@@ -74,6 +74,11 @@ export const conversationStatistics = {
   }
 };
 
+export const conversationLogs = {
+  conversations: [],
+  pages: 0
+};
+
 export default {
   auth,
   responses,
@@ -84,5 +89,6 @@ export default {
   categories,
   usageStatistics,
   environment,
-  conversationStatistics
+  conversationStatistics,
+  conversationLogs
 };

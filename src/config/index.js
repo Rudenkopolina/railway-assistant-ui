@@ -42,7 +42,9 @@ module.exports = {
 			getStepsConversationsStatistics: '/api/statistics/conversations/steps',
 			getDurationConversationsStatistics: '/api/statistics/conversations/duration',
 			getEnvironment: '/api/group/environment',
-			checkResponse: id => `/api/text/check/${id}`
+			checkResponse: id => `/api/text/check/${id}`,
+			getConversations: (id, initDate) => `/api/logs/conversations?page=${id}&from=${initDate}`,
+			getConversationsPages: '/api/logs/conversations_pages'
 		}
 	},
 	baseUrl
