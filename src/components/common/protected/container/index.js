@@ -50,43 +50,49 @@ class ProtectedContainerComponent extends Component {
     let { requiredRoles } = this.props;
     let { requiredAnyRoles } = this.props;
 
-    //If nothing is provided.
+    //If no required roles were provided.
     if (!requiredRoles && !requiredAnyRoles) {
       return true;
     }
 
     if (!requiredRoles && requiredAnyRoles) {
-
-      if (!Array.isArray(requiredAnyRoles)) {
-        requiredAnyRoles = [requiredAnyRoles];
-      }
-
-      let result = false;
-      requiredAnyRoles.forEach(item => {
-        if (currentUser.permissions[item]) {
-          result = true;
-        }
-      });
-
-      return result;
-
+      return this.checkPossibleRoles(currentUser.permissions, requiredAnyRoles);
     } else {
-
-      if (!Array.isArray(requiredRoles)) {
-        requiredRoles = [requiredRoles];
-      }
-
-      let result = true;
-      requiredRoles.forEach(item => {
-        if (!currentUser.permissions[item]) {
-           result = false;
-        }
-      });
-
-      return result;
-
+      return this.checkRequiredRoles(currentUser.permissions, requiredRoles);
     }
   }
+
+  checkRequiredRoles = (usersPermissions, requiredPermissions) => {
+
+    if (!Array.isArray(requiredPermissions)) {
+      requiredPermissions = [requiredPermissions];
+    }
+
+    let result = true;
+    requiredPermissions.forEach(item => {
+      if (!usersPermissions[item]) {
+        result = false;
+      }
+    });
+
+    return result;
+  };
+
+  checkPossibleRoles = (usersPermissions, possiblePermissions) => {
+
+    if (!Array.isArray(possiblePermissions)) {
+      possiblePermissions = [possiblePermissions];
+    }
+
+    let result = false;
+    possiblePermissions.forEach(item => {
+      if (usersPermissions[item]) {
+        result = true;
+      }
+    });
+
+    return result;
+  };
 
   renderLoadingIndicator() {
     return (
