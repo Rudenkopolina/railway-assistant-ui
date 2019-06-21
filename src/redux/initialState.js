@@ -76,7 +76,8 @@ export const conversationStatistics = {
 
 export const conversationLogs = {
   conversations: [],
-  pages: 0
+  pages: 0,
+  selectedConversationMessages: []
 };
 
 export default {

@@ -5,7 +5,7 @@ import { withRouter } from 'react-router-dom';
 import AnswersSections from '../../components/AnswersSections';
 import Protected from '../../components/common/protected/container';
 import Filter from './../../components/Filter';
-import {NotificationContainer, NotificationManager} from 'react-notifications';
+import { NotificationManager } from 'react-notifications';
 import {
   getCommonResponses,
   getReferenceResponses,
@@ -14,7 +14,7 @@ import {
   createResponse,
   moveResponsesToCategory
 } from '../../redux/actions/responses';
-import {getCategories, createCategory, deleteCategory} from '../../redux/actions/categories';
+import { getCategories, createCategory, deleteCategory } from '../../redux/actions/categories';
 
 import './styles.css';
 import request from "../../services/request";

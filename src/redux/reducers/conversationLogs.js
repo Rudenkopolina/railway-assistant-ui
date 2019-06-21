@@ -5,7 +5,10 @@ import {
   GET_CONVERSATIONS_PAGES_FAIL,
   GET_CONVERSATIONS_PAGES_SUCCESS,
   GET_CONVERSATIONS_SUCCESS,
-  GET_CONVERSATIONS_PAGES
+  GET_CONVERSATIONS_PAGES,
+  GET_CONVERSATIONS_MESSAGES,
+  GET_CONVERSATIONS_MESSAGES_SUCCESS,
+  GET_CONVERSATIONS_MESSAGES_FAIL
 } from "../actions/conversationLogs";
 
 export default function(state = initialState, action) {
@@ -44,6 +47,24 @@ export default function(state = initialState, action) {
         ...state,
         pending: false,
         pages: 0
+      };
+    case GET_CONVERSATIONS_MESSAGES:
+      return {
+        ...state,
+        pending: true,
+        selectedConversationMessages: []
+      };
+    case GET_CONVERSATIONS_MESSAGES_SUCCESS:
+      return {
+        ...state,
+        pending: false,
+        selectedConversationMessages: action.selectedConversationMessages
+      };
+    case GET_CONVERSATIONS_MESSAGES_FAIL:
+      return {
+        ...state,
+        pending: false,
+        selectedConversationMessages: []
       };
 
     default:

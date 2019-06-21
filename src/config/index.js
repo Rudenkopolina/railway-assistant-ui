@@ -1,4 +1,4 @@
-const baseUrl = process && process.env.REACT_APP_BASE_API_URL || 'http://172.16.6.253:1000';
+const baseUrl = process.env.REACT_APP_BASE_API_URL ? process.env.REACT_APP_BASE_API_URL : 'http://172.16.6.253:1000';
 
 module.exports = {
 	urls: {
@@ -14,13 +14,11 @@ module.exports = {
 			updateReferenceResponse: (id) => `/api/answers/reference_responses/${id}`,
 			audioUrl: (title, id) => {
 				const token = localStorage.getItem('jwtToken');
-				const encoded = encodeURI(`${baseUrl}/api/answers/${title}_responses/${id}/audio/${token.substring(1, token.length - 1)}`);
-				return encoded;
+        return encodeURI(`${baseUrl}/api/answers/${title}_responses/${id}/audio/${token.substring(1, token.length - 1)}`);
 			},
 			newAudioUrl: text => {
 				const token = localStorage.getItem('jwtToken');
-				const encoded = encodeURI(`${baseUrl}/api/speech/textToSpeech?text=${text}&token=${token.substring(1, token.length - 1)}`);
-				return encoded;
+        return encodeURI(`${baseUrl}/api/speech/textToSpeech?text=${text}&token=${token.substring(1, token.length - 1)}`);
 			},
 			createReferenceResponse: '/api/answers/reference_responses',
 			getReferenceResponse: id => `/api/answers/reference_responses/${id}`,
@@ -44,7 +42,8 @@ module.exports = {
 			getEnvironment: '/api/group/environment',
 			checkResponse: id => `/api/text/check/${id}`,
 			getConversations: (id, initDate) => `/api/logs/conversations?page=${id}&from=${initDate}`,
-			getConversationsPages: '/api/logs/conversations_pages'
+			getConversationsPages: '/api/logs/conversations_pages',
+			getConversationsMessages: (session) => `/api/logs/conversations/${session}`
 		}
 	},
 	baseUrl

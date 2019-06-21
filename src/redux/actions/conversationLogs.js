@@ -9,6 +9,10 @@ export const GET_CONVERSATIONS_PAGES = 'GET_CONVERSATIONS_PAGES';
 export const GET_CONVERSATIONS_PAGES_SUCCESS = 'GET_CONVERSATIONS_PAGES_SUCCESS';
 export const GET_CONVERSATIONS_PAGES_FAIL = 'GET_CONVERSATIONS_PAGES_FAIL';
 
+export const GET_CONVERSATIONS_MESSAGES = 'GET_CONVERSATIONS_MESSAGES_PAGES';
+export const GET_CONVERSATIONS_MESSAGES_SUCCESS = 'GET_CONVERSATIONS_MESSAGES_SUCCESS';
+export const GET_CONVERSATIONS_MESSAGES_FAIL = 'GET_CONVERSATIONS_MESSAGES_FAIL';
+
 export function getConversations(id, initDate) {
   return async dispatch => {
     dispatch({
@@ -46,6 +50,27 @@ export function getConversationsPages() {
     } catch (err) {
       dispatch({
         type: GET_CONVERSATIONS_PAGES_FAIL
+      });
+    }
+  };
+}
+
+export function getConversationsMessages(session) {
+  return async dispatch => {
+    dispatch({
+      type: GET_CONVERSATIONS_MESSAGES
+    });
+
+    try {
+      const response = await request(urls.responses.getConversationsMessages(session));
+
+      dispatch({
+        type: GET_CONVERSATIONS_MESSAGES_SUCCESS,
+        selectedConversationMessages: response.logs
+      });
+    } catch (err) {
+      dispatch({
+        type: GET_CONVERSATIONS_MESSAGES_FAIL
       });
     }
   };

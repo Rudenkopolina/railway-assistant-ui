@@ -14,7 +14,7 @@ const permissions = [
 class RoleCard extends React.Component {
   state = {
     role: this.props.role,
-  }
+  };
 
   renderActions = () => {
     const { permissions } = this.props.role;
@@ -33,7 +33,7 @@ class RoleCard extends React.Component {
       </div>
     </div>
     )
-  }
+  };
 
   handleCheckbox = value => {
     let newPermissions = this.state.role.permissions;
@@ -43,7 +43,7 @@ class RoleCard extends React.Component {
       newPermissions = [...newPermissions, value];
     }
     this.setState({ role: {...this.state.role, permissions: newPermissions}});
-  }
+  };
 
   render() {
     const { role } = this.props;
@@ -73,6 +73,6 @@ class RoleCard extends React.Component {
 RoleCard.propTypes = {
   role: PropTypes.object.isRequired,
   onSave: PropTypes.func.isRequired
-}
+};
 
 export default RoleCard;

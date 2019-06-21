@@ -1,5 +1,5 @@
 import React from 'react';
-import {Link, withRouter} from 'react-router-dom';
+import {withRouter} from 'react-router-dom';
 import './styles.css'
 import {connect} from "react-redux";
 import {getEnvironment} from "../../redux/actions/environment";
@@ -24,22 +24,18 @@ class EnvironmentPage extends React.Component {
 		}
 	};
 
-	drawElement = (environment) => {
-    return (
-			<div className='environment-card'>
-        <Icon name={this.getIconByType(environment.type)} className='environment-icon' size='big'/>
-        <div className='environment-title'>
-          {environment.account.name}
-        </div>
-        <div className='environment-description'>
-          {this.getDescriptionByType(environment)}
-        </div>
-      </div>)
-  };
-
 	drawCards = () => {
     return(this.props.environment.environment.map((environment, index) => {
-      return this.drawElement(environment);
+			return (
+				<div key={index} className='environment-card'>
+					<Icon name={this.getIconByType(environment.type)} className='environment-icon' size='big'/>
+					<div className='environment-title'>
+						{environment.account.name}
+					</div>
+					<div className='environment-description'>
+						{this.getDescriptionByType(environment)}
+					</div>
+				</div>);
     }));
 	};
 

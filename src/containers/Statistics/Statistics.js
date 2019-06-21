@@ -51,7 +51,6 @@ class Statistics extends React.Component {
 
 	getContent = () => {
 		const { activeTab } = this.state;
-		console.log(this.props.conversationStatistics);
 		switch (activeTab) {
 			case 'conversation_statistics':
 				return (

@@ -141,7 +141,7 @@ export function moveResponsesToCategory(categoryId, responseIds) {
     });
 
     try {
-      const response = await request(urls.responses.moveToCategory(categoryId), {
+      await request(urls.responses.moveToCategory(categoryId), {
         method: 'POST',
         body: { "responseIds": responseIds }
       });

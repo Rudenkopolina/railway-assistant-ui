@@ -28,7 +28,7 @@ class AnswersSections extends React.Component {
   }
 
   setCategory = categoryId => {
-    if (categoryId != this.state.activeTab) {
+    if (categoryId !== this.state.activeTab) {
       this.setState({"chosenResponses": []});
       this.setState({
         activeTab: categoryId

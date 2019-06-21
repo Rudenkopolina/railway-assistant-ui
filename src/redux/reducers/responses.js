@@ -45,7 +45,7 @@ export default function (state = initialState, action) {
     const title = `${action.title}Responses`;
     const changedResponses = state[title].map(item => (
       item.id === action.response.id ? action.response : item
-    ))
+    ));
     return {
       ...state,
       pending: false,
@@ -82,7 +82,7 @@ export default function (state = initialState, action) {
     };
   case MOVE_CATEGORIES_SUCCESS:
     state.referenceResponses.forEach(res => {
-      if (action.movedResponseIds.find((el) => el == res.id)) {
+      if (action.movedResponseIds.find((el) => parseInt(el) === parseInt(res.id))) {
         res.categoryId = action.categoryId;
       }
     });

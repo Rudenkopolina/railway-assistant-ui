@@ -4,17 +4,23 @@ import './LogsConversations.css'
 import { withRouter } from 'react-router-dom';
 import moment from "moment";
 import {
-	getConversations,
-	getConversationsPages
+  getConversations,
+  getConversationsMessages,
+  getConversationsPages
 } from "../../redux/actions/conversationLogs";
+import ConversationsTable from "../../components/ConversationsTable";
+import ConversationModal from "../../components/ConversationsTable/ConversationModal";
 
 class LogsConversations extends React.Component {
+
 	constructor(props) {
 		super(props);
 		this.state = {
-			currentPage: 1,
-			activationTimestamp: moment().utc().format("YYYY-MM-DD HH:mm:ss")
-		};
+      currentPage: 1,
+      activationTimestamp: moment().utc().format("YYYY-MM-DD HH:mm:ss"),
+      visibleModal: false,
+      selectedConversation: {}
+    };
 	}
 
 	componentWillMount() {
@@ -24,54 +30,44 @@ class LogsConversations extends React.Component {
 			this.props.conversationLogs.conversations = [];
 			this.props.getConversations(this.state.currentPage, this.state.activationTimestamp);
 			this.props.getConversationsPages();
+      this.props.getConversationsMessages("8bb4601f-d93e-4a5a-86eb-6e4b77ac1016");
 		}
 	}
 
 	onMoreClick = () => {
-		this.props.getConversations(++this.state.currentPage, this.state.activationTimestamp);
+		this.props.getConversations(this.state.currentPage + 1, this.state.activationTimestamp);
+		this.setState({currentPage: this.state.currentPage + 1});
 	};
 
-	drawMoreButton = () => {
-		if (this.state.currentPage < this.props.conversationLogs.pages) {
-			return (
-				<tfoot>
-				<tr>
-					<th colSpan="4">
-						<div className='block-pagination'>
-							<button className="ui right labeled icon button" onClick={this.onMoreClick}>
-								<i className="right arrow icon"></i>Загрузить ещё
-							</button>
-						</div>
-					</th>
-				</tr>
-				</tfoot>)
-		}
-	};
+	onConversationClick = (item) => {
+	  this.props.getConversationsMessages(item.session);
+	  this.setState({visibleModal: true});
+    this.setState({
+      selectedConversation: item
+    });
+  };
+
+	onModalClose = () => {
+    this.setState({visibleModal: false});
+    this.setState({selectedConversation: {}});
+  };
 
 	render() {
 		return (
 			<div className='conversations-table-container container'>
-				<table className="ui celled padded table">
-					<thead>
-					<tr>
-						<th><div className="cell-header">Дата начала</div></th>
-						<th><div className="cell-header">Дата конца</div></th>
-						<th><div className="cell-header">Сессия</div></th>
-						<th><div className="cell-header">Количество шагов</div></th>
-					</tr>
-					</thead>
-					<tbody>
-						{this.props.conversationLogs.conversations.map(conversation => {
-							return (<tr>
-								<td><div className="cell-body">{(moment(conversation.timestamp_start)).format('DD.MM.YYYY HH:mm:ss')}</div></td>
-								<td><div className="cell-body">{(moment(conversation.timestamp_end)).format('DD.MM.YYYY HH:mm:ss')}</div></td>
-								<td><div className="cell-body">{conversation.session}</div></td>
-								<td><div className="cell-body">{conversation.iterations}</div></td>
-							</tr>)
-						})}
-					</tbody>
-					{this.drawMoreButton()}
-				</table>
+        <ConversationModal
+          conversation={this.state.selectedConversation}
+          messages={this.props.conversationLogs.selectedConversationMessages}
+          visible={this.state.visibleModal}
+          onModalClose={this.onModalClose}
+        />
+        <ConversationsTable
+          conversations={this.props.conversationLogs.conversations}
+          currentPage={this.state.currentPage}
+          pages={this.props.conversationLogs.pages}
+          onConversationClick={this.onConversationClick}
+          onMoreClick={this.onMoreClick}
+        />
 			</div>
 		);
 	}
@@ -83,7 +79,8 @@ const mapStateToProps = ({ auth, conversationLogs }) => ({
 
 const mapDispatchToProps = dispatch => ({
 	getConversations: (id, initDate) => dispatch(getConversations(id, initDate)),
-	getConversationsPages: () => dispatch(getConversationsPages())
+	getConversationsPages: () => dispatch(getConversationsPages()),
+  getConversationsMessages: (session) => dispatch(getConversationsMessages(session))
 });
 
 

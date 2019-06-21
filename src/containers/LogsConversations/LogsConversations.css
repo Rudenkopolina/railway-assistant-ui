@@ -5,21 +5,3 @@
   padding: 20px;
   box-sizing: content-box;
 }
-
-.cell-header {
-  font-weight: bold;
-  text-align: center;
-  vertical-align: center;
-}
-
-.cell-body {
-  text-align: center;
-  vertical-align: center;
-}
-
-.block-pagination {
-  display: flex;
-  justify-content: flex-end;
-  width: 100%;
-  height: 35px;
-}
