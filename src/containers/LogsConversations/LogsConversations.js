@@ -21,14 +21,14 @@ class LogsConversations extends React.Component {
 		const { user } = this.props.auth;
 
 		if (user.permissions.ALLOWED_LOGS_VIEWING) {
+			this.props.conversationLogs.conversations = [];
 			this.props.getConversations(this.state.currentPage, this.state.activationTimestamp);
 			this.props.getConversationsPages();
 		}
 	}
 
 	onMoreClick = () => {
-		this.state.currentPage = this.state.currentPage + 1;
-		this.props.getConversations(this.state.currentPage, this.state.activationTimestamp);
+		this.props.getConversations(++this.state.currentPage, this.state.activationTimestamp);
 	};
 
 	drawMoreButton = () => {
