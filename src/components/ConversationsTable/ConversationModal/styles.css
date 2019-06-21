@@ -43,7 +43,7 @@
   justify-content: flex-end;
 }
 
-.message {
+.message-conversation {
   width: 350px;
   height: 100%;
   font-size: 18px;
@@ -51,12 +51,12 @@
   font-weight: 900;
 }
 
-.message-user {
+.message-conversation-user {
   margin: 1px;
   text-align: left;
 }
 
-.message-system {
+.message-conversation-system {
   margin: 1px;
   text-align: right;
 }

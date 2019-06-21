@@ -17,8 +17,8 @@ class ConversationModal extends React.Component {
             {this.props.messages.map((message, index) => {
               return (
                 <div key={index}>
-                  <div className='line'><div className='message message-user'>{message.requestText}</div></div>
-                  <div className='line'><div className='message message-system'>{message.responseText}</div></div>
+                  <div className='line'><div className='message-conversation message-conversation-user'>{message.requestText}</div></div>
+                  <div className='line'><div className='message-conversation message-conversation-system'>{message.responseText}</div></div>
                 </div>
               );
             })}
