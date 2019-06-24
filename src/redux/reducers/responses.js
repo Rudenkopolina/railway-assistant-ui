@@ -114,21 +114,27 @@ export default function (state = initialState, action) {
     };
 
   case RESPONSE_PING:
-    state.referenceResponses[state.referenceResponses.findIndex(value => value.id === action.id)].updating = true;
+    if (state.referenceResponses[state.referenceResponses.findIndex(value => value.id === action.id)]) {
+      state.referenceResponses[state.referenceResponses.findIndex(value => value.id === action.id)].updating = true;
+    }
     return {
       ...state,
       pending: false,
       referenceResponses: state.referenceResponses
     };
   case RESPONSE_PING_SUCCESS:
-    state.referenceResponses[state.referenceResponses.findIndex(value => value.id === action.id)].updating = false;
+    if (state.referenceResponses[state.referenceResponses.findIndex(value => value.id === action.id)]) {
+      state.referenceResponses[state.referenceResponses.findIndex(value => value.id === action.id)].updating = false;
+    }
     return {
       ...state,
       pending: false,
       referenceResponses: state.referenceResponses
     };
   case RESPONSE_PING_FAIL:
-    state.referenceResponses[state.referenceResponses.findIndex(value => value.id === action.id)].updating = false;
+    if (state.referenceResponses[state.referenceResponses.findIndex(value => value.id === action.id)]) {
+      state.referenceResponses[state.referenceResponses.findIndex(value => value.id === action.id)].updating = false;
+    }
     return {
       ...state,
       pending: false,
