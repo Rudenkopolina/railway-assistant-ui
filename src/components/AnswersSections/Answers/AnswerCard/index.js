@@ -56,6 +56,7 @@ class AnswerCard extends React.Component {
   };
 
   renderDelete = () => {
+    if (this.props.title === 'common') return (<div/>);
     const {answer, onDeleteAnswer} = this.props;
     return (
       <div className='answer-action'>
