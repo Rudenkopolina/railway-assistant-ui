@@ -25,6 +25,10 @@ export const MOVE_CATEGORIES = 'MOVE_CATEGORIES';
 export const MOVE_CATEGORIES_SUCCESS = 'MOVE_CATEGORIES_SUCCESS';
 export const MOVE_CATEGORIES_FAIL = 'MOVE_CATEGORIES_FAIL';
 
+export const RESPONSE_PING = 'RESPONSE_PING';
+export const RESPONSE_PING_SUCCESS = 'RESPONSE_PING_SUCCESS';
+export const RESPONSE_PING_FAIL = 'RESPONSE_PING_FAIL';
+
 export function getCommonResponses() {
   return async dispatch => {
     dispatch({
@@ -153,6 +157,29 @@ export function moveResponsesToCategory(categoryId, responseIds) {
     } catch (err) {
       dispatch({
         type: MOVE_CATEGORIES_FAIL
+      });
+    }
+  };
+}
+
+export function responsePing(id) {
+  return async dispatch => {
+    dispatch({
+      type: RESPONSE_PING,
+      id: id
+    });
+
+    try {
+      await request(urls.responses.checkResponse(id));
+      dispatch({
+        type: RESPONSE_PING_SUCCESS,
+        id: id
+      });
+
+    } catch (err) {
+      dispatch({
+        type: RESPONSE_PING_FAIL,
+        id: id
       });
     }
   };

@@ -85,7 +85,7 @@ class AnswerCard extends React.Component {
   render() {
     const {answer} = this.props;
     return (
-      <div className={this.state.chosen ? 'answer-row-wrapper-selected' : 'answer-row-wrapper'}
+      <div className={answer.updating ? 'answer-row-wrapper-updating' : this.state.chosen ? 'answer-row-wrapper-selected' : 'answer-row-wrapper'}
            onClick={this.checkAnswer}>
         <div className='answer-card-content'>
           <div className='answer-card-title'>

@@ -12,13 +12,12 @@ import {
   changeResponse,
   deleteResponse,
   createResponse,
-  moveResponsesToCategory
+  moveResponsesToCategory,
+  responsePing
 } from '../../redux/actions/responses';
 import { getCategories, createCategory, deleteCategory } from '../../redux/actions/categories';
 
 import './styles.css';
-import request from "../../services/request";
-import {urls} from "../../config";
 
 class Answer extends React.Component {
   state = {
@@ -63,10 +62,8 @@ class Answer extends React.Component {
     this.props.createResponse(data).then(() => {
       let lastResponse = this.props.data.reference[this.props.data.reference.length - 1];
       NotificationManager.info(`Начинается обработка ответа #${lastResponse.id}!`, "Информация");
-      request(urls.responses.checkResponse(lastResponse.id)).then((result) => {
-        if (result.status) {
-          NotificationManager.success(`Ответ #${lastResponse.id} успешно обработан!`, "Успешно");
-        }
+      this.props.responsePing(lastResponse.id).then(finished => {
+        NotificationManager.success(`Ответ #${lastResponse.id} успешно обработан!`, "Успешно");
       });
     });
   };
@@ -144,10 +141,10 @@ const mapDispatchToProps = dispatch => ({
   getCategories: () => dispatch(getCategories()),
   createCategory: categoryName => dispatch(createCategory(categoryName)),
   deleteCategory: id => dispatch(deleteCategory(id)),
-  changeResponse: (data, id, title) =>
-    dispatch(changeResponse(data, id, title)),
+  changeResponse: (data, id, title) => dispatch(changeResponse(data, id, title)),
   onDeleteAnswer: id => dispatch(deleteResponse(id)),
-  moveToCategory: (categoryId, responseIds) => dispatch(moveResponsesToCategory(categoryId, responseIds))
+  moveToCategory: (categoryId, responseIds) => dispatch(moveResponsesToCategory(categoryId, responseIds)),
+  responsePing: (id) => dispatch(responsePing(id))
 });
 
 export default withRouter(

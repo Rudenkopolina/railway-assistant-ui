@@ -17,7 +17,10 @@ import {
   DELETE_RESPONSE_FAIL,
   MOVE_CATEGORIES,
   MOVE_CATEGORIES_SUCCESS,
-  MOVE_CATEGORIES_FAIL
+  MOVE_CATEGORIES_FAIL,
+  RESPONSE_PING,
+  RESPONSE_PING_SUCCESS,
+  RESPONSE_PING_FAIL
 } from '../actions/responses';
 
 import { LOGOUT } from '../actions/auth';
@@ -109,6 +112,30 @@ export default function (state = initialState, action) {
       pending: false,
       failed: true
     };
+
+  case RESPONSE_PING:
+    state.referenceResponses[state.referenceResponses.findIndex(value => value.id === action.id)].updating = true;
+    return {
+      ...state,
+      pending: false,
+      referenceResponses: state.referenceResponses
+    };
+  case RESPONSE_PING_SUCCESS:
+    state.referenceResponses[state.referenceResponses.findIndex(value => value.id === action.id)].updating = false;
+    return {
+      ...state,
+      pending: false,
+      referenceResponses: state.referenceResponses
+    };
+  case RESPONSE_PING_FAIL:
+    state.referenceResponses[state.referenceResponses.findIndex(value => value.id === action.id)].updating = false;
+    return {
+      ...state,
+      pending: false,
+      referenceResponses: state.referenceResponses
+    };
+
+
 
   case LOGOUT:
   return initialState;

@@ -39,6 +39,19 @@
   border: 2px solid rgba(109, 153, 224, 0.5)
 }
 
+.answer-row-wrapper-updating {
+  cursor: default;
+  display: flex;
+  flex-direction: column;
+  background-color: #fff;
+  font-size: 14px;
+  padding: 20px;
+  width: 296px;
+  height: 146px;
+  margin: 10px 20px 10px 0px;
+  border: 2px solid rgba(224, 95, 25, 0.5)
+}
+
 .table-raw-wrapper:hover {
   box-shadow: 0 0 11px rgba(33, 33, 33, 0.2);
 }
