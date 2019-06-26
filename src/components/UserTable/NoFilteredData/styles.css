@@ -1,0 +1,13 @@
+.no-filer-container {
+  display: flex;
+  justify-content: center;
+  padding: 100px;
+  font-size: 30px;
+  color: #cbd0d7;
+}
+
+.filter-sring {
+  font-weight: bold;
+  color: #babcbf;
+  padding: 0 10px;
+}

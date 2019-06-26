@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
 import UserCard from './UserCard';
 import './styles.css';
+import NoFilteredData from "./NoFilteredData";
 
 class UserTable extends React.Component {
   render() {
@@ -15,6 +16,11 @@ class UserTable extends React.Component {
           || user.privilege.toLowerCase().indexOf(filterStringLowerCase) > -1)
           :
           users;
+
+    if (filteredAnswers.length === 0) {
+      return <NoFilteredData filterString={filterString} />;
+    }
+
     return (
       <div className='users-table-container'>
         {filteredAnswers.map((user, index) => (
