@@ -1,4 +1,4 @@
-.modal-wrapper{
+.modal-wrapper-conversation {
   padding: 0;
   max-height: 750px;
 }
@@ -6,12 +6,11 @@
 .header {
   height: 80px;
   background-color: #f9f9fb;
-  border-radius: .28571429rem;
+  border-radius: 0.28571429rem;
   padding: 20px;
 }
 
 .session-title {
-  font-size: 20px;
   text-align: center;
   font-weight: 500;
   font-size: 1.6em;
@@ -21,8 +20,11 @@
 }
 
 .session-dates {
-  color: #9a9da2;
-  font-size: 12px;
+  /* color: #9a9da2;
+  font-size: 12px; */
+  font-size: 1.4em;
+  line-height: 2em;
+  color: rgba(0, 0, 0, 0.75);
   text-align: center;
 }
 
@@ -34,15 +36,13 @@
 
 .line {
   display: flex;
-}
-
-.line:nth-child(even) {
-  justify-content: flex-end;
+  flex-direction: column;
 }
 
 .message-conversation {
+  display: flex;
+  flex-direction: column;
   max-width: 50%;
-  height: 100%;
   font-size: 18px;
   font-family: Consolas;
   font-weight: 700;
@@ -52,14 +52,31 @@
   border-top-left-radius: 20px;
 }
 
-.message-conversation-user {  
+.message-conversation-user {
   color: rgba(0, 0, 0, 0.85);
-  background-color: #DDE5FA;
+  background-color: #dde5fa;
   border-bottom-right-radius: 20px;
+  align-self: flex-start;
 }
 
 .message-conversation-system {
   background-color: #436dd2;
   color: #f9f9f9;
   border-bottom-left-radius: 20px;
+  align-self: flex-end;
+}
+
+.message-conversation-time {
+  font-size: 11px;
+  font-weight: 300;
+  color: rgba(0, 0, 0, 0.65);
+}
+
+.time-system {
+  align-self: flex-end;
+  margin-right: 4px;
+}
+.time-user {
+  align-self: flex-start;
+  margin-left: 3px;
 }
