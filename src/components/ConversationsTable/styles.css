@@ -10,9 +10,8 @@
   cursor: pointer;
 }
 
-.table-row:hover td div {
-  font-weight: 900;
-  font-size: 19px;
+tbody tr:hover {
+  background-color: #f9f9fb;
 }
 
 .cell-body {
