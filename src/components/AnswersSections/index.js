@@ -64,6 +64,14 @@ class AnswersSections extends React.Component {
     this.setCategory(categoryId);
   };
 
+  getTotalNumberOfAnswers = category => {
+    const { answers } = this.props;
+    const totalAnswers = answers.filter(item => {
+      return item.categoryId === category;
+    });
+    return totalAnswers.length;
+  };
+
   getNumberOfAnswers = category => {
     const { answers } = this.props;
     const displayCategory = answers.filter(item => {
@@ -123,7 +131,7 @@ class AnswersSections extends React.Component {
             {this.getNumberOfAnswers(category.id)}
           </span>
         </div>
-        {!this.getNumberOfAnswers(category.id) && (
+        {!this.getTotalNumberOfAnswers(category.id) && (
           <span className='remove-icon ml-icon'>
             <Icon
               name='delete'
