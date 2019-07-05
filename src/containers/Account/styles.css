@@ -6,7 +6,7 @@
   align-items: center;
   margin: 50px;
   box-shadow: 0px 0px 20px 0px #cbd0d77a;
-  color: #2b52c2;
+  color: #436dd2;
 }
 
 .account-info {
@@ -19,7 +19,7 @@
 }
 
 .account-info-value {
-  color: #9a9da2;
+  color: #727c8a;
 }
 
 .account-icon {
@@ -27,7 +27,8 @@
 }
 
 .account-out {
+  text-decoration: underline;
   margin-top: 50px;
   cursor: pointer;
-  color: #d3d3e3;
+  color: #436dd2;
 }

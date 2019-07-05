@@ -1,9 +1,9 @@
 .cell-header {
-  font-weight: bold;
+  font-weight: 500;
+  font-size: 1.3em;
+  line-height: 1.3em;
+  color: rgba(0, 0, 0, 0.85);
   text-align: center;
-  vertical-align: center;
-  font-family: Consolas;
-  font-size: 18px;
 }
 
 .table-row {
@@ -16,9 +16,8 @@ tbody tr:hover {
 
 .cell-body {
   text-align: center;
-  vertical-align: center;
-  font-family: Consolas;
-  font-size: 18px;
+  font-size: 15px;
+  color: rgba(0, 0, 0, 0.65);
 }
 
 .table-row td:nth-child(1) {

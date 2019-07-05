@@ -12,7 +12,7 @@ class Header extends React.Component {
     return (
       <div className='header-wrapper'>
         <div>
-          <Icon name='user outline' />
+          <Icon name='user' />
           {this.props.user}
           <Dropdown item icon='ellipsis horizontal' className='header-menu'>
             <Dropdown.Menu direction='left' className='header-menu-item'>

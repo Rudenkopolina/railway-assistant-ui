@@ -18,7 +18,7 @@ class Account extends React.Component {
 			<div className='container'>
 				<div className='account-info-wrapper'>
 					<div className='account-icon'>
-						<Icon name='user outline' size='massive' />
+						<Icon name='user' size='massive' />
 					</div>
 					<div className='account-info'>
 						<div className='account-info-title'>

@@ -59,7 +59,6 @@ class Statistics extends React.Component {
 						<div className='statistics-card'>
 
 							<div className='statistics-card-title'>
-								<Icon name='conversation' className='statistics-icon' size='small'/>
 								Общее число обращений:
 							</div>
 
@@ -99,7 +98,6 @@ class Statistics extends React.Component {
 						<div className='statistics-card'>
 
 							<div className='statistics-card-title'>
-								<Icon name='exchange' className='statistics-icon' size='small'/>
 								Среднее количество шагов в обращении:
 							</div>
 
@@ -138,8 +136,7 @@ class Statistics extends React.Component {
 						<div className='statistics-card'>
 
 							<div className='statistics-card-title'>
-								<Icon name='clock outline' className='statistics-icon' size='small'/>
-								Средняя длительность обращения:
+								Средняя длительность обращения (в секундах):
 							</div>
 
 							<div className='statistics-card-content'>
