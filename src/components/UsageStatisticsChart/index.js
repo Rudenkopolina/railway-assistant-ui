@@ -15,8 +15,6 @@ function UsageStatisticsChart(props) {
     }
   });
 
-  const data = useMemo(() => computeChartValue(statistic), [statistic]);
-
   const computeChartValue = stats => {
     const data = [];
     stats.statistics.forEach(record => {
@@ -24,6 +22,8 @@ function UsageStatisticsChart(props) {
     });
     return data;
   };
+  
+  const data = useMemo(() => computeChartValue(statistic), [statistic]);
 
   return (
     <Chart
