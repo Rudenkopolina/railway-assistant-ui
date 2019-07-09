@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {Button, Modal, Input, Dropdown} from 'semantic-ui-react';
+import {Button, Modal, Dropdown} from 'semantic-ui-react';
 
 class ChooseCategoryModal extends React.Component {
   constructor(props) {
@@ -11,7 +11,6 @@ class ChooseCategoryModal extends React.Component {
   }
 
   render() {
-    const { inputValue } = this.state;
     const quantity = this.props.chosenResponsesCount;
     return (
       <div className='add-category-button'>

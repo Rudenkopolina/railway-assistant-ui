@@ -2,14 +2,14 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import './styles.css';
 
-const permissions = [
-  'ALLOWED_USERS_CREATION',
-  'ALLOWED_KNOWLEDGEBASE_VIEWING',
-  'ALLOWED_KNOWLEDGEBASE_EDITING',
-  'ALLOWED_ANSWERS_VIEWING',
-  'ALLOWED_ANSWERS_EDITING',
-  'ALLOWED_HISTORY_VIEWING'
-];
+// const permissions = [
+//   'ALLOWED_USERS_CREATION',
+//   'ALLOWED_KNOWLEDGEBASE_VIEWING',
+//   'ALLOWED_KNOWLEDGEBASE_EDITING',
+//   'ALLOWED_ANSWERS_VIEWING',
+//   'ALLOWED_ANSWERS_EDITING',
+//   'ALLOWED_HISTORY_VIEWING'
+// ];
 
 class RoleCard extends React.Component {
   state = {
