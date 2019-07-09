@@ -69,9 +69,11 @@ class ConversationsTable extends React.Component {
 
   render() {
     const { column, direction, data } = this.state;
-    console.log(data);
     return (
+      <div className='table-container'>
+      <div className='chat-history-title'>История разговоров</div>
       <Table sortable celled compact>
+      
         <Table.Header>
           <Table.Row>
             <Table.HeaderCell
@@ -123,6 +125,7 @@ class ConversationsTable extends React.Component {
         </Table.Body>
         {this.drawMoreButton()}
       </Table>
+      </div>
     );
   }
 }
