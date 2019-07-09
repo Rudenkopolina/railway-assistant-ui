@@ -1,44 +1,12 @@
-.cell-header {
-  font-weight: 500;
-  font-size: 1.3em;
-  line-height: 1.3em;
-  color: rgba(0, 0, 0, 0.85);
-  text-align: center;
-}
-
 .table-row {
   cursor: pointer;
 }
-
 tbody tr:hover {
   background-color: #f9f9fb;
-}
-
-.cell-body {
-  text-align: center;
-  font-size: 15px;
-  color: rgba(0, 0, 0, 0.65);
-}
-
-.table-row td:nth-child(1) {
-  width: 15%;
-}
-
-.table-row td:nth-child(2) {
-  width: 15%;
-}
-
-.table-row td:nth-child(3) {
-  width: 55%;
-}
-
-.table-row td:nth-child(4) {
-  width: 15%;
 }
 
 .block-pagination {
   display: flex;
   justify-content: flex-end;
-  width: 100%;
   height: 35px;
 }

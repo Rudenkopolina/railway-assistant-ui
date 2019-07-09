@@ -6,7 +6,7 @@ import { Chart } from 'react-charts';
 
 function UsageStatisticsChart(props) {
   let [statistic, getStatistic] = useState({
-    statistics: [{ date: '2019-01-01', records: 0 }]
+    statistics: [{ date: '', records: 0 }]
   });
 
   useEffect(() => {
