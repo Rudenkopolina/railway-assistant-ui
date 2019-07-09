@@ -131,7 +131,7 @@ class AnswersSections extends React.Component {
             {this.getNumberOfAnswers(category.id)}
           </span>
         </div>
-        {!this.getTotalNumberOfAnswers(category.id) && (
+        {!this.getTotalNumberOfAnswers(category.id) && category.id !==2 && (
           <span className='remove-icon ml-icon'>
             <Icon
               name='delete'
