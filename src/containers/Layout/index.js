@@ -31,7 +31,7 @@ class Layout extends React.Component {
 	render() {
     const { failed, pending } = this.props.responses;
 		if (failed) {
-			NotificationManager.error('Something go wrong, try again.', 'Sorry :(');
+			NotificationManager.error('Something went wrong, try again.', 'Sorry :(');
 		}
 		return (
 			<Fragment>
