@@ -43,9 +43,9 @@
   height: 300px;
 }
 
-table.ui.celled.table tr td {
-  padding: 25px;
-  text-align: center;
+.table-td-padding {
+  padding: 25px !important;
+  text-align: center !important;
 }
 
 .statistics-card-content-table {

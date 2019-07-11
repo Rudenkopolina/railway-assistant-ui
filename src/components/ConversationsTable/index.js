@@ -75,7 +75,7 @@ class ConversationsTable extends React.Component {
       <Table sortable celled compact>
       
         <Table.Header>
-          <Table.Row>
+          <Table.Row className='table-row'>
             <Table.HeaderCell
               textAlign='center'
               sorted={column === 'timestamp_start' ? direction : null}
@@ -102,7 +102,7 @@ class ConversationsTable extends React.Component {
         </Table.Header>
         <Table.Body>
           {data.map((conversation, index) => (
-            <Table.Row
+            <Table.Row className='table-row'
               key={index}
               onClick={() => this.props.onConversationClick(conversation)}
             >

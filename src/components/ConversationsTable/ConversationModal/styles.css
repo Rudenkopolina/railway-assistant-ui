@@ -10,6 +10,11 @@
   padding: 20px;
 }
 
+.flex {
+  display: flex;
+  justify-content: space-between;
+}
+
 .session-title {
   text-align: center;
   font-weight: 500;
@@ -32,7 +37,7 @@
 .session-info {
   font-size: 0.9em;
   line-height: 1.2em;
-  text-align: center;
+  /* text-align: center; */
   color: rgba(0, 0, 0, 0.55);
 }
 
@@ -78,13 +83,27 @@
   font-size: 11px;
   font-weight: 300;
   color: rgba(0, 0, 0, 0.65);
+  margin-left: 3px;
+}
+
+.message-conversation-info {
+  display: flex;
+  flex-flow: row wrap;
+  font-size: 14px;
+  color: rgba(0, 0, 0, 0.45);
+  margin: -3px 0px 0px 3px;
+}
+
+.message-conversation-icon{
+  cursor: default;
+  margin-left:3px !important;
 }
 
 .time-system {
   align-self: flex-end;
   margin-right: 4px;
 }
-.time-user {
-  align-self: flex-start;
-  margin-left: 3px;
+
+.intent {
+  margin-right: 5px;
 }

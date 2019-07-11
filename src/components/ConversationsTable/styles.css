@@ -16,6 +16,7 @@
 .table-row {
   cursor: pointer;
 }
+
 tbody tr:hover {
   background-color: #f9f9fb;
 }

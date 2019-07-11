@@ -7,7 +7,7 @@ import RoleTable from '../../components/RoleTable';
 import Filter from './../../components/Filter';
 import Protected from '../../components/common/protected/container';
 import UserModal from '../../components/UserTable/UserModal';
-// import RoleModal from '../../components/RoleTable/RoleModal';
+import RoleModal from '../../components/RoleTable/RoleModal';
 import { getAllUsers, createUser, deleteUser } from '../../redux/actions/users';
 import { deletePrivilege, getPrivileges, createPrivilege } from '../../redux/actions/privileges';
 import { getPermissions } from '../../redux/actions/permissions';
@@ -33,11 +33,11 @@ class Users extends React.Component {
       this.props.getAllUsers();
     }
     if (user.permissions.ALLOWED_ROLES_EDITING) {
-      // titles.push({
-      //   name: 'Редактор Ролей',
-      //   key: 'roles',
-      //   requiredRoles: 'ALLOWED_ROLES_EDITING'
-      // });
+      titles.push({
+        name: 'Редактор Ролей',
+        key: 'roles',
+        requiredRoles: 'ALLOWED_ROLES_EDITING'
+      });
       this.props.getPrivileges();
       this.props.getPermissions();
     }
@@ -115,10 +115,10 @@ class Users extends React.Component {
             </div>
           </div>
           <div className='users-menu-item element-mb'>
-            {/* <RoleModal
+            <RoleModal
               buttonText='Cоздать роль'
               onSave={(data) => this.onCreate('roles', data)}
-            /> */}
+            />
             <UserModal
               buttonText='Добавить сотрудника' roles={this.props.privileges.privileges}
               onSave={user => {

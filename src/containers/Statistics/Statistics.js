@@ -71,8 +71,8 @@ class Statistics extends React.Component {
 									<Table.Body>
 										{timeIntervalsString.map((time, index) => (
 											<Table.Row key={time + index}>
-												<Table.Cell>{timeIntervals[index]}</Table.Cell>
-												<Table.Cell>
+												<Table.Cell className='table-td-padding'>{timeIntervals[index]}</Table.Cell>
+												<Table.Cell className='table-td-padding'>
 													{this.props.conversationStatistics[item][time]}
 												</Table.Cell>
 											</Table.Row>

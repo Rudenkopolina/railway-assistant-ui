@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Modal } from 'semantic-ui-react';
+import { Modal, Icon } from 'semantic-ui-react';
 import './styles.css';
 import moment from "moment";
 import 'moment/locale/ru'
@@ -12,19 +12,29 @@ class ConversationModal extends React.Component {
         <div className='modal-wrapper-conversation'>
           <div className='header'>
             {/* <div className='session-title'>{this.props.conversation.session}</div> */}
-            <div className='session-dates'>{(moment(this.props.conversation.timestamp_start)).format('DD.MM.YYYY')} </div>
-
-            <div className='session-info'>Начало: {(moment(this.props.conversation.timestamp_start)).format('HH:mm:ss')}</div>
-            <div className='session-info'>Продолжительность: {moment.duration(moment(this.props.conversation.timestamp_end) - moment(this.props.conversation.timestamp_start)).locale('ru').asSeconds()} секунды</div>
-
+          <div className='session-dates'>{(moment(this.props.conversation.timestamp_start)).format('DD.MM.YYYY')} </div>
+          <div className='flex'>
+            <div className='left-content'>
+              <div className='session-info'>Начало: {(moment(this.props.conversation.timestamp_start)).format('HH:mm:ss')}</div>
+              <div className='session-info'>Продолжительность: {moment.duration(moment(this.props.conversation.timestamp_end) - moment(this.props.conversation.timestamp_start)).locale('ru').asSeconds()} секунды</div>
+            </div>
+            <div className='session-info'>Отправлено из Telegram</div>
+          </div>
           </div>
           <div className='body'>
             {this.props.messages.map((message, index) => {
               return (
                 <div key={index}>
-                  <div className='line'>
+                  <div className='line'> 
                     <div className='message-conversation message-conversation-user'>{message.requestText}</div>
-                    <div className='message-conversation-time time-user'>Пользователь, {moment(message.timestamp).format('HH:mm:ss')}</div>
+                    <div className='message-conversation-info'>
+                      <div className='intent'>#Intent</div>
+                      <div>@Entity</div>
+                    </div>
+                    <div className='message-conversation-time'>Пользователь, {moment(message.timestamp).format('HH:mm:ss')}
+                    <Icon className='message-conversation-icon' name='envelope outline' />
+                    {/* <Icon className='message-conversation-icon' name='comment outline' /> */}
+                    </div>
                   </div>
                   <div className='line'>
                     <div className='message-conversation message-conversation-system'>{message.responseText}</div>
