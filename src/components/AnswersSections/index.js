@@ -109,6 +109,7 @@ class AnswersSections extends React.Component {
       : displayCategory;
   };
 
+
   render() {
     const { categories, answers, isReferanseTab } = this.props;
     const { activeTab } = this.state;
@@ -117,8 +118,13 @@ class AnswersSections extends React.Component {
     });
     const displayCategory = isReferanseTab ? filterCategory : answers;
     const filteredAnswers = this.getFilteredAnswers(displayCategory);
+    const smallestIndex = categories.reduce((index, category) => {
+      if (category.id < index) index = category.id;
+      return index;
+    }, 10);
 
     const tabs = categories.map((category, index) => (
+      
       <span key={index} className='category-button-container'>
         <div
           className={cx('category-button', {
@@ -131,7 +137,7 @@ class AnswersSections extends React.Component {
             {this.getNumberOfAnswers(category.id)}
           </span>
         </div>
-        {!this.getTotalNumberOfAnswers(category.id) && category.id !==2 && (
+        {!this.getTotalNumberOfAnswers(category.id) && category.id !== smallestIndex && (
           <span className='remove-icon ml-icon'>
             <Icon
               name='delete'
