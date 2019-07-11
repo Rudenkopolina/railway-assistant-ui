@@ -24,24 +24,24 @@ class AnswerCard extends React.Component {
   };
 
   toggleKeywordsView = () => {
-    const {isKeywordsShown} = this.state;
-    this.setState({isKeywordsShown: !isKeywordsShown});
+    const { isKeywordsShown } = this.state;
+    this.setState({ isKeywordsShown: !isKeywordsShown });
   };
 
   getAudioSrc = id => {
-    const {title} = this.props;
+    const { title } = this.props;
     return urls.responses.audioUrl(title, id);
   };
 
-  checkAnswer = async () => {
-    if (this.props.title === "reference") {
-      await this.setState({"chosen": !this.state.chosen});
+  checkAnswer = async (event) => {
+    if (event.target.dataset.space && this.props.title === 'reference') {
+      await this.setState({ 'chosen': !this.state.chosen });
       this.props.onResponseSelected(this._reactInternalFiber.key, this.state.chosen);
     }
   };
 
   renderActions = () => {
-    const {answer, index, onUpdateAnswer, isShowExamples, title} = this.props;
+    const { answer, index, onUpdateAnswer, isShowExamples, title } = this.props;
     return (
       <IntentModal
         key={answer.id}
@@ -56,14 +56,14 @@ class AnswerCard extends React.Component {
   };
 
   renderDelete = () => {
-    if (this.props.title === 'common') return (<div/>);
-    const {answer, onDeleteAnswer} = this.props;
+    if (this.props.title === 'common') return (<div />);
+    const { answer, onDeleteAnswer } = this.props;
     return (
       <div className='answer-action'>
         {onDeleteAnswer && (
           <Modal
             closeIcon
-            trigger={<Icon size='small' name='trash' className='remove-icon'/>}
+            trigger={<Icon size='small' name='trash' className='remove-icon' />}
             closeOnEscape={true}
             size={'mini'}
             content='Вы уверены, что хотите удалить этот ответ? Ответ будет потерян без возможности восстановления.'
@@ -83,24 +83,23 @@ class AnswerCard extends React.Component {
   };
 
   render() {
-    const {answer} = this.props;
+    const { answer } = this.props;
     return (
-      <div className={answer.updating ? 'answer-row-wrapper-updating' : this.state.chosen ? 'answer-row-wrapper-selected' : 'answer-row-wrapper'}
-           onClick={this.checkAnswer}>
-        <div className='answer-card-content'>
-          <div className='answer-card-title'>
-            <div className='answer-overflow'>{answer.responseName}</div>
+      <div className={answer.updating ? 'answer-row-wrapper-updating' : this.state.chosen ? 'answer-row-wrapper selected' : 'answer-row-wrapper'} onClick={(e) => this.checkAnswer(e)} data-space='answer-card'>
+        <div data-space='answer-card' className='answer-card-content'>
+          <div data-space='answer-card' className='answer-card-title'>
+            <div data-space='answer-card' className='answer-overflow'>{answer.responseName}</div>
             {this.renderDelete()}
           </div>
-          <div className='answer-card-description'>
+          <div data-space='answer-card' className='answer-card-description'>
             <Truncate lines={3} ellipsis={<span>...</span>}>
               {answer.responseDescription}
             </Truncate>
           </div>
         </div>
-        <div className='answer-actions'>
+        <div data-space='answer-card' className='answer-actions'>
           <div className='icon-position'>
-            <AudioPlayer id={answer.id} url={this.getAudioSrc(answer.id)}/>
+            <AudioPlayer id={answer.id} url={this.getAudioSrc(answer.id)} />
           </div>
           {this.renderActions()}
         </div>
