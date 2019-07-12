@@ -1,19 +1,19 @@
 .role-table-checkbox {
   -webkit-appearance: none;
-    background-color: #eeeef5;
-    padding: 9px;
-    border-radius: 2px;
-    display: inline-block;
-    position: relative;
-    outline: none;
+  background-color: #eeeef5;
+  padding: 9px;
+  border-radius: 2px;
+  display: inline-block;
+  position: relative;
+  outline: none;
 }
 
 .role-table-checkbox:checked {
-	background-color: #96a1b8;
+  background-color: #96a1b8;
 }
 
 .role-table-checkbox:checked:after {
-  content: '✔';
+  content: "✔";
   font-size: 13px;
   position: absolute;
   top: 3px;
@@ -21,37 +21,9 @@
   color: #fff;
 }
 
-.checkbox-container {
-  display: flex;
-  justify-content: center;
-}
-
 .no-button {
   min-height: 10px;
   width: 140px;
-}
-
-.role-table-row {
-  display: flex;
-  align-items: center;
-  /* background-color: #fff; */
-  font-size: 16px;
-  /* padding: 20px; */
-  /* margin-bottom: 10px; */
-}
-
-.link {
-  color: #436dd2;;
-}
-
-.role-table-number {
-  margin-right: 10px;
-}
-
-.role-table-content {
-  width: 100%;
-  padding: 15px 20px;
-  margin: 0 10px;
 }
 
 .role-table-actions {
@@ -84,16 +56,6 @@
 }
 
 .role-table-button:active {
-	position: relative;
-	top: 1px;
-}
-
-.role-table-row-wrapper {
-  display: flex;
-  /* align-items: center; */
-  flex-direction: column;
-  background-color: #fff;
-  font-size: 16px;
-  padding: 20px;
-  margin-bottom: 10px;
+  position: relative;
+  top: 1px;
 }
