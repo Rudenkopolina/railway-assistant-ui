@@ -29,18 +29,15 @@ class AnswersSections extends React.Component {
 
   setCategory = categoryId => {
     if (categoryId !== this.state.activeTab) {
-      this.setState({"chosenResponses": []});
-      this.setState({
-        activeTab: categoryId
-      });
+      this.setState({ chosenResponses: [], activeTab: categoryId });
     }
   };
 
   deleteCategory = (event, id) => {
-    const { categories } = this.props;
+    const { categories, onDeleteCategory } = this.props;
     const { activeTab } = this.state;
     event.preventDefault();
-    this.props.onDeleteCategory(id);
+    onDeleteCategory(id);
     if (id === activeTab) {
       this.setState({
         activeTab: categories[0].id
@@ -49,11 +46,12 @@ class AnswersSections extends React.Component {
   };
 
   onResponseSelected = async (id, state) => {
-    state ? await this.state.chosenResponses.push(id) : await this.state.chosenResponses.splice(this.state.chosenResponses.indexOf(id), 1);
-    this.setState({"chosenResponses": this.state.chosenResponses});
+    const { chosenResponses } = this.state;
+    state ? await chosenResponses.push(id) : await chosenResponses.splice(chosenResponses.indexOf(id), 1);
+    this.setState({chosenResponses});
   };
 
-  drawMoveButton = () => {
+  drawMoreButton = () => {
     if (this.state.chosenResponses.length > 0) {
       return (<ChooseCategoryModal onChooseCategory={this.onMove} categories={this.props.categories} chosenResponsesCount={this.state.chosenResponses.length} />);
     }
@@ -155,7 +153,7 @@ class AnswersSections extends React.Component {
           <div className='categories-container'>
             {tabs}
             <NewCategoryModal onCreateCategory={this.props.onCreateCategory} />
-            {this.drawMoveButton()}
+            {this.drawMoreButton()}
             <div className='header-button'>
               <Protected requiredRoles='ALLOWED_KNOWLEDGEBASE_CREATION'>
                 <IntentModal

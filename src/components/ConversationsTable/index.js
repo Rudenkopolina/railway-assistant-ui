@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
 import { Table } from 'semantic-ui-react';
+import Filter from '../Filter';
 import './styles.css';
 import moment from 'moment';
 
@@ -11,7 +12,8 @@ class ConversationsTable extends React.Component {
     this.state = {
       column: null,
       direction: null,
-      data: []
+      data: [],
+      filterString:''
     };
   }
 
@@ -67,12 +69,35 @@ class ConversationsTable extends React.Component {
     }
   };
 
+  onFilterChange = filterString => {
+    this.setState({ filterString });
+  };
+
+  getFilteredRows = conversatiosData => {
+    const { filterString } = this.state;
+    return filterString
+      ? conversatiosData.filter(
+        conversation => moment(conversation.timestamp_start).format('DD.MM.YYYY HH:mm:ss').indexOf(filterString) > -1 ||
+          moment(conversation.timestamp_end).format('DD.MM.YYYY HH:mm:ss').indexOf(filterString) > -1
+      ) : conversatiosData;
+  };
+
   render() {
-    const { column, direction, data } = this.state;
+    const { column, direction, data, filterString } = this.state;
+    const filteredRows = this.getFilteredRows(data);
+    
     return (
       <div className='table-container'>
-      <div className='chat-history-title'>История разговоров</div>
-      <Table sortable celled compact>
+        <div className='table-container-flex'>
+          <div className='chat-history-title'>История разговоров</div>
+          <div className='element-mb'>
+          <Filter
+            filterString={filterString}
+            onFilterChange={this.onFilterChange}
+          />
+          </div>
+        </div>     
+        <Table sortable celled compact>
       
         <Table.Header>
           <Table.Row className='table-row'>
@@ -101,7 +126,7 @@ class ConversationsTable extends React.Component {
           </Table.Row>
         </Table.Header>
         <Table.Body>
-          {data.map((conversation, index) => (
+          {filteredRows.map((conversation, index) => (
             <Table.Row className='table-row'
               key={index}
               onClick={() => this.props.onConversationClick(conversation)}
