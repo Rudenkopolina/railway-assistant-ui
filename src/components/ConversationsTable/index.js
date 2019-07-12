@@ -2,9 +2,11 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
 import { Table } from 'semantic-ui-react';
-import Filter from '../Filter';
+
 import './styles.css';
 import moment from 'moment';
+import ConversationFilterBar from './ConversationFilterBar';
+
 
 class ConversationsTable extends React.Component {
   constructor(props) {
@@ -13,9 +15,10 @@ class ConversationsTable extends React.Component {
       column: null,
       direction: null,
       data: [],
-      filterString:''
+      intervalString: ''
     };
   }
+
 
   static getDerivedStateFromProps(props) {
     if (props.conversations) {
@@ -27,7 +30,7 @@ class ConversationsTable extends React.Component {
 
   propComparator = value => {
     return function(a, b) {
-      return Date.parse(a[value]) - Date.parse(b[value])
+      return Date.parse(a[value]) - Date.parse(b[value]);
     };
   };
 
@@ -69,87 +72,86 @@ class ConversationsTable extends React.Component {
     }
   };
 
-  onFilterChange = filterString => {
-    this.setState({ filterString });
+  getInterval = intervalString => {
+    this.setState({intervalString})
   };
 
+
   getFilteredRows = conversatiosData => {
-    const { filterString } = this.state;
-    return filterString
-      ? conversatiosData.filter(
-        conversation => moment(conversation.timestamp_start).format('DD.MM.YYYY HH:mm:ss').indexOf(filterString) > -1 ||
-          moment(conversation.timestamp_end).format('DD.MM.YYYY HH:mm:ss').indexOf(filterString) > -1
-      ) : conversatiosData;
+    const { intervalString } = this.state;
+    return intervalString
+      ? conversatiosData
+      //function that returns
+      : conversatiosData;
   };
 
   render() {
-    const { column, direction, data, filterString } = this.state;
+    const { column, direction, data } = this.state;
     const filteredRows = this.getFilteredRows(data);
-    
+
     return (
       <div className='table-container'>
         <div className='table-container-flex'>
           <div className='chat-history-title'>История разговоров</div>
           <div className='element-mb'>
-          <Filter
-            filterString={filterString}
-            onFilterChange={this.onFilterChange}
-          />
+            <ConversationFilterBar getIntervalConversations={this.getInterval}></ConversationFilterBar>
           </div>
-        </div>     
+        </div>
         <Table sortable celled compact>
-      
-        <Table.Header>
-          <Table.Row className='table-row'>
-            <Table.HeaderCell
-              textAlign='center'
-              sorted={column === 'timestamp_start' ? direction : null}
-              onClick={this.handleSort('timestamp_start')}
-            >
-              Дата начала
-            </Table.HeaderCell>
-            <Table.HeaderCell
-              textAlign='center'
-              sorted={column === 'timestamp_end' ? direction : null}
-              onClick={this.handleSort('timestamp_end')}
-            >
-              Дата конца
-            </Table.HeaderCell>
-            <Table.HeaderCell textAlign='center'>Сессия</Table.HeaderCell>
-            <Table.HeaderCell
-              textAlign='center'
-              sorted={column === 'iterations' ? direction : null}
-              onClick={this.handleSort('iterations')}
-            >
-              Количество шагов
-            </Table.HeaderCell>
-          </Table.Row>
-        </Table.Header>
-        <Table.Body>
-          {filteredRows.map((conversation, index) => (
-            <Table.Row className='table-row'
-              key={index}
-              onClick={() => this.props.onConversationClick(conversation)}
-            >
-              <Table.Cell textAlign='center'>
-                {moment(conversation.timestamp_start).format(
-                  'DD.MM.YYYY HH:mm:ss'
-                )}
-              </Table.Cell>
-              <Table.Cell textAlign='center'>
-                {moment(conversation.timestamp_end).format(
-                  'DD.MM.YYYY HH:mm:ss'
-                )}
-              </Table.Cell>
-              <Table.Cell textAlign='center'>{conversation.session}</Table.Cell>
-              <Table.Cell textAlign='center'>
-                {conversation.iterations}
-              </Table.Cell>
+          <Table.Header>
+            <Table.Row className='table-row'>
+              <Table.HeaderCell
+                textAlign='center'
+                sorted={column === 'timestamp_start' ? direction : null}
+                onClick={this.handleSort('timestamp_start')}
+              >
+                Дата начала
+              </Table.HeaderCell>
+              <Table.HeaderCell
+                textAlign='center'
+                sorted={column === 'timestamp_end' ? direction : null}
+                onClick={this.handleSort('timestamp_end')}
+              >
+                Дата конца
+              </Table.HeaderCell>
+              <Table.HeaderCell textAlign='center'>Сессия</Table.HeaderCell>
+              <Table.HeaderCell
+                textAlign='center'
+                sorted={column === 'iterations' ? direction : null}
+                onClick={this.handleSort('iterations')}
+              >
+                Количество шагов
+              </Table.HeaderCell>
             </Table.Row>
-          ))}
-        </Table.Body>
-        {this.drawMoreButton()}
-      </Table>
+          </Table.Header>
+          <Table.Body>
+            {filteredRows.map((conversation, index) => (
+              <Table.Row
+                className='table-row'
+                key={index}
+                onClick={() => this.props.onConversationClick(conversation)}
+              >
+                <Table.Cell textAlign='center'>
+                  {moment(conversation.timestamp_start).format(
+                    'DD.MM.YYYY HH:mm:ss'
+                  )}
+                </Table.Cell>
+                <Table.Cell textAlign='center'>
+                  {moment(conversation.timestamp_end).format(
+                    'DD.MM.YYYY HH:mm:ss'
+                  )}
+                </Table.Cell>
+                <Table.Cell textAlign='center'>
+                  {conversation.session}
+                </Table.Cell>
+                <Table.Cell textAlign='center'>
+                  {conversation.iterations}
+                </Table.Cell>
+              </Table.Row>
+            ))}
+          </Table.Body>
+          {this.drawMoreButton()}
+        </Table>
       </div>
     );
   }

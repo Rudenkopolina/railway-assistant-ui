@@ -1,0 +1,9 @@
+.flex-filter {
+  display: flex;
+}
+.center-filter-items {
+  align-items: center;
+}
+.side-margin {
+  margin: 0 10px;
+}
