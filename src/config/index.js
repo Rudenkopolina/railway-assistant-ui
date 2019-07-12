@@ -41,7 +41,7 @@ module.exports = {
 			getDurationConversationsStatistics: '/api/statistics/conversations/duration',
 			getEnvironment: '/api/group/environment',
 			checkResponse: id => `/api/text/check/${id}`,
-			getConversations: (id, initDate) => `/api/logs/conversations?page=${id}&from=${initDate}`,
+			getConversations: (id, initDate) => `/api/logs/conversations?page=${id}&to=${initDate}`,
 			getConversationsPages: '/api/logs/conversations_pages',
 			getConversationsMessages: (session) => `/api/logs/conversations/${session}`
 		}
