@@ -29,7 +29,7 @@ class ConversationsTable extends React.Component {
 
   componentDidUpdate(prevProps, prevState) {
     if (this.state.intervalString !== prevState.intervalString) {
-      this.props.getConversations(1, this.state.intervalString);
+      this.props.getFilteredConversations(1, this.state.intervalString);
     }
   }
 
@@ -158,7 +158,7 @@ ConversationsTable.propTypes = {
   onMoreClick: PropTypes.func.isRequired,
   onConversationClick: PropTypes.func.isRequired,
   currentPage: PropTypes.number.isRequired,
-  getConversations: PropTypes.func.isRequired
+  getFilteredConversations: PropTypes.func.isRequired
 };
 
 export default withRouter(ConversationsTable);

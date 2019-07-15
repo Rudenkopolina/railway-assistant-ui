@@ -3,17 +3,21 @@ import {
   GET_CONVERSATIONS,
   GET_CONVERSATIONS_FAIL,
   GET_CONVERSATIONS_PAGES_FAIL,
+  GET_FILTERED_CONVERSATIONS,
+  GET_FILTERED_CONVERSATIONS_FAIL,
+  GET_FILTERED_CONVERSATIONS_SUCCESS,
   GET_CONVERSATIONS_PAGES_SUCCESS,
   GET_CONVERSATIONS_SUCCESS,
   GET_CONVERSATIONS_MESSAGES,
   GET_CONVERSATIONS_MESSAGES_SUCCESS,
   GET_CONVERSATIONS_MESSAGES_FAIL
-} from "../actions/conversationLogs";
+} from '../actions/conversationLogs';
 
 export default function(state = initialState, action) {
   var GET_CONVERSATIONS_PAGES;
   switch (action.type) {
     case GET_CONVERSATIONS:
+    case GET_FILTERED_CONVERSATIONS:
       return {
         ...state,
         pending: true
@@ -24,7 +28,14 @@ export default function(state = initialState, action) {
         pending: false,
         conversations: [...state.conversations, ...action.conversations]
       };
+    case GET_FILTERED_CONVERSATIONS_SUCCESS:
+      return {
+        ...state,
+        pending: false,
+        conversations: action.conversations
+      };
     case GET_CONVERSATIONS_FAIL:
+    case GET_FILTERED_CONVERSATIONS_FAIL:
       return {
         ...state,
         pending: false
@@ -69,4 +80,4 @@ export default function(state = initialState, action) {
     default:
       return state;
   }
-};
+}

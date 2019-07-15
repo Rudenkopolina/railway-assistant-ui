@@ -4,7 +4,8 @@ import './LogsConversations.css'
 import { withRouter } from 'react-router-dom';
 import moment from "moment";
 import {
-  getConversations,
+	getConversations,
+	getFilteredConversations,
   getConversationsMessages,
   getConversationsPages
 } from "../../redux/actions/conversationLogs";
@@ -67,7 +68,7 @@ class LogsConversations extends React.Component {
           pages={this.props.conversationLogs.pages}
           onConversationClick={this.onConversationClick}
 					onMoreClick={this.onMoreClick}
-					getConversations={this.props.getConversations}
+					getFilteredConversations={this.props.getFilteredConversations}
         />
 			</div>
 		);
@@ -80,6 +81,7 @@ const mapStateToProps = ({ auth, conversationLogs }) => ({
 
 const mapDispatchToProps = dispatch => ({
 	getConversations: (id, initDate) => dispatch(getConversations(id, initDate)),
+	getFilteredConversations: (id, initDate) => dispatch(getFilteredConversations(id, initDate)),
 	getConversationsPages: () => dispatch(getConversationsPages()),
   getConversationsMessages: (session) => dispatch(getConversationsMessages(session))
 });

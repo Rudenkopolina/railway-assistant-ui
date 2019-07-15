@@ -5,6 +5,10 @@ export const GET_CONVERSATIONS = 'GET_CONVERSATIONS';
 export const GET_CONVERSATIONS_SUCCESS = 'GET_CONVERSATIONS_SUCCESS';
 export const GET_CONVERSATIONS_FAIL = 'GET_CONVERSATIONS_FAIL';
 
+export const GET_FILTERED_CONVERSATIONS = 'GET_FILTERED_CONVERSATIONS';
+export const GET_FILTERED_CONVERSATIONS_SUCCESS = 'GET_FILTERED_CONVERSATIONS_SUCCESS';
+export const GET_FILTERED_CONVERSATIONS_FAIL = 'GET_FILTERED_CONVERSATIONS_FAIL';
+
 export const GET_CONVERSATIONS_PAGES = 'GET_CONVERSATIONS_PAGES';
 export const GET_CONVERSATIONS_PAGES_SUCCESS = 'GET_CONVERSATIONS_PAGES_SUCCESS';
 export const GET_CONVERSATIONS_PAGES_FAIL = 'GET_CONVERSATIONS_PAGES_FAIL';
@@ -29,6 +33,26 @@ export function getConversations(id, initDate) {
     } catch (err) {
       dispatch({
         type: GET_CONVERSATIONS_FAIL
+      });
+    }
+  };
+}
+
+export function getFilteredConversations(id, initDate) {
+  return async dispatch => {
+    dispatch({
+      type: GET_FILTERED_CONVERSATIONS
+    });
+
+    try {
+      const response = await request(urls.responses.getConversations(id, initDate));
+      dispatch({
+        type: GET_FILTERED_CONVERSATIONS_SUCCESS,
+        conversations: response.conversations
+      });
+    } catch (err) {
+      dispatch({
+        type: GET_FILTERED_CONVERSATIONS_FAIL
       });
     }
   };

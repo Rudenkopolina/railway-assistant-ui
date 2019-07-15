@@ -26,7 +26,7 @@ class ConversationFilterBar extends React.Component {
     const { filterStringStart, filterStringEnd } = this.state;
     let intervalString = '';
     if (filterStringStart.length > 0 || filterStringEnd.length > 0) {
-      intervalString = `?${moment(filterStringStart).format('YYYY-MM-DD HH:mm:ss')}&${moment(filterStringEnd).format('YYYY-MM-DD HH:mm:ss')}`;
+      intervalString = `?to=${moment(filterStringEnd).format('YYYY-MM-DD HH:mm:ss')}&from=${moment(filterStringStart).format('YYYY-MM-DD HH:mm:ss')}`;
     }
     this.props.getIntervalConversations(intervalString);
   };
