@@ -14,17 +14,22 @@ class ConversationsTable extends React.Component {
     this.state = {
       column: null,
       direction: null,
-      data: [],
+      conversatios: [],
       intervalString: ''
     };
   }
 
-
   static getDerivedStateFromProps(props) {
     if (props.conversations) {
       return {
-        data: props.conversations
+        conversatios: props.conversations
       };
+    }
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    if (this.state.intervalString !== prevState.intervalString) {
+      this.props.getConversations(1, this.state.intervalString);
     }
   }
 
@@ -35,17 +40,17 @@ class ConversationsTable extends React.Component {
   };
 
   handleSort = clickedColumn => () => {
-    const { column, data, direction } = this.state;
+    const { column, conversatios, direction } = this.state;
     if (column !== clickedColumn) {
       this.setState({
         column: clickedColumn,
-        data: data.sort(this.propComparator(clickedColumn)),
+        conversatios: conversatios.sort(this.propComparator(clickedColumn)),
         direction: 'ascending'
       });
       return;
     }
     this.setState({
-      data: data.reverse(),
+      conversatios: conversatios.reverse(),
       direction: direction === 'ascending' ? 'descending' : 'ascending'
     });
   };
@@ -73,28 +78,19 @@ class ConversationsTable extends React.Component {
   };
 
   getInterval = intervalString => {
-    this.setState({intervalString})
-  };
-
-
-  getFilteredRows = conversatiosData => {
-    const { intervalString } = this.state;
-    return intervalString
-      ? conversatiosData
-      //function that returns
-      : conversatiosData;
+    this.setState({ intervalString });
   };
 
   render() {
-    const { column, direction, data } = this.state;
-    const filteredRows = this.getFilteredRows(data);
-
+    const { column, direction, conversatios } = this.state;
     return (
       <div className='table-container'>
         <div className='table-container-flex'>
           <div className='chat-history-title'>История разговоров</div>
           <div className='element-mb'>
-            <ConversationFilterBar getIntervalConversations={this.getInterval}></ConversationFilterBar>
+            <ConversationFilterBar
+              getIntervalConversations={this.getInterval}
+            />
           </div>
         </div>
         <Table sortable celled compact>
@@ -125,7 +121,7 @@ class ConversationsTable extends React.Component {
             </Table.Row>
           </Table.Header>
           <Table.Body>
-            {filteredRows.map((conversation, index) => (
+            {conversatios.map((conversation, index) => (
               <Table.Row
                 className='table-row'
                 key={index}
@@ -161,7 +157,8 @@ ConversationsTable.propTypes = {
   pages: PropTypes.number.isRequired,
   onMoreClick: PropTypes.func.isRequired,
   onConversationClick: PropTypes.func.isRequired,
-  currentPage: PropTypes.number.isRequired
+  currentPage: PropTypes.number.isRequired,
+  getConversations: PropTypes.func.isRequired
 };
 
 export default withRouter(ConversationsTable);

@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
 import { Input, Checkbox, Button } from 'semantic-ui-react';
 import './styles.css';
+import moment from 'moment';
 const mass = ['Telegram', 'Viber', 'Phone'];
 class ConversationFilterBar extends React.Component {
   constructor(props) {
@@ -25,7 +26,7 @@ class ConversationFilterBar extends React.Component {
     const { filterStringStart, filterStringEnd } = this.state;
     let intervalString = '';
     if (filterStringStart.length > 0 || filterStringEnd.length > 0) {
-      intervalString = `?${filterStringStart}&${filterStringEnd}`;
+      intervalString = `?${moment(filterStringStart).format('YYYY-MM-DD HH:mm:ss')}&${moment(filterStringEnd).format('YYYY-MM-DD HH:mm:ss')}`;
     }
     this.props.getIntervalConversations(intervalString);
   };
@@ -39,6 +40,7 @@ class ConversationFilterBar extends React.Component {
           <label className='side-margin'>Начало</label>
           <Input
             id='1'
+            placeholder='YYYY-MM-DD HH:mm:ss'
             value={filterStringStart}
             onChange={({ target }) =>
               this.onFilterChange(target.value, target.id)
@@ -49,6 +51,7 @@ class ConversationFilterBar extends React.Component {
           <label className='side-margin'>Окончание</label>
           <Input
             id='2'
+            placeholder='YYYY-MM-DD HH:mm:ss'
             value={filterStringEnd}
             onChange={({ target }) =>
               this.onFilterChange(target.value, target.id)

@@ -66,7 +66,8 @@ class LogsConversations extends React.Component {
           currentPage={this.state.currentPage}
           pages={this.props.conversationLogs.pages}
           onConversationClick={this.onConversationClick}
-          onMoreClick={this.onMoreClick}
+					onMoreClick={this.onMoreClick}
+					getConversations={this.props.getConversations}
         />
 			</div>
 		);
