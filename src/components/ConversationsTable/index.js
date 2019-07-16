@@ -86,6 +86,7 @@ class ConversationsTable extends React.Component {
       case "TEXT": return (<div><Icon name='align justify' size='small'/>Текст</div>);
       case "MIXED": return (<div><Icon name='sync' size='small'/>Смешанный</div>);
       case "UNKN": return (<div><Icon name='question circle' size='small'/>Неизвестен</div>);
+      default: return (<div><Icon name='question circle' size='small'/>Неизвестен</div>);
     }
   };
 
