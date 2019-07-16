@@ -4,59 +4,83 @@ import { withRouter } from 'react-router-dom';
 import { Input, Checkbox, Button } from 'semantic-ui-react';
 import './styles.css';
 import moment from 'moment';
-const mass = ['Telegram', 'Viber', 'Phone'];
+import { DateTimeInput } from 'semantic-ui-calendar-react';
+
 class ConversationFilterBar extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      filterStringEnd: '',
-      filterStringStart: ''
+      mass: {
+        "TELEGRAM": false,
+        "VIBER": false,
+        "PSTN": false,
+        "ALL": true
+      },
+      fromDate: '',
+      toDate: '',
+      source: "ALL"
     };
   }
 
-  onFilterChange = (filterString, tabIndex) => {
-    if (tabIndex == 2) {
-      this.setState({ filterStringEnd: filterString });
-      return;
+  onFilterChange = (name, value) => {
+    if (this.state.hasOwnProperty(name)) {
+      this.setState({ [name]: value });
     }
-    this.setState({ filterStringStart: filterString });
+  };
+
+  onCheckBoxChange = (event, element) => {
+    let state = this.state;
+
+    state.source = element.label;
+
+    state.mass["TELEGRAM"] = false;
+    state.mass["VIBER"] = false;
+    state.mass["PSTN"] = false;
+    state.mass["ALL"] = false;
+
+    state.mass[element.label] = !state.mass[element.label];
+
+    this.setState(state);
   };
 
   makeSearch = () => {
-    const { filterStringStart, filterStringEnd } = this.state;
-    let intervalString = '';
-    if (filterStringStart.length > 0 || filterStringEnd.length > 0) {
-      intervalString = `?to=${moment(filterStringEnd).format('YYYY-MM-DD HH:mm:ss')}&from=${moment(filterStringStart).format('YYYY-MM-DD HH:mm:ss')}`;
-    }
-    this.props.getIntervalConversations(intervalString);
+    this.props.setNewFilterParameters(
+      this.state.fromDate ? moment(this.state.fromDate, 'DD-MM-YYYY HH:mm').utc().format('YYYY-MM-DD HH:mm:ss') : undefined,
+      this.state.toDate ? moment(this.state.toDate, 'DD-MM-YYYY HH:mm').utc().format('YYYY-MM-DD HH:mm:ss') : undefined,
+      !!this.state.source.localeCompare("ALL") ? this.state.source : undefined,
+      this.state.type ? this.state.type : undefined
+    );
   };
 
   render() {
-    const { filterStringStart, filterStringEnd } = this.state;
-
     return (
       <div className='flex-filter'>
         <div className='side-margin'>
-          <label className='side-margin'>Начало</label>
-          <Input
-            id='1'
-            placeholder='YYYY-MM-DD HH:mm:ss'
-            value={filterStringStart}
-            onChange={({ target }) =>
-              this.onFilterChange(target.value, target.id)
-            }
+          <DateTimeInput
+            localization='ru'
+            id="1"
+            name="fromDate"
+            placeholder="Дата начала"
+            iconPosition="left"
+            onChange={(event, {name, value}) => this.onFilterChange(name, value)}
+            value={this.state.fromDate}
           />
         </div>
         <div className='side-margin'>
-          <label className='side-margin'>Окончание</label>
-          <Input
-            id='2'
-            placeholder='YYYY-MM-DD HH:mm:ss'
-            value={filterStringEnd}
-            onChange={({ target }) =>
-              this.onFilterChange(target.value, target.id)
-            }
+          <DateTimeInput
+            localization='ru'
+            id="2"
+            name="toDate"
+            placeholder="Дата конца"
+            iconPosition="left"
+            onChange={(event, {name, value}) => this.onFilterChange(name, value)}
+            value={this.state.toDate}
           />
+        </div>
+        <div className='flex-filter center-filter-items'>
+          {Object.keys(this.state.mass).map((m, i) => (
+            <Checkbox key={i} className='side-margin' label={m} checked={this.state.mass[m]} onChange={this.onCheckBoxChange} />
+          ))}
         </div>
         <Button
           className='side-margin'
@@ -64,18 +88,13 @@ class ConversationFilterBar extends React.Component {
           icon='search'
           onClick={this.makeSearch}
         />
-        <div className='flex-filter center-filter-items'>
-          {mass.map((m, i) => (
-            <Checkbox key={i} className='side-margin' label={m} />
-          ))}
-        </div>
       </div>
     );
   }
 }
 
 ConversationFilterBar.propTypes = {
-  getIntervalConversations: PropTypes.func.isRequired
+  setNewFilterParameters: PropTypes.func.isRequired
 };
 
 export default withRouter(ConversationFilterBar);

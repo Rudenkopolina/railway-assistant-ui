@@ -1,4 +1,4 @@
-const baseUrl = process.env.REACT_APP_BASE_API_URL ? process.env.REACT_APP_BASE_API_URL : 'http://172.16.6.253:1000';
+const baseUrl = process.env.REACT_APP_BASE_API_URL ? process.env.REACT_APP_BASE_API_URL : 'http://localhost:5000';
 
 module.exports = {
 	urls: {
@@ -41,8 +41,8 @@ module.exports = {
 			getDurationConversationsStatistics: '/api/statistics/conversations/duration',
 			getEnvironment: '/api/group/environment',
 			checkResponse: id => `/api/text/check/${id}`,
-			getConversations: (id, initDate) => `/api/logs/conversations?page=${id}&to=${initDate}`,
-			getConversationsPages: '/api/logs/conversations_pages',
+			getConversations: (id, query) => `/api/logs/conversations?page=${id}${query}`,
+			getConversationsPages: (query) => `/api/logs/conversations_pages?${query}`,
 			getConversationsMessages: (session) => `/api/logs/conversations/${session}`
 		}
 	},

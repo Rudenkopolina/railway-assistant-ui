@@ -5,9 +5,9 @@ export const GET_CONVERSATIONS = 'GET_CONVERSATIONS';
 export const GET_CONVERSATIONS_SUCCESS = 'GET_CONVERSATIONS_SUCCESS';
 export const GET_CONVERSATIONS_FAIL = 'GET_CONVERSATIONS_FAIL';
 
-export const GET_FILTERED_CONVERSATIONS = 'GET_FILTERED_CONVERSATIONS';
-export const GET_FILTERED_CONVERSATIONS_SUCCESS = 'GET_FILTERED_CONVERSATIONS_SUCCESS';
-export const GET_FILTERED_CONVERSATIONS_FAIL = 'GET_FILTERED_CONVERSATIONS_FAIL';
+export const CLEAR_CONVERSATIONS = 'CLEAR_CONVERSATIONS';
+export const CLEAR_CONVERSATIONS_SUCCESS = 'CLEAR_CONVERSATIONS_SUCCESS';
+export const CLEAR_CONVERSATIONS_FAIL = 'CLEAR_CONVERSATIONS_FAIL';
 
 export const GET_CONVERSATIONS_PAGES = 'GET_CONVERSATIONS_PAGES';
 export const GET_CONVERSATIONS_PAGES_SUCCESS = 'GET_CONVERSATIONS_PAGES_SUCCESS';
@@ -17,14 +17,21 @@ export const GET_CONVERSATIONS_MESSAGES = 'GET_CONVERSATIONS_MESSAGES_PAGES';
 export const GET_CONVERSATIONS_MESSAGES_SUCCESS = 'GET_CONVERSATIONS_MESSAGES_SUCCESS';
 export const GET_CONVERSATIONS_MESSAGES_FAIL = 'GET_CONVERSATIONS_MESSAGES_FAIL';
 
-export function getConversations(id, initDate) {
+export function getConversations(page, fromDate, toDate, source, type) {
   return async dispatch => {
     dispatch({
       type: GET_CONVERSATIONS
     });
 
     try {
-      const response = await request(urls.responses.getConversations(id, initDate));
+      let query = "";
+
+      if (fromDate) query += `&from=${fromDate}`;
+      if (toDate) query += `&to=${toDate}`;
+      if (source) query += `&source=${source}`;
+      if (type) query += `&type=${type}`;
+
+      const response = await request(urls.responses.getConversations(page, query));
 
       dispatch({
         type: GET_CONVERSATIONS_SUCCESS,
@@ -38,34 +45,39 @@ export function getConversations(id, initDate) {
   };
 }
 
-export function getFilteredConversations(id, initDate) {
+export function clearConversations() {
   return async dispatch => {
     dispatch({
-      type: GET_FILTERED_CONVERSATIONS
+      type: CLEAR_CONVERSATIONS
     });
 
     try {
-      const response = await request(urls.responses.getConversations(id, initDate));
       dispatch({
-        type: GET_FILTERED_CONVERSATIONS_SUCCESS,
-        conversations: response.conversations
+        type: CLEAR_CONVERSATIONS_SUCCESS,
       });
     } catch (err) {
       dispatch({
-        type: GET_FILTERED_CONVERSATIONS_FAIL
+        type: CLEAR_CONVERSATIONS_FAIL
       });
     }
   };
 }
 
-export function getConversationsPages() {
+export function getConversationsPages(fromDate, toDate, source, type) {
   return async dispatch => {
     dispatch({
       type: GET_CONVERSATIONS_PAGES
     });
 
     try {
-      const response = await request(urls.responses.getConversationsPages);
+      let query = "";
+
+      if (fromDate) query += `&from=${fromDate}`;
+      if (toDate) query += `&to=${toDate}`;
+      if (source) query += `&source=${source}`;
+      if (type) query += `&type=${type}`;
+
+      const response = await request(urls.responses.getConversationsPages(query));
 
       dispatch({
         type: GET_CONVERSATIONS_PAGES_SUCCESS,

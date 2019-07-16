@@ -5,7 +5,7 @@ import { withRouter } from 'react-router-dom';
 import moment from "moment";
 import {
 	getConversations,
-	getFilteredConversations,
+	clearConversations,
   getConversationsMessages,
   getConversationsPages
 } from "../../redux/actions/conversationLogs";
@@ -18,10 +18,23 @@ class LogsConversations extends React.Component {
 		super(props);
 		this.state = {
       currentPage: 1,
-      activationTimestamp: moment().utc().format("YYYY-MM-DD HH:mm:ss"),
       visibleModal: false,
-      selectedConversation: {}
+			activationTimestamp: moment().utc().format("YYYY-MM-DD HH:mm:ss"),
+      selectedConversation: {},
+			filter: {
+				fromDate: undefined,
+				toDate: moment().utc().format("YYYY-MM-DD HH:mm:ss"),
+				source: undefined,
+				type: undefined
+			}
     };
+	}
+
+	componentDidUpdate(prevProps, prevState) {
+		if (this.state.filter !== prevState.filter) {
+			this.props.getConversations(this.state.currentPage, this.state.filter.fromDate, this.state.filter.toDate, this.state.filter.source, this.state.filter.type);
+			this.props.getConversationsPages(this.state.filter.fromDate, this.state.filter.toDate, this.state.filter.source, this.state.filter.type);
+		}
 	}
 
 	componentWillMount() {
@@ -29,14 +42,13 @@ class LogsConversations extends React.Component {
 
 		if (user.permissions.ALLOWED_LOGS_VIEWING) {
 			this.props.conversationLogs.conversations = [];
-			this.props.getConversations(this.state.currentPage, this.state.activationTimestamp);
-			this.props.getConversationsPages();
-      this.props.getConversationsMessages("8bb4601f-d93e-4a5a-86eb-6e4b77ac1016");
+			this.props.getConversations(this.state.currentPage, this.state.filter.fromDate, this.state.filter.toDate, this.state.filter.source, this.state.filter.type);
+			this.props.getConversationsPages(this.state.filter.fromDate, this.state.filter.toDate, this.state.filter.source, this.state.filter.type);
 		}
 	}
 
 	onMoreClick = () => {
-		this.props.getConversations(this.state.currentPage + 1, this.state.activationTimestamp);
+		this.props.getConversations(this.state.currentPage + 1, this.state.filter.fromDate, this.state.filter.toDate, this.state.filter.source, this.state.filter.type);
 		this.setState({currentPage: this.state.currentPage + 1});
 	};
 
@@ -53,6 +65,15 @@ class LogsConversations extends React.Component {
     this.setState({selectedConversation: {}});
   };
 
+	onSearchClick = (filter) => {
+		this.props.clearConversations();
+		this.setState({"currentPage": 1});
+		if (!filter.toDate) {
+			filter.toDate = this.state.activationTimestamp;
+		}
+		this.setState({"filter": filter});
+	};
+
 	render() {
 		return (
 			<div className='conversations-table-container container'>
@@ -68,7 +89,7 @@ class LogsConversations extends React.Component {
           pages={this.props.conversationLogs.pages}
           onConversationClick={this.onConversationClick}
 					onMoreClick={this.onMoreClick}
-					getFilteredConversations={this.props.getFilteredConversations}
+					getFilteredConversations={this.onSearchClick}
         />
 			</div>
 		);
@@ -80,10 +101,10 @@ const mapStateToProps = ({ auth, conversationLogs }) => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-	getConversations: (id, initDate) => dispatch(getConversations(id, initDate)),
-	getFilteredConversations: (id, initDate) => dispatch(getFilteredConversations(id, initDate)),
-	getConversationsPages: () => dispatch(getConversationsPages()),
-  getConversationsMessages: (session) => dispatch(getConversationsMessages(session))
+	getConversations: (page, fromDate, toDate, source, type) => dispatch(getConversations(page, fromDate, toDate, source, type)),
+	getConversationsPages: (fromDate, toDate, source, type) => dispatch(getConversationsPages(fromDate, toDate, source, type)),
+  getConversationsMessages: (session) => dispatch(getConversationsMessages(session)),
+	clearConversations: () => dispatch(clearConversations())
 });
 
 

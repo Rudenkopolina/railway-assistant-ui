@@ -3,9 +3,9 @@ import {
   GET_CONVERSATIONS,
   GET_CONVERSATIONS_FAIL,
   GET_CONVERSATIONS_PAGES_FAIL,
-  GET_FILTERED_CONVERSATIONS,
-  GET_FILTERED_CONVERSATIONS_FAIL,
-  GET_FILTERED_CONVERSATIONS_SUCCESS,
+  CLEAR_CONVERSATIONS,
+  CLEAR_CONVERSATIONS_FAIL,
+  CLEAR_CONVERSATIONS_SUCCESS,
   GET_CONVERSATIONS_PAGES_SUCCESS,
   GET_CONVERSATIONS_SUCCESS,
   GET_CONVERSATIONS_MESSAGES,
@@ -17,7 +17,7 @@ export default function(state = initialState, action) {
   var GET_CONVERSATIONS_PAGES;
   switch (action.type) {
     case GET_CONVERSATIONS:
-    case GET_FILTERED_CONVERSATIONS:
+    case CLEAR_CONVERSATIONS:
       return {
         ...state,
         pending: true
@@ -28,14 +28,14 @@ export default function(state = initialState, action) {
         pending: false,
         conversations: [...state.conversations, ...action.conversations]
       };
-    case GET_FILTERED_CONVERSATIONS_SUCCESS:
+    case CLEAR_CONVERSATIONS_SUCCESS:
       return {
         ...state,
         pending: false,
-        conversations: action.conversations
+        conversations: []
       };
     case GET_CONVERSATIONS_FAIL:
-    case GET_FILTERED_CONVERSATIONS_FAIL:
+    case CLEAR_CONVERSATIONS_FAIL:
       return {
         ...state,
         pending: false

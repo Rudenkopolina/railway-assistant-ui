@@ -27,11 +27,14 @@ class ConversationsTable extends React.Component {
     }
   }
 
-  componentDidUpdate(prevProps, prevState) {
-    if (this.state.intervalString !== prevState.intervalString) {
-      this.props.getFilteredConversations(1, this.state.intervalString);
-    }
-  }
+  setNewFilterParameters = (fromDate, toDate, source, type) => {
+    this.props.getFilteredConversations({
+      "fromDate": fromDate ? fromDate : undefined,
+      "toDate": toDate ? toDate : undefined,
+      "source": source ? source : undefined,
+      "type": type ? type : undefined
+    });
+  };
 
   propComparator = value => {
     return function(a, b) {
@@ -77,10 +80,6 @@ class ConversationsTable extends React.Component {
     }
   };
 
-  getInterval = intervalString => {
-    this.setState({ intervalString });
-  };
-
   render() {
     const { column, direction, conversatios } = this.state;
     return (
@@ -89,7 +88,7 @@ class ConversationsTable extends React.Component {
           <div className='chat-history-title'>История разговоров</div>
           <div className='element-mb'>
             <ConversationFilterBar
-              getIntervalConversations={this.getInterval}
+              setNewFilterParameters={this.setNewFilterParameters}
             />
           </div>
         </div>
