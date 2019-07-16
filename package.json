@@ -7,7 +7,7 @@
     "install": "^0.12.2",
     "js-cookie": "^2.2.0",
     "moment": "^2.24.0",
-    "npm": "^6.9.0",
+    "npm": "^6.10.1",
     "react": "^16.8.6",
     "react-charts": "^2.0.0-alpha.12",
     "react-dom": "^16.8.6",
@@ -19,6 +19,7 @@
     "react-truncate": "^2.4.0",
     "redux": "^4.0.1",
     "redux-thunk": "^2.3.0",
+    "semantic-ui-calendar-react": "^0.15.2",
     "semantic-ui-react": "^0.86.0"
   },
   "scripts": {
