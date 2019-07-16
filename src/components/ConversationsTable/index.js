@@ -83,9 +83,9 @@ class ConversationsTable extends React.Component {
   drawConversationType = (type) => {
     switch(type) {
       case "VOICE": return (<div><Icon name='microphone' size='small'/>Голос</div>);
-      case "TEXT": return (<div><Icon name='align justify' size='small'/>Текст</div>);;
-      case "MIXED": return (<div><Icon name='sync' size='small'/>Смешанный</div>);;
-      case "UNKN": return (<div><Icon name='question circle' size='small'/>Неизвестен</div>);;
+      case "TEXT": return (<div><Icon name='align justify' size='small'/>Текст</div>);
+      case "MIXED": return (<div><Icon name='sync' size='small'/>Смешанный</div>);
+      case "UNKN": return (<div><Icon name='question circle' size='small'/>Неизвестен</div>);
     }
   };
 
