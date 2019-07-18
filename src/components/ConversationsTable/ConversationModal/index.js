@@ -4,7 +4,6 @@ import {Modal, Icon, Popup} from 'semantic-ui-react';
 import './styles.css';
 import moment from "moment";
 import 'moment/locale/ru'
-import ReactHtmlParser from 'react-html-parser';
 
 class ConversationModal extends React.Component {
 
