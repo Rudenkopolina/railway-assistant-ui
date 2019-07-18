@@ -7,7 +7,7 @@ import './styles.css'
 const pageList = [
 	{ key: '/account', value: 'Профиль', icon: 'user', requiredRoles: ''},
 	{ key: '/answers', value: 'Ответы', icon: 'comments', requiredAnyRoles: ['ALLOWED_ANSWERS_VIEWING', 'ALLOWED_KNOWLEDGEBASE_VIEWING']},
-	{ key: '/history', value: 'История', icon: 'history', requiredRoles: 'ALLOWED_HISTORY_EDITING'},
+	{ key: '/history', value: 'История намерений', icon: 'envelope', requiredRoles: 'ALLOWED_HISTORY_VIEWING'},
 	{ key: '/users', value: 'Сотрудники', icon: 'group', requiredRoles: 'ALLOWED_USERS_CREATION'},
 	{ key: '/statistics', value: 'Статистика использования', icon: 'dashboard', requiredAnyRoles: ['ALLOWED_USAGE_STATISTICS_VIEWING', 'ALLOWED_CONVERSATION_STATISTICS_VIEWING']},
 	{ key: '/group/environment', value: 'Подключённое окружение', icon: 'plug', requiredRoles: ''},

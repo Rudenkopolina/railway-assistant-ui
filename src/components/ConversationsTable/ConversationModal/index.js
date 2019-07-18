@@ -1,11 +1,50 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Modal, Icon } from 'semantic-ui-react';
+import {Modal, Icon, Popup} from 'semantic-ui-react';
 import './styles.css';
 import moment from "moment";
 import 'moment/locale/ru'
+import ReactHtmlParser from 'react-html-parser';
 
 class ConversationModal extends React.Component {
+
+  drawSource = (type) => {
+    switch(type) {
+      case "TELEGRAM": return (<div>Отправлено из Telegram</div>);
+      case "VIBER": return (<div>Отправлено из Viber</div>);
+      case "MIXED": return (<div>Смешанные способы отправки</div>);
+      case "PSTN": return (<div>Отправлено из телефонной сети</div>);
+      case "UNKN": return (<div>Источник неизвестен</div>);
+      default: return (<div>Источник неизвестен</div>);
+    }
+  };
+
+  drawMessageWithEntities = (message, entities) => {
+    let offset = 0;
+
+    entities.forEach(entity => {
+      let popup = `<span class='entity' title=${entity.entity}>${message.substring(entity.location[0] + offset, entity.location[1] + offset)}</span>`;
+      message = message.substring(0, offset + entity.location[0]) + popup + message.substring(entity.location[1] + offset);
+      offset += popup.length - entity.location[1];
+    });
+
+    return (<div dangerouslySetInnerHTML= {{__html: message}}/>);
+  };
+
+  drawIntents = (intents) => {
+    return (<Popup
+      content={intents.map((intent, index) => {
+        if (intent.confidence > 0) {
+          return (<div key={index}>{intent.intent} - {parseFloat(Math.round(intent.confidence * 100) / 100).toFixed(2)}</div>);
+        }
+      })
+      }
+      position='right center'
+      trigger={
+        <div>#{intents[0].intent}</div>
+      }
+    />);
+  };
 
   renderContent = () => {
     return (
@@ -18,7 +57,7 @@ class ConversationModal extends React.Component {
               <div className='session-info'>Начало: {(moment(this.props.conversation.timestamp_start)).format('HH:mm:ss')}</div>
               <div className='session-info'>Продолжительность: {moment.duration(moment(this.props.conversation.timestamp_end) - moment(this.props.conversation.timestamp_start)).locale('ru').asSeconds()} секунды</div>
             </div>
-            <div className='session-info'>Отправлено из Telegram</div>
+            <div className='session-info'>{this.drawSource(this.props.conversation.source)}</div>
           </div>
           </div>
           <div className='body'>
@@ -26,14 +65,12 @@ class ConversationModal extends React.Component {
               return (
                 <div key={index}>
                   <div className='line'> 
-                    <div className='message-conversation message-conversation-user'>{message.requestText}</div>
+                    <div className='message-conversation message-conversation-user'>{this.drawMessageWithEntities(message.requestText, message.entities)}</div>
                     <div className='message-conversation-info'>
-                      <div className='intent'>#Intent</div>
-                      <div>@Entity</div>
+                      <div className='intent'>{this.drawIntents(message.intents)}</div>
                     </div>
                     <div className='message-conversation-time'>Пользователь, {moment(message.timestamp).format('HH:mm:ss')}
                     <Icon className='message-conversation-icon' name='envelope outline' />
-                    {/* <Icon className='message-conversation-icon' name='comment outline' /> */}
                     </div>
                   </div>
                   <div className='line'>
