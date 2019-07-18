@@ -4,6 +4,7 @@ import './History.css'
 import { withRouter } from 'react-router-dom';
 import moment from "moment";
 import HistoryTable from "../../components/HistoryTable";
+import 'react-notifications/lib/notifications.css';
 import {
 	clearIntents,
 	getIntents,
