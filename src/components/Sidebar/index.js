@@ -11,11 +11,11 @@ const pageList = [
 	{ key: '/', value: 'Домашняя страница', icon: 'home', requiredRoles: ''},
 	{ key: '/account', value: 'Профиль', icon: 'user', requiredRoles: ''},
 	{ key: '/answers', value: 'Ответы', icon: 'comments', requiredAnyRoles: ['ALLOWED_ANSWERS_VIEWING', 'ALLOWED_KNOWLEDGEBASE_VIEWING']},
-	{ key: '/history', value: 'История намерений', icon: 'envelope', requiredRoles: 'ALLOWED_HISTORY_VIEWING'},
 	{ key: '/users', value: 'Сотрудники', icon: 'group', requiredRoles: 'ALLOWED_USERS_CREATION'},
 	{ key: '/statistics', value: 'Статистика использования', icon: 'dashboard', requiredAnyRoles: ['ALLOWED_USAGE_STATISTICS_VIEWING', 'ALLOWED_CONVERSATION_STATISTICS_VIEWING']},
 	{ key: '/group/environment', value: 'Подключённое окружение', icon: 'plug', requiredRoles: ''},
-	{ key: '/logs/conversations', value: 'История разговоров', icon: 'history', requiredRoles: 'ALLOWED_LOGS_VIEWING'}
+	{ key: '/logs/conversations', value: 'История разговоров', icon: 'history', requiredRoles: 'ALLOWED_LOGS_VIEWING'},
+	{ key: '/history/irrelevant', value: 'Нераспознанные намерения', icon: 'question circle', requiredRoles: 'ALLOWED_HISTORY_VIEWING'}
 ];
 
 class Sidebar extends React.Component {

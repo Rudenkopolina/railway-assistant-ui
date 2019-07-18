@@ -20,8 +20,8 @@ function Routes() {
 			<Route exact path={'/login'} component={Login} />
 
 			<ProtectedRoute
-				requiredRoles='ALLOWED_HISTORY_EDITING'
-				path={'/history'}
+				requiredRoles='ALLOWED_HISTORY_VIEWING'
+				path={'/history/irrelevant'}
 				component={() => <Layout><History/></Layout> }
 				saveUrlOnFail
 			/>
