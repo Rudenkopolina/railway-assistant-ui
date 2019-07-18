@@ -3,6 +3,7 @@ import {
   GET_CONVERSATIONS,
   GET_CONVERSATIONS_FAIL,
   GET_CONVERSATIONS_PAGES_FAIL,
+  GET_CONVERSATIONS_PAGES,
   CLEAR_CONVERSATIONS,
   CLEAR_CONVERSATIONS_FAIL,
   CLEAR_CONVERSATIONS_SUCCESS,
@@ -14,7 +15,6 @@ import {
 } from '../actions/conversationLogs';
 
 export default function(state = initialState, action) {
-  var GET_CONVERSATIONS_PAGES;
   switch (action.type) {
     case GET_CONVERSATIONS:
     case CLEAR_CONVERSATIONS:

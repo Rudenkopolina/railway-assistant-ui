@@ -106,22 +106,8 @@
 
 .intent {
   margin-right: 5px;
-  cursor: pointer;
 }
 
 .entity {
   font-weight: 900;
-}
-
-.entity-list {
-  margin-right: 5px;
-  cursor: pointer;
-}
-
-.entities {
-  width: 50%;
-  display: flex;
-  flex-wrap: wrap;
-  align-items: flex-start;
-  justify-content: left;
 }

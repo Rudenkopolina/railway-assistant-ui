@@ -80,6 +80,11 @@ export const conversationLogs = {
   selectedConversationMessages: []
 };
 
+export const intentLogs = {
+  intents: [],
+  pages: 0
+};
+
 export default {
   auth,
   responses,
@@ -91,5 +96,6 @@ export default {
   usageStatistics,
   environment,
   conversationStatistics,
-  conversationLogs
+  conversationLogs,
+  intentLogs
 };

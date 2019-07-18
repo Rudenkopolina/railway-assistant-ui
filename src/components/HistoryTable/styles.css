@@ -1,0 +1,51 @@
+.table-container {
+  width: 100%;
+  padding: 7px 30px;
+}
+.table-container-flex {
+  display: flex;
+}
+.chat-history-title {
+  font-size: 18px;
+  margin-right: 20px;
+  margin-bottom: -2px;
+  padding: 0px 0 17px 0;
+  color: #363f56;
+  border-bottom: 2px solid #436dd2;
+  width: 170px;
+  margin-bottom: 30px;
+}
+
+.history-table-row {
+  cursor: pointer;
+}
+
+tbody tr:hover {
+  background-color: #f9f9fb;
+}
+
+.block-pagination {
+  display: flex;
+  justify-content: flex-end;
+  height: 35px;
+}
+
+.history-table-row td:nth-child(1) {
+  width: 15%;
+}
+
+.history-table-row td:nth-child(2) {
+  width: 25%;
+}
+
+.history-table-row td:nth-child(3) {
+  width: 35%;
+}
+
+.history-table-row td:nth-child(4) {
+  width: 15%;
+}
+
+.history-table-row td:nth-child(5) {
+  width: 10%;
+}

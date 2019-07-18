@@ -43,7 +43,9 @@ module.exports = {
 			checkResponse: id => `/api/text/check/${id}`,
 			getConversations: (id, query) => `/api/logs/conversations?page=${id}${query}`,
 			getConversationsPages: (query) => `/api/logs/conversations_pages?${query}`,
-			getConversationsMessages: (session) => `/api/logs/conversations/${session}`
+			getConversationsMessages: (session) => `/api/logs/conversations/${session}`,
+			getIntents: (id, query) => `/api/logs/intents?page=${id}${query}`,
+			getIntentsPages: (query) => `/api/logs/intents_pages?${query}`,
 		}
 	},
 	baseUrl

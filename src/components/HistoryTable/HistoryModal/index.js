@@ -5,7 +5,7 @@ import './styles.css';
 import moment from "moment";
 import 'moment/locale/ru'
 
-class ConversationModal extends React.Component {
+class HistoryModal extends React.Component {
 
   drawSource = (type) => {
     switch(type) {
@@ -40,7 +40,7 @@ class ConversationModal extends React.Component {
       }
       position='right center'
       trigger={
-        <div>#{intents[0] ? intents[0].intent : "Irrelevant"}</div>
+        <div>#{intents[0].intent}</div>
       }
     />);
   };
@@ -74,13 +74,14 @@ class ConversationModal extends React.Component {
               return (
                 <div key={index}>
                   <div className='line'> 
-                    <div className='message-conversation message-conversation-user'>{message.requestText}</div>
+                    <div className='message-conversation message-conversation-user'>{this.drawMessageWithEntities(message.requestText, message.entities)}</div>
                     <div className='message-conversation-info'>
                       <div className='intent'>{this.drawIntents(message.intents)}</div>
-                      <div className='entities'>{this.drawEntities(message.entities)}</div>
+                      <div>{this.drawEntities(message.entities)}</div>
                     </div>
                     <div className='message-conversation-time'>Пользователь, {moment(message.timestamp).format('HH:mm:ss')}
                     <Icon className='message-conversation-icon' name='envelope outline' />
+                    {/* <Icon className='message-conversation-icon' name='comment outline' /> */}
                     </div>
                   </div>
                   <div className='line'>
@@ -110,11 +111,11 @@ class ConversationModal extends React.Component {
   }
 }
 
-ConversationModal.propTypes = {
+HistoryModal.propTypes = {
   conversation: PropTypes.object.isRequired,
   visible: PropTypes.bool.isRequired,
   onModalClose: PropTypes.func.isRequired,
   messages: PropTypes.array.isRequired
 };
 
-export default ConversationModal;
+export default HistoryModal;

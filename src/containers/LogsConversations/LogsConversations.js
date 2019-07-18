@@ -41,7 +41,7 @@ class LogsConversations extends React.Component {
 		const { user } = this.props.auth;
 
 		if (user.permissions.ALLOWED_LOGS_VIEWING) {
-			this.props.conversationLogs.conversations = [];
+			this.props.clearConversations();
 			this.props.getConversations(this.state.currentPage, this.state.filter.fromDate, this.state.filter.toDate, this.state.filter.source, this.state.filter.type);
 			this.props.getConversationsPages(this.state.filter.fromDate, this.state.filter.toDate, this.state.filter.source, this.state.filter.type);
 		}
