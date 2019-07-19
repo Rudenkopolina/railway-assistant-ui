@@ -40,7 +40,7 @@ class ConversationModal extends React.Component {
       }
       position='right center'
       trigger={
-        <div>#{intents[0] ? intents[0].intent : "Irrelevant"}</div>
+        <div>#{intents[0] ? intents[0].confidence > 0.5 ? intents[0].intent : "Irrelevant" : "Irrelevant"}</div>
       }
     />);
   };
