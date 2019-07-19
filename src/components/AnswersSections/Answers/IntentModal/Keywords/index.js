@@ -59,11 +59,17 @@ class Keywords extends React.Component {
         method: 'POST',
         body: { keyword: keyToCheck }
       }).then(response => {
-        if (response.isUsed && !(response.responses[0].id === answerId)) {
+        if (response.isUsed && response.responses && response.responses[0] && !(response.responses[0].id === answerId)) {
           this.setState({
             error: `Ключ уже используется в ${
               response.responses[0].responseDescription
             }`
+          });
+          return;
+        }
+        if (response.isUsed && !response.responses) {
+          this.setState({
+            error: `Ключ уже используется в системном ответе.`
           });
           return;
         }
