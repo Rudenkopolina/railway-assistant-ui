@@ -85,6 +85,10 @@ export const intentLogs = {
   pages: 0
 };
 
+export const availableIntents = {
+  intents: []
+};
+
 export default {
   auth,
   responses,
@@ -97,5 +101,6 @@ export default {
   environment,
   conversationStatistics,
   conversationLogs,
-  intentLogs
+  intentLogs,
+  availableIntents
 };

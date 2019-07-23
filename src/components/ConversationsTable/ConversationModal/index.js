@@ -30,23 +30,25 @@ class ConversationModal extends React.Component {
     return (<div dangerouslySetInnerHTML= {{__html: message}}/>);
   };
 
-  drawIntents = (intents) => {
+  drawIntents = (intents, detectedIntent, correctedIntent, detectedIntentDescription, correctedIntentDescription) => {
     return (<Popup
-      content={intents.map((intent, index) => {
-        if (intent.confidence > 0) {
-          return (<div key={index}>{intent.intent} - {parseFloat(Math.round(intent.confidence * 100) / 100).toFixed(2)}</div>);
-        }
-      })
-      }
+      content={intents[0] && intents[0].confidence >= 0.3 ? <div>Системой было определено намерение '{intents[0].intent}' с вероятностью {parseFloat(Math.round(intents[0].confidence * 100) / 100).toFixed(2)}</div> : <div>Информация о намерениях не доступна</div>}
       position='right center'
       trigger={
-        <div>#{intents[0] ? intents[0].confidence > 0.3 ? intents[0].intent : "Irrelevant" : "Irrelevant"}</div>
+        <div>#{correctedIntent ? correctedIntentDescription ? correctedIntentDescription : correctedIntent : detectedIntentDescription ? detectedIntentDescription : detectedIntent}</div>
       }
     />);
   };
 
+  drawEditButton = (intents) => {
+    if (intents[0] && intents[0].confidence < 1.0) {
+      return (<Icon name='edit' size='small'/>)
+    }
+  };
+
   drawEntities = (entities) => {
-    return (entities.map((entity) => <Popup
+    return (entities.map((entity, index) => <Popup
+      key={index}
       content={<div>{entity.entity}</div>}
       position='right center'
       trigger={
@@ -69,14 +71,15 @@ class ConversationModal extends React.Component {
             <div className='session-info'>{this.drawSource(this.props.conversation.source)}</div>
           </div>
           </div>
-          <div className='body'>
+          <div className='body-conversation'>
             {this.props.messages.map((message, index) => {
               return (
                 <div key={index}>
                   <div className='line'> 
                     <div className='message-conversation message-conversation-user'>{message.requestText}</div>
                     <div className='message-conversation-info'>
-                      <div className='intent'>{this.drawIntents(message.intents)}</div>
+                      <div className='intent'>{this.drawIntents(message.intents, message.detectedIntent, message.correctedIntent, message.detectedIntentDescription, message.correctedIntentDescription)}</div>
+                      <div className='edit-button' onClick={(event, object) => this.props.onEditClick(message)}>{this.drawEditButton(message.intents)}</div>
                       <div className='entities'>{this.drawEntities(message.entities)}</div>
                     </div>
                     <div className='message-conversation-time'>Пользователь, {moment(message.timestamp).format('HH:mm:ss')}
@@ -114,7 +117,8 @@ ConversationModal.propTypes = {
   conversation: PropTypes.object.isRequired,
   visible: PropTypes.bool.isRequired,
   onModalClose: PropTypes.func.isRequired,
-  messages: PropTypes.array.isRequired
+  messages: PropTypes.array.isRequired,
+  onEditClick: PropTypes.func.isRequired
 };
 
 export default ConversationModal;

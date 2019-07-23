@@ -10,6 +10,8 @@ import {
 	getIntents,
 	getIntentsPages
 } from "../../redux/actions/intentLogs";
+import {getAvailableIntents} from "../../redux/actions/availableIntents";
+import {correctIntents} from "../../redux/actions/conversationLogs";
 
 class History extends React.Component {
 
@@ -52,7 +54,10 @@ class History extends React.Component {
 	};
 
 	onConversationClick = (item) => {
-
+		this.setState({visibleIntentsEditorModal: true});
+		this.setState({
+			selectedMessage: item
+		});
   };
 
 	onSearchClick = (filter) => {
@@ -62,6 +67,12 @@ class History extends React.Component {
 			filter.toDate = this.state.activationTimestamp;
 		}
 		this.setState({"filter": filter});
+	};
+
+	onChangeIntent = (message, intent) => {
+		this.setState({visibleIntentsEditorModal: false});
+		this.setState({selectedMessage: {}});
+		this.props.correctIntents(message, intent);
 	};
 
 	render() {
@@ -80,14 +91,16 @@ class History extends React.Component {
 	}
 }
 
-const mapStateToProps = ({ auth, intentLogs }) => ({
-	auth, intentLogs
+const mapStateToProps = ({ auth, intentLogs, availableIntents }) => ({
+	auth, intentLogs, availableIntents
 });
 
 const mapDispatchToProps = dispatch => ({
 	getIntents: (page, fromDate, toDate, source, type) => dispatch(getIntents(page, fromDate, toDate, source, type)),
 	getIntentsPages: (fromDate, toDate, source, type) => dispatch(getIntentsPages(fromDate, toDate, source, type)),
-	clearIntents: () => dispatch(clearIntents())
+	clearIntents: () => dispatch(clearIntents()),
+	getAvailableIntents: () => dispatch(getAvailableIntents()),
+	correctIntents: (message, intent) => dispatch(correctIntents(message, intent))
 });
 
 

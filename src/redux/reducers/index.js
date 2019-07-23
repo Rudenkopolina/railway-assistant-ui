@@ -12,6 +12,7 @@ import environment from './environment';
 import conversationStatistics from './conversationStatistics';
 import conversationLogs from "./conversationLogs";
 import intentLogs from "./intentLogs";
+import availableIntents from "./availableIntents"
 
 export default combineReducers({
   auth,
@@ -25,5 +26,6 @@ export default combineReducers({
   environment,
   conversationStatistics,
   conversationLogs,
-  intentLogs
+  intentLogs,
+  availableIntents
 });

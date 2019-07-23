@@ -1,6 +1,7 @@
 .modal-wrapper-conversation {
   padding: 0;
   max-height: 750px;
+  height: 750px;
 }
 
 .header {
@@ -41,8 +42,9 @@
   color: rgba(0, 0, 0, 0.55);
 }
 
-.body {
+.body-conversation {
   max-height: 655px;
+  height: 655px;
   padding: 20px;
   overflow: auto;
 }
@@ -124,4 +126,8 @@
   flex-wrap: wrap;
   align-items: flex-start;
   justify-content: left;
+}
+
+.edit-button {
+  cursor: pointer;
 }

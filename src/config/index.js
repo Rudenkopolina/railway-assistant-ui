@@ -46,6 +46,8 @@ module.exports = {
 			getConversationsMessages: (session) => `/api/logs/conversations/${session}`,
 			getIntents: (id, query) => `/api/logs/intents?page=${id}${query}`,
 			getIntentsPages: (query) => `/api/logs/intents_pages?${query}`,
+			getAvailableIntents: '/api/text/intents',
+			correctIntents: '/api/text/intents/correct'
 		}
 	},
 	baseUrl

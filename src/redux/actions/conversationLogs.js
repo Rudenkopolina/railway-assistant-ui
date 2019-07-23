@@ -17,6 +17,10 @@ export const GET_CONVERSATIONS_MESSAGES = 'GET_CONVERSATIONS_MESSAGES_PAGES';
 export const GET_CONVERSATIONS_MESSAGES_SUCCESS = 'GET_CONVERSATIONS_MESSAGES_SUCCESS';
 export const GET_CONVERSATIONS_MESSAGES_FAIL = 'GET_CONVERSATIONS_MESSAGES_FAIL';
 
+export const CORRECT_INTENTS = 'CORRECT_INTENTS';
+export const CORRECT_INTENTS_SUCCESS = 'CORRECT_INTENTS_SUCCESS';
+export const CORRECT_INTENTS_FAIL = 'CORRECT_INTENTS_FAIL';
+
 export function getConversations(page, fromDate, toDate, source, type) {
   return async dispatch => {
     dispatch({
@@ -107,6 +111,31 @@ export function getConversationsMessages(session) {
     } catch (err) {
       dispatch({
         type: GET_CONVERSATIONS_MESSAGES_FAIL
+      });
+    }
+  };
+}
+
+export function correctIntents(log, intent) {
+  return async dispatch => {
+    dispatch({
+      type: CORRECT_INTENTS
+    });
+
+    try {
+      const response = await request(urls.responses.correctIntents, {
+        method: "POST",
+        body: { "intentId": intent.id, "logId": log.id }
+      });
+
+      dispatch({
+        type: CORRECT_INTENTS_SUCCESS,
+        log: log,
+        intent: intent
+      });
+    } catch (err) {
+      dispatch({
+        type: CORRECT_INTENTS_FAIL
       });
     }
   };

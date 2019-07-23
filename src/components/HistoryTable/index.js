@@ -67,9 +67,9 @@ class HistoryTable extends React.Component {
   render() {
     const messages = this.props.messages;
     return (
-      <div className='table-container'>
-        <div className='table-container-flex'>
-          <div className='chat-history-title'>История намерений</div>
+      <div className='table-container-history'>
+        <div className='table-container-flex-history'>
+          <div className='chat-irrelevant-history-title'>История нераспознанных сообщений</div>
           <div className='element-mb'>
             <HistoryFilterBar
               setNewFilterParameters={this.setNewFilterParameters}
