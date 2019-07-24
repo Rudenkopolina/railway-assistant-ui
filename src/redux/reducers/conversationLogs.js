@@ -84,12 +84,12 @@ export default function(state = initialState, action) {
         ...state
       };
     case CORRECT_INTENTS_SUCCESS:
-      let itemIndex = state.selectedConversationMessages.findIndex((element) => {
-        return element.id === action.log.id;
+      state.selectedConversationMessages.forEach((element) => {
+        if (element.requestText === action.log.requestText) {
+          element.correctedIntent = action.intent.name;
+          element.correctedIntentDescription = action.intent.description;
+        }
       });
-
-      state.selectedConversationMessages[itemIndex].correctedIntent = action.intent.name;
-      state.selectedConversationMessages[itemIndex].correctedIntentDescription = action.intent.description
 
       return {
         ...state,

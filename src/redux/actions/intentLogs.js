@@ -13,6 +13,10 @@ export const GET_INTENTS_PAGES = 'GET_INTENTS_PAGES';
 export const GET_INTENTS_PAGES_SUCCESS = 'GET_INTENTS_PAGES_SUCCESS';
 export const GET_INTENTS_PAGES_FAIL = 'GET_INTENTS_PAGES_FAIL';
 
+export const CORRECT_INTENTS = 'CORRECT_INTENTS';
+export const CORRECT_INTENTS_SUCCESS = 'CORRECT_INTENTS_SUCCESS';
+export const CORRECT_INTENTS_FAIL = 'CORRECT_INTENTS_FAIL';
+
 export function getIntents(page, fromDate, toDate, source, type) {
   return async dispatch => {
     dispatch({
@@ -82,6 +86,31 @@ export function getIntentsPages(fromDate, toDate, source, type) {
     } catch (err) {
       dispatch({
         type: GET_INTENTS_PAGES_FAIL
+      });
+    }
+  };
+}
+
+export function correctIntents(log, intent) {
+  return async dispatch => {
+    dispatch({
+      type: CORRECT_INTENTS
+    });
+
+    try {
+      const response = await request(urls.responses.correctIntents, {
+        method: "POST",
+        body: { "intentId": intent.id, "logId": log.id }
+      });
+
+      dispatch({
+        type: CORRECT_INTENTS_SUCCESS,
+        log: log,
+        intent: intent
+      });
+    } catch (err) {
+      dispatch({
+        type: CORRECT_INTENTS_FAIL
       });
     }
   };

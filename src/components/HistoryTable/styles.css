@@ -39,7 +39,7 @@ tbody tr:hover {
 }
 
 .history-table-row td:nth-child(3) {
-  width: 35%;
+  width: 20%;
 }
 
 .history-table-row td:nth-child(4) {
@@ -47,5 +47,9 @@ tbody tr:hover {
 }
 
 .history-table-row td:nth-child(5) {
+  width: 15%;
+}
+
+.history-table-row td:nth-child(6) {
   width: 10%;
 }

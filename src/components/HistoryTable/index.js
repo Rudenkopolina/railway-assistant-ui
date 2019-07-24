@@ -37,7 +37,7 @@ class HistoryTable extends React.Component {
       return (
         <tfoot>
           <tr>
-            <th colSpan='5'>
+            <th colSpan='6'>
               <div className='block-pagination'>
                 <button
                   className='ui right labeled icon button'
@@ -82,7 +82,8 @@ class HistoryTable extends React.Component {
               <Table.HeaderCell textAlign='center'>Дата сообщения</Table.HeaderCell>
               <Table.HeaderCell textAlign='center'>Сессия</Table.HeaderCell>
               <Table.HeaderCell textAlign='center'>Сообщение</Table.HeaderCell>
-              <Table.HeaderCell textAlign='center'>Намерение</Table.HeaderCell>
+              <Table.HeaderCell textAlign='center'>Распознаное системой намерение</Table.HeaderCell>
+              <Table.HeaderCell textAlign='center'>Скорректированное намерение</Table.HeaderCell>
               <Table.HeaderCell textAlign='center'>Тип</Table.HeaderCell>
             </Table.Row>
           </Table.Header>
@@ -105,7 +106,10 @@ class HistoryTable extends React.Component {
                   {message.requestText}
                 </Table.Cell>
                 <Table.Cell textAlign='center'>
-                  {message.detectedIntent}
+                  {message.detectedIntentDescription ? message.detectedIntentDescription : message.detectedIntent}
+                </Table.Cell>
+                <Table.Cell textAlign='center'>
+                  {message.correctedIntentDescription ? message.correctedIntentDescription : message.correctedIntent }
                 </Table.Cell>
                 <Table.Cell textAlign='center'>
                   {this.drawConversationType(message.type)}
