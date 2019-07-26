@@ -5,8 +5,7 @@ import {Icon, Table} from 'semantic-ui-react';
 
 import './styles.css';
 import moment from 'moment';
-import ConversationFilterBar from './ConversationFilterBar';
-
+import FilterBar from '../FilterBar';
 
 class ConversationsTable extends React.Component {
   constructor(props) {
@@ -14,7 +13,7 @@ class ConversationsTable extends React.Component {
     this.state = {
       column: null,
       direction: null,
-      conversatios: [],
+      conversations: [],
       intervalString: ''
     };
   }
@@ -22,18 +21,13 @@ class ConversationsTable extends React.Component {
   static getDerivedStateFromProps(props) {
     if (props.conversations) {
       return {
-        conversatios: props.conversations
+        conversations: props.conversations
       };
     }
   }
 
   setNewFilterParameters = (fromDate, toDate, source, type) => {
-    this.props.getFilteredConversations({
-      "fromDate": fromDate ? fromDate : undefined,
-      "toDate": toDate ? toDate : undefined,
-      "source": source ? source : undefined,
-      "type": type ? type : undefined
-    });
+    this.props.getFilteredConversations({ fromDate, toDate, source, type });
   };
 
   propComparator = value => {
@@ -43,17 +37,17 @@ class ConversationsTable extends React.Component {
   };
 
   handleSort = clickedColumn => () => {
-    const { column, conversatios, direction } = this.state;
+    const { column, conversations, direction } = this.state;
     if (column !== clickedColumn) {
       this.setState({
         column: clickedColumn,
-        conversatios: conversatios.sort(this.propComparator(clickedColumn)),
+        conversations: conversations.sort(this.propComparator(clickedColumn)),
         direction: 'ascending'
       });
       return;
     }
     this.setState({
-      conversatios: conversatios.reverse(),
+      conversations: conversations.reverse(),
       direction: direction === 'ascending' ? 'descending' : 'ascending'
     });
   };
@@ -85,19 +79,18 @@ class ConversationsTable extends React.Component {
       case "VOICE": return (<div><Icon name='microphone' size='small'/>Голос</div>);
       case "TEXT": return (<div><Icon name='align justify' size='small'/>Текст</div>);
       case "MIXED": return (<div><Icon name='sync' size='small'/>Смешанный</div>);
-      case "UNKN": return (<div><Icon name='question circle' size='small'/>Неизвестен</div>);
       default: return (<div><Icon name='question circle' size='small'/>Неизвестен</div>);
     }
   };
 
   render() {
-    const { column, direction, conversatios } = this.state;
+    const { column, direction, conversations } = this.state;
     return (
       <div className='table-container'>
         <div className='table-container-flex'>
           <div className='chat-history-title'>История разговоров</div>
           <div className='element-mb'>
-            <ConversationFilterBar
+            <FilterBar
               setNewFilterParameters={this.setNewFilterParameters}
             />
           </div>
@@ -131,7 +124,7 @@ class ConversationsTable extends React.Component {
             </Table.Row>
           </Table.Header>
           <Table.Body>
-            {conversatios.map((conversation, index) => (
+            {conversations.map((conversation, index) => (
               <Table.Row
                 className='table-row'
                 key={index}

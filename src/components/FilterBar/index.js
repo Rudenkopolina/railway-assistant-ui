@@ -1,0 +1,117 @@
+import React from 'react';
+import PropTypes from 'prop-types';
+import { withRouter } from 'react-router-dom';
+import { Checkbox, Button } from 'semantic-ui-react';
+import './styles.css';
+import moment from 'moment';
+import { DateTimeInput } from 'semantic-ui-calendar-react';
+
+class ConversationFilterBar extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      messenger: {
+        TELEGRAM: false,
+        VIBER: false,
+        PSTN: false,
+        ALL: true
+      },
+      fromDate: '',
+      toDate: '',
+      source: 'ALL'
+    };
+  }
+
+  onFilterChange = (name, value) => {
+    this.setState({ [name]: value });
+  };
+
+    onCheckBoxChange = (event, element) => {
+        event.preventDefault();
+        const { messenger } = this.state;
+        const messengers = Object.keys(messenger).reduce((acc, key) => { acc[key] = false; return acc; }, {})
+        messengers[element.label] = true;
+        this.setState({ messenger: messengers, source: element.label })
+        // this.setState((state, props) => ({
+        //   messenger: {
+        //     ...state.messenger,
+        //     [element.label]: !state.messenger[element.label]
+        //   }
+        // }));
+    };
+
+  makeSearch = () => {
+    const { fromDate, toDate, source, type } = this.state;
+    this.props.setNewFilterParameters(
+      fromDate
+        ? moment(fromDate, 'DD-MM-YYYY HH:mm')
+            .utc()
+            .format('YYYY-MM-DD HH:mm:ss')
+        : null,
+      toDate
+        ? moment(toDate, 'DD-MM-YYYY HH:mm')
+            .utc()
+            .format('YYYY-MM-DD HH:mm:ss')
+        : null,
+      !!source.localeCompare('ALL') ? source : null,
+      type ? type : null
+    );
+  };
+
+  render() {
+    const { messenger } = this.state;
+    return (
+      <div className='flex-filter'>
+        <div className='side-margin'>
+          <DateTimeInput
+            localization='ru'
+            id='1'
+            name='fromDate'
+            placeholder='Дата начала'
+            iconPosition='left'
+            onChange={(event, { name, value }) =>
+              this.onFilterChange(name, value)
+            }
+            value={this.state.fromDate}
+          />
+        </div>
+        <div className='side-margin'>
+          <DateTimeInput
+            localization='ru'
+            id='2'
+            name='toDate'
+            placeholder='Дата конца'
+            iconPosition='left'
+            onChange={(event, { name, value }) =>
+              this.onFilterChange(name, value)
+            }
+            value={this.state.toDate}
+          />
+        </div>
+        <div className='flex-filter center-filter-items'>
+          {Object.keys(messenger).map((m, i) => (
+            <Checkbox
+              key={i}
+              className='side-margin'
+              label={m}
+              checked={messenger[m]}
+              onChange={this.onCheckBoxChange}
+            />
+          ))}
+        </div>
+        <Button
+          className='side-margin'
+          circular
+          icon='search'
+          onClick={this.makeSearch}
+        />
+      </div>
+    );
+  }
+}
+
+ConversationFilterBar.propTypes = {
+  setNewFilterParameters: PropTypes.func.isRequired
+};
+
+export default withRouter(ConversationFilterBar);

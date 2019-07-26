@@ -52,7 +52,7 @@ class ConversationModal extends React.Component {
       content={<div>{entity.entity}</div>}
       position='right center'
       trigger={
-        <span className='entity-list'>@{entity.value}</span>
+        <div className='intent'>@{entity.value}</div>
       }
     />));
   };
@@ -79,8 +79,8 @@ class ConversationModal extends React.Component {
                     <div className='message-conversation message-conversation-user'>{message.requestText}</div>
                     <div className='message-conversation-info'>
                       <div className='intent'>{this.drawIntents(message.intents, message.detectedIntent, message.correctedIntent, message.detectedIntentDescription, message.correctedIntentDescription)}</div>
-                      <div className='edit-button' onClick={(event, object) => this.props.onEditClick(message)}>{this.drawEditButton(message.intents)}</div>
-                      <div className='entities'>{this.drawEntities(message.entities)}</div>
+                      <div className='edit-button' onClick={(event) => this.props.onEditClick(message)}>{this.drawEditButton(message.intents)}</div>
+                      {this.drawEntities(message.entities)}
                     </div>
                     <div className='message-conversation-time'>Пользователь, {moment(message.timestamp).format('HH:mm:ss')}
                     <Icon className='message-conversation-icon' name='envelope outline' />

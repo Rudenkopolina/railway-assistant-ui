@@ -5,31 +5,13 @@ import {Icon, Table} from 'semantic-ui-react';
 
 import './styles.css';
 import moment from 'moment';
-import HistoryFilterBar from './HistoryFilterBar';
+import FilterBar from '../FilterBar';
 
 
 class HistoryTable extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-    };
-  }
-
-  static getDerivedStateFromProps(props) {
-    if (props.messages) {
-      return {
-        messages: props.messages
-      };
-    }
-  }
 
   setNewFilterParameters = (fromDate, toDate, source, type) => {
-    this.props.getFilteredConversations({
-      "fromDate": fromDate ? fromDate : undefined,
-      "toDate": toDate ? toDate : undefined,
-      "source": source ? source : undefined,
-      "type": type ? type : undefined
-    });
+    this.props.getFilteredConversations({ fromDate, toDate, source, type });
   };
 
   drawMoreButton = () => {
@@ -65,13 +47,15 @@ class HistoryTable extends React.Component {
   };
 
   render() {
-    const messages = this.props.messages;
+    const {messages} = this.props;
     return (
       <div className='table-container-history'>
         <div className='table-container-flex-history'>
-          <div className='chat-irrelevant-history-title'>История нераспознанных сообщений</div>
+          <div className='chat-irrelevant-history-title'>
+            История нераспознанных сообщений
+          </div>
           <div className='element-mb'>
-            <HistoryFilterBar
+            <FilterBar
               setNewFilterParameters={this.setNewFilterParameters}
             />
           </div>
@@ -79,10 +63,16 @@ class HistoryTable extends React.Component {
         <Table celled compact>
           <Table.Header>
             <Table.Row className='history-table-row'>
-              <Table.HeaderCell textAlign='center'>Дата сообщения</Table.HeaderCell>
+              <Table.HeaderCell textAlign='center'>
+                Дата сообщения
+              </Table.HeaderCell>
               <Table.HeaderCell textAlign='center'>Сессия</Table.HeaderCell>
-              <Table.HeaderCell textAlign='center'>Сообщение</Table.HeaderCell>
-              <Table.HeaderCell textAlign='center'>Намерение</Table.HeaderCell>
+              <Table.HeaderCell textAlign='center'>
+                Сообщение
+              </Table.HeaderCell>
+              <Table.HeaderCell textAlign='center'>
+                Намерение
+              </Table.HeaderCell>
               <Table.HeaderCell textAlign='center'>Тип</Table.HeaderCell>
             </Table.Row>
           </Table.Header>
@@ -94,9 +84,7 @@ class HistoryTable extends React.Component {
                 onClick={() => this.props.onConversationClick(message)}
               >
                 <Table.Cell textAlign='center'>
-                  {moment(message.timestamp).format(
-                    'DD.MM.YYYY HH:mm:ss'
-                  )}
+                  {moment(message.timestamp).format('DD.MM.YYYY HH:mm:ss')}
                 </Table.Cell>
                 <Table.Cell textAlign='center'>
                   {message.session}
