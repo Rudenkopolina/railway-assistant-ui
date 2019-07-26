@@ -1,112 +1,159 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import './History.css'
+import './History.css';
 import { withRouter } from 'react-router-dom';
-import moment from "moment";
-import HistoryTable from "../../components/HistoryTable";
+import moment from 'moment';
+import HistoryTable from '../../components/HistoryTable';
 import 'react-notifications/lib/notifications.css';
 import {
-	clearIntents,
-	getIntents,
-	getIntentsPages
-} from "../../redux/actions/intentLogs";
-import {getAvailableIntents} from "../../redux/actions/availableIntents";
-import {correctIntents} from "../../redux/actions/conversationLogs";
+  clearIntents,
+  getIntents,
+  getIntentsPages
+} from '../../redux/actions/intentLogs';
+import { getAvailableIntents } from '../../redux/actions/availableIntents';
+import { correctIntents } from '../../redux/actions/intentLogs';
+import IntentsEditorModalHistory from '../../components/HistoryTable/IntentsEditorModalHistory';
 
 class History extends React.Component {
-
-	constructor(props) {
-		super(props);
-		this.state = {
+  constructor(props) {
+    super(props);
+    this.state = {
       currentPage: 1,
       visibleModal: false,
-			activationTimestamp: moment().utc().format("YYYY-MM-DD HH:mm:ss"),
+      activationTimestamp: moment()
+        .utc()
+        .format('YYYY-MM-DD HH:mm:ss'),
       selectedConversation: {},
-			filter: {
-				fromDate: undefined,
-				toDate: moment().utc().format("YYYY-MM-DD HH:mm:ss"),
-				source: undefined,
-				type: undefined
-			}
+      visibleIntentsEditorModal: false,
+      selectedMessage: {},
+      filter: {
+        fromDate: undefined,
+        toDate: moment()
+          .utc()
+          .format('YYYY-MM-DD HH:mm:ss'),
+        source: undefined,
+        type: undefined
+      }
     };
-	}
+  }
 
 	componentDidUpdate(prevProps, prevState) {
-		if (this.state.filter !== prevState.filter) {
-			this.props.getIntents(this.state.currentPage, this.state.filter.fromDate, this.state.filter.toDate, this.state.filter.source, this.state.filter.type);
-			this.props.getIntentsPages(this.state.filter.fromDate, this.state.filter.toDate, this.state.filter.source, this.state.filter.type);
+		const { filter, currentPage } = this.state;
+		if (filter !== prevState.filter) {
+			this.props.getIntents(
+				currentPage,
+				filter.fromDate,
+				filter.toDate,
+				filter.source,
+				filter.type
+			);
+			this.props.getIntentsPages(
+				filter.fromDate,
+				filter.toDate,
+				filter.source,
+				filter.type
+			);
 		}
 	}
 
-	componentWillMount() {
-		const { user } = this.props.auth;
+  componentWillMount() {
+	const { user } = this.props.auth;
+	const { filter, currentPage } = this.state;
 
-		if (user.permissions.ALLOWED_HISTORY_VIEWING) {
-			this.props.clearIntents();
-			this.props.getIntents(this.state.currentPage, this.state.filter.fromDate, this.state.filter.toDate, this.state.filter.source, this.state.filter.type);
-			this.props.getIntentsPages(this.state.filter.fromDate, this.state.filter.toDate, this.state.filter.source, this.state.filter.type);
-		}
-	}
+    if (user.permissions.ALLOWED_HISTORY_VIEWING) {
+      this.props.clearIntents();
+      this.props.getIntents(
+        currentPage,
+        filter.fromDate,
+        filter.toDate,
+        filter.source,
+        filter.type
+      );
+      this.props.getIntentsPages(
+        filter.fromDate,
+        filter.toDate,
+        filter.source,
+        filter.type
+      );
+      this.props.getAvailableIntents();
+    }
+  }
 
-	onMoreClick = () => {
-		this.props.getIntents(this.state.currentPage + 1, this.state.filter.fromDate, this.state.filter.toDate, this.state.filter.source, this.state.filter.type);
-		this.setState({currentPage: this.state.currentPage + 1});
-	};
-
-	onConversationClick = (item) => {
-		this.setState({visibleIntentsEditorModal: true});
-		this.setState({
-			selectedMessage: item
-		});
+  onMoreClick = () => {
+	const { filter, currentPage } = this.state;
+    this.props.getIntents(
+      currentPage + 1,
+      filter.fromDate,
+      filter.toDate,
+      filter.source,
+      filter.type
+    );
+	this.setState((state, props)=> ({ currentPage: state.currentPage + 1 }));
   };
 
-	onSearchClick = (filter) => {
-		this.props.clearIntents();
-		this.setState({"currentPage": 1});
-		if (!filter.toDate) {
-			filter.toDate = this.state.activationTimestamp;
-		}
-		this.setState({"filter": filter});
-	};
+  onConversationClick = item => {
+    this.setState({ visibleIntentsEditorModal: true, selectedMessage: item });
+  };
 
-	onChangeIntent = (message, intent) => {
-		this.setState({visibleIntentsEditorModal: false});
-		this.setState({selectedMessage: {}});
-		this.props.correctIntents(message, intent);
-	};
+  onSearchClick = filter => {
+    this.props.clearIntents();
+    if (!filter.toDate) {
+      filter.toDate = this.state.activationTimestamp;
+    }
+    this.setState({ currentPage: 1, filter: filter });
+  };
 
-	render() {
-		return (
-			<div className='history-table-container container'>
+  onChangeIntent = (message, intent) => {
+    this.setState({ visibleIntentsEditorModal: false, selectedMessage: {} });
+    this.props.correctIntents(message, intent);
+  };
+
+  onIntentsModalClose = () => {
+    this.setState({ visibleIntentsEditorModal: false, selectedMessage: {} });
+  };
+
+  render() {
+    return (
+      <div className='history-table-container container'>
+        <IntentsEditorModalHistory
+          visible={this.state.visibleIntentsEditorModal}
+          onModalClose={this.onIntentsModalClose}
+          availableIntents={this.props.availableIntents.intents}
+          message={this.state.selectedMessage}
+          onChangeIntent={this.onChangeIntent}
+        />
         <HistoryTable
           messages={this.props.intentLogs.intents}
           currentPage={this.state.currentPage}
           pages={this.props.intentLogs.pages}
           onConversationClick={this.onConversationClick}
-					onMoreClick={this.onMoreClick}
-					getFilteredConversations={this.onSearchClick}
+          onMoreClick={this.onMoreClick}
+          getFilteredConversations={this.onSearchClick}
         />
-			</div>
-		);
-	}
+      </div>
+    );
+  }
 }
 
 const mapStateToProps = ({ auth, intentLogs, availableIntents }) => ({
-	auth, intentLogs, availableIntents
+  auth,
+  intentLogs,
+  availableIntents
 });
 
 const mapDispatchToProps = dispatch => ({
-	getIntents: (page, fromDate, toDate, source, type) => dispatch(getIntents(page, fromDate, toDate, source, type)),
-	getIntentsPages: (fromDate, toDate, source, type) => dispatch(getIntentsPages(fromDate, toDate, source, type)),
-	clearIntents: () => dispatch(clearIntents()),
-	getAvailableIntents: () => dispatch(getAvailableIntents()),
-	correctIntents: (message, intent) => dispatch(correctIntents(message, intent))
+  getIntents: (page, fromDate, toDate, source, type) =>
+    dispatch(getIntents(page, fromDate, toDate, source, type)),
+  getIntentsPages: (fromDate, toDate, source, type) =>
+    dispatch(getIntentsPages(fromDate, toDate, source, type)),
+  clearIntents: () => dispatch(clearIntents()),
+  getAvailableIntents: () => dispatch(getAvailableIntents()),
+  correctIntents: (message, intent) => dispatch(correctIntents(message, intent))
 });
 
-
 export default withRouter(
-	connect(
-		mapStateToProps,
-		mapDispatchToProps
-	)(History)
+  connect(
+    mapStateToProps,
+    mapDispatchToProps
+  )(History)
 );

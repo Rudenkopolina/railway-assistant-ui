@@ -8,7 +8,10 @@ import {
   GET_INTENTS_PAGES_SUCCESS,
   CLEAR_INTENTS,
   CLEAR_INTENTS_SUCCESS,
-  CLEAR_INTENTS_FAIL
+  CLEAR_INTENTS_FAIL,
+  CORRECT_INTENTS,
+  CORRECT_INTENTS_FAIL,
+  CORRECT_INTENTS_SUCCESS
 } from '../actions/intentLogs';
 
 export default function(state = initialState, action) {
@@ -55,7 +58,27 @@ export default function(state = initialState, action) {
         pending: false,
         pages: 0
       };
+    case CORRECT_INTENTS:
+      return {
+        ...state
+      };
+    case CORRECT_INTENTS_SUCCESS:
+      state.intents.forEach((element) => {
+        if (element.requestText === action.log.requestText) {
+          element.correctedIntent = action.intent.name;
+          element.correctedIntentDescription = action.intent.description;
+        }
+      });
 
+      return {
+        ...state,
+        pending: false,
+        intents: state.intents
+      };
+    case CORRECT_INTENTS_FAIL:
+      return {
+        ...state
+      };
     default:
       return state;
   }

@@ -15,15 +15,16 @@ class HistoryTable extends React.Component {
   };
 
   drawMoreButton = () => {
-    if (this.props.currentPage < this.props.pages) {
+    const {currentPage, pages, onMoreClick} = this.props;
+    if (currentPage < pages) {
       return (
         <tfoot>
           <tr>
-            <th colSpan='5'>
+            <th colSpan='6'>
               <div className='block-pagination'>
                 <button
                   className='ui right labeled icon button'
-                  onClick={this.props.onMoreClick}
+                  onClick={onMoreClick}
                 >
                   <i className='right arrow icon' />
                   Загрузить ещё
@@ -67,12 +68,9 @@ class HistoryTable extends React.Component {
                 Дата сообщения
               </Table.HeaderCell>
               <Table.HeaderCell textAlign='center'>Сессия</Table.HeaderCell>
-              <Table.HeaderCell textAlign='center'>
-                Сообщение
-              </Table.HeaderCell>
-              <Table.HeaderCell textAlign='center'>
-                Намерение
-              </Table.HeaderCell>
+              <Table.HeaderCell textAlign='center'>Сообщение</Table.HeaderCell>
+              <Table.HeaderCell textAlign='center'>Распознаное системой намерение</Table.HeaderCell>
+              <Table.HeaderCell textAlign='center'>Скорректированное намерение</Table.HeaderCell>
               <Table.HeaderCell textAlign='center'>Тип</Table.HeaderCell>
             </Table.Row>
           </Table.Header>
@@ -93,7 +91,10 @@ class HistoryTable extends React.Component {
                   {message.requestText}
                 </Table.Cell>
                 <Table.Cell textAlign='center'>
-                  {message.detectedIntent}
+                  {message.detectedIntentDescription}
+                </Table.Cell>
+                <Table.Cell textAlign='center'>
+                  {message.correctedIntentDescription }
                 </Table.Cell>
                 <Table.Cell textAlign='center'>
                   {this.drawConversationType(message.type)}
