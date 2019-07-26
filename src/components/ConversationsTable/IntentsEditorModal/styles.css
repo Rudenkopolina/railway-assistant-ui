@@ -48,8 +48,8 @@
 }
 
 .intents-editor-dropdown {
-  width: 235px;
-  margin: 5px auto 20px 0px;
+  margin-bottom: 30px;
+  margin-top: 5px;
 }
 
 .intents-editor-modal-button {

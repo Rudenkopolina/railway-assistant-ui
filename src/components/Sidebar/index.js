@@ -30,7 +30,7 @@ class Sidebar extends React.Component {
 								content={item.value}
 								position='right center'
 								trigger={
-									<Icon name={item.icon} className={cx('sidebar-icon', { 'sidebar-active-icon': title === item.key })} size='big' />
+									<Icon name={item.icon} className={cx('sidebar-icon', { 'sidebar-active-icon': title === item.key })} size='large' />
 								}
 							/>
 						</Link>

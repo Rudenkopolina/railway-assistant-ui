@@ -75,6 +75,7 @@ class IntentsEditorModal extends React.Component {
         <div className='intents-editor-label'>Изменить намерение</div>
           <Dropdown
             className='intents-editor-dropdown'
+            fluid
             search
             selection
             options={options}

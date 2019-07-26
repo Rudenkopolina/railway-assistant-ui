@@ -1,4 +1,5 @@
 .sidebar-wrapper {
+  /* padding: 15px 0; */
   display: flex;
   flex-direction: column;
   width: 60px;
@@ -12,7 +13,7 @@
 
 .sidebar-icon {
   color: #8FA3BE;
-  margin: 30px 10px !important;
+  margin: 18px 15px !important;
 }
 
 .sidebar-active-item {

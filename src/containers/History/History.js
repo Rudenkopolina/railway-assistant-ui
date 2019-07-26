@@ -12,7 +12,7 @@ import {
 } from '../../redux/actions/intentLogs';
 import { getAvailableIntents } from '../../redux/actions/availableIntents';
 import { correctIntents } from '../../redux/actions/intentLogs';
-import IntentsEditorModalHistory from '../../components/HistoryTable/IntentsEditorModalHistory';
+import IntentsEditorModal from '../../components/ConversationsTable/IntentsEditorModal';
 
 class History extends React.Component {
   constructor(props) {
@@ -115,7 +115,7 @@ class History extends React.Component {
   render() {
     return (
       <div className='history-table-container container'>
-        <IntentsEditorModalHistory
+        <IntentsEditorModal
           visible={this.state.visibleIntentsEditorModal}
           onModalClose={this.onIntentsModalClose}
           availableIntents={this.props.availableIntents.intents}
