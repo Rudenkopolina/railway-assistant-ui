@@ -51,10 +51,17 @@
   margin-bottom: 30px;
   margin-top: 5px;
 }
+.intents-editor-modal-actions{
+  display: flex;
+}
 
 .intents-editor-modal-button {
-  width: 115px;
-  margin-right: 5px !important;
+  flex-grow: 1;
+  margin: 0 !important;
+}
+
+.intents-editor-modal-actions :first-child{
+  margin-right: 10px !important;
 }
 
 .intents-calendar-icon{

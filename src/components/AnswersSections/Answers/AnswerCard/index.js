@@ -51,6 +51,7 @@ class AnswerCard extends React.Component {
         answer={answer}
         isShowExamples={isShowExamples}
         isDescriptionChangeable={title === 'reference'}
+        supportedTTS={this.props.supportedTTS}
       />
     );
   };
@@ -118,7 +119,8 @@ AnswerCard.propTypes = {
   onStopAudio: PropTypes.func.isRequired,
   playedId: PropTypes.number,
   onUpdateAnswer: PropTypes.func.isRequired,
-  onResponseSelected: PropTypes.func.isRequired
+  onResponseSelected: PropTypes.func.isRequired,
+  supportedTTS: PropTypes.bool.isRequired
 };
 
 export default AnswerCard;

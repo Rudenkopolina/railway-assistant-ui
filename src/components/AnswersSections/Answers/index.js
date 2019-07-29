@@ -95,6 +95,7 @@ class Answers extends React.Component {
             playedId={this.state.playedId}
             onUpdateAnswer={this.onUpdateAnswer}
             onResponseSelected={this.onResponseSelected}
+            supportedTTS={this.props.supportedTTS}
           />
         ))}
       </div>
@@ -109,7 +110,8 @@ Answers.propTypes = {
   changeResponse: PropTypes.func.isRequired,
   onDeleteAnswer: PropTypes.func.isRequired,
   isReferanseTab: PropTypes.bool.isRequired,
-  onResponseSelected: PropTypes.func.isRequired
+  onResponseSelected: PropTypes.func.isRequired,
+  supportedTTS: PropTypes.bool.isRequired
 };
 
 

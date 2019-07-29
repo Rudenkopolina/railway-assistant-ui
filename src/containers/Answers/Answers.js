@@ -70,6 +70,7 @@ class Answer extends React.Component {
 
   getContent = () => {
     const { activeTab, filterString } = this.state;
+    const { user } = this.props.auth;
     const isReferanseTab = activeTab === 'reference';
     const answers = isReferanseTab
       ? this.props.data.reference
@@ -89,6 +90,7 @@ class Answer extends React.Component {
           filterString={filterString}
           isReferanseTab={isReferanseTab}
           onMoveResponse={this.props.moveToCategory}
+          supportedTTS={user.supportedTTS}
         />
       </Protected>
     );

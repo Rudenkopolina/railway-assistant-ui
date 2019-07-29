@@ -175,6 +175,7 @@ class AnswersSections extends React.Component {
           changeResponse={this.props.changeResponse}
           isReferanseTab={isReferanseTab}
           onResponseSelected={this.onResponseSelected}
+          supportedTTS={this.props.supportedTTS}
         />
       </div>
     );
@@ -192,7 +193,8 @@ AnswersSections.propTypes = {
   isReferanseTab: PropTypes.bool.isRequired,
   onDeleteCategory: PropTypes.func.isRequired,
   onCreateCategory: PropTypes.func.isRequired,
-  onMoveResponse: PropTypes.func.isRequired
+  onMoveResponse: PropTypes.func.isRequired,
+  supportedTTS: PropTypes.bool.isRequired
 };
 
 export default withRouter(AnswersSections);

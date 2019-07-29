@@ -36,22 +36,23 @@ class IntentModal extends React.Component {
   };
 
   handleUpdateKeys = keys => {
-    this.setState({
-      modalAnswer: { ...this.state.modalAnswer, examples: keys }
-    });
+    this.setState((state, props)=>({
+      modalAnswer: { ...state.modalAnswer, examples: keys }
+    }));
   };
 
   componentDidUpdate(prevProps, prevState) {
     const { isModalOpen } = this.state;
+    const { answer } = this.props;
     let modalAnswer = {};
-    if (this.props.answer) {
+    if (answer) {
       modalAnswer = {
-        responseName: this.props.answer.responseName || '',
-        responseDescription: this.props.answer.responseDescription || '',
-        textTranscription: this.props.answer.textTranscription || '',
-        audioTranscription: this.props.answer.audioTranscription || '',
-        examples: this.props.answer.examples || [],
-        categoryId: this.props.answer.categoryId
+        responseName: answer.responseName || '',
+        responseDescription: answer.responseDescription || '',
+        textTranscription: answer.textTranscription || '',
+        audioTranscription: answer.audioTranscription || '',
+        examples: answer.examples || [],
+        categoryId: answer.categoryId
       };
     } else {
       modalAnswer = {
@@ -69,13 +70,12 @@ class IntentModal extends React.Component {
   }
 
   onHandlerFormField = (value, title) => {
-    const { modalAnswer } = this.state;
-    this.setState({ modalAnswer: { ...modalAnswer, [title]: value } });
+    this.setState((state, props) => 
+    ({ modalAnswer: { ...state.modalAnswer, [title]: value } }));
   };
 
   onTrigerModal = () => {
-    const { isModalOpen } = this.state;
-    this.setState({ isModalOpen: !isModalOpen });
+    this.setState((state, props) => ({ isModalOpen: !state.isModalOpen }));
   };
 
   onSendData = () => {
@@ -90,7 +90,7 @@ class IntentModal extends React.Component {
   };
 
   isDisabled = () => {
-    const { isShowExamples = true } = this.props;
+    const { isShowExamples = true, answer } = this.props;
     const {
       responseName,
       responseDescription,
@@ -102,13 +102,13 @@ class IntentModal extends React.Component {
     let isNothigChanged = true;
     let isDisabled = true;
 
-    if (this.props.answer) {
+    if (answer) {
       isNothigChanged =
-        !(responseName === this.props.answer.responseName) ||
-        !(responseDescription === this.props.answer.responseDescription) ||
-        !(textTranscription === this.props.answer.textTranscription) ||
-        !(audioTranscription === this.props.answer.audioTranscription) ||
-        !(examples.length === this.props.answer.examples.length);
+        !(responseName === answer.responseName) ||
+        !(responseDescription === answer.responseDescription) ||
+        !(textTranscription === answer.textTranscription) ||
+        !(audioTranscription === answer.audioTranscription) ||
+        !(examples.length === answer.examples.length);
     }
     examples.forEach(item => {
       isDisabled = isDisabled && !!item.trim();
@@ -147,7 +147,7 @@ class IntentModal extends React.Component {
     const {
       isShowExamples = true,
       isDescriptionChangeable = true,
-      answer
+      answer, modalTitle, supportedTTS
     } = this.props;
     const answerId = answer ? answer.id : null;
     const keywordsHint = (
@@ -163,7 +163,7 @@ class IntentModal extends React.Component {
 
     return (
       <div className='modal-wrapper'>
-        <div className='modal-header'>{this.props.modalTitle}</div>
+        <div className='modal-header'>{modalTitle}</div>
         <div className='modal-content'>
           {isDescriptionChangeable ? (
             <div className='modal-formfield'>
@@ -252,7 +252,7 @@ class IntentModal extends React.Component {
               }
             />
           </div>
-          <div className='modal-formfield'>
+          {supportedTTS && (<div className='modal-formfield'>
             <div className='modal-formfield-title'>
               Голосовой ответ
               <Popup
@@ -277,7 +277,7 @@ class IntentModal extends React.Component {
                 this.onHandlerFormField(e.target.value, 'audioTranscription')
               }
             />
-          </div>
+          </div>)}
         </div>
         <div className='modal-actions actions'>
           <Button onClick={this.onTrigerModal}>Отменить</Button>
@@ -320,7 +320,8 @@ IntentModal.propTypes = {
   answer: PropTypes.object,
   isShowExamples: PropTypes.bool,
   isDescriptionChangeable: PropTypes.bool,
-  categoryId: PropTypes.number
+  categoryId: PropTypes.number,
+  supportedTTS: PropTypes.bool.isRequired
 };
 
 export default connect(
