@@ -47,7 +47,9 @@ module.exports = {
 			getIntents: (id, query) => `/api/logs/intents?page=${id}${query}`,
 			getIntentsPages: (query) => `/api/logs/intents_pages?${query}`,
 			getAvailableIntents: '/api/text/intents',
-			correctIntents: '/api/text/intents/correct'
+			correctIntents: '/api/text/intents/correct',
+			getMonitoring: '/api/monitoring',
+			getMonitoringItem: (id) => `/api/monitoring/${id}`
 		}
 	},
 	baseUrl

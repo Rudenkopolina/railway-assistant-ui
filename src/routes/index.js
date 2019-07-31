@@ -13,6 +13,7 @@ import Users from '../containers/Users/Users';
 import UsageStatistics from '../containers/Statistics/Statistics';
 import EnvironmentPage from "../containers/EnvironmentPage";
 import LogsConversations from "../containers/LogsConversations/LogsConversations";
+import MonitoringPage from "../containers/MonitoringPage";
 
 function Routes() {
 	return (
@@ -62,6 +63,13 @@ function Routes() {
 				requiredRoles='ALLOWED_LOGS_VIEWING'
 				path={'/logs/conversations'}
 				component={() => <Layout><LogsConversations/></Layout>}
+				saveUrlOnFail
+			/>
+
+			<ProtectedRoute
+				requiredRoles='ALLOWED_MONITORING_VIEWING'
+				path={'/monitoring'}
+				component={() => <Layout><MonitoringPage></MonitoringPage></Layout>}
 				saveUrlOnFail
 			/>
 
