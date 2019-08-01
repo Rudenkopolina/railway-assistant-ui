@@ -63,8 +63,7 @@ class IntentModal extends React.Component {
   }
 
   isDisabled = () => {
-    const { isShowExamples = true, answer
-      // , supportedTTS 
+    const { isShowExamples = true, answer, supportedTTS 
     } = this.props;
     const {
       responseName,
@@ -78,7 +77,6 @@ class IntentModal extends React.Component {
 
     let isNothigChanged = true;
     let isBufferChanged = false;
-    const supportedTTS = false;
 
     if (answer) {
       isNothigChanged =
@@ -117,7 +115,7 @@ class IntentModal extends React.Component {
 
   onHandlerFormField = (value, title) => {
     this.setState((state, props) => ({
-      modalAnswer: { ...state.modalAnswer, [title]: value }
+      modalAnswer: { ...state.modalAnswer, [title]: value, inputType: 0 }
     }));
   };
 
@@ -311,7 +309,6 @@ class IntentModal extends React.Component {
           {supportedTTS && (
             <div className='modal-actions-flex'>
             <div className='modal-actions-audio-player'><AudioPlayer id={1} url={this.getRecordSrc()} /> <span>Прослушать</span></div>
-
               <AudioRecorder onSaveRecord={this.onRecord} />
             </div>)}
         </div>
