@@ -40,6 +40,14 @@
   margin-top: 15px;
   justify-content: flex-end;
 }
+.modal-actions-flex {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.modal-actions-audio-player{
+  margin-top: 20px;
+}
 
 .modal-keys-formfield {
   display: flex;

@@ -1,0 +1,18 @@
+.recorder-container{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 10px;
+}
+
+.recorder-actions {
+    display: flex;
+}
+
+.recorder-action {
+    width: 185px !important;
+}
+
+.audio-player{
+    padding: 22px;
+}
