@@ -89,6 +89,10 @@ export const availableIntents = {
   intents: []
 };
 
+export const monitoring = {
+  items: []
+};
+
 export default {
   auth,
   responses,
@@ -102,5 +106,6 @@ export default {
   conversationStatistics,
   conversationLogs,
   intentLogs,
-  availableIntents
+  availableIntents,
+  monitoring
 };

@@ -15,7 +15,8 @@ const pageList = [
 	{ key: '/statistics', value: 'Статистика использования', icon: 'dashboard', requiredAnyRoles: ['ALLOWED_USAGE_STATISTICS_VIEWING', 'ALLOWED_CONVERSATION_STATISTICS_VIEWING']},
 	{ key: '/group/environment', value: 'Подключённое окружение', icon: 'plug', requiredRoles: ''},
 	{ key: '/logs/conversations', value: 'История разговоров', icon: 'history', requiredRoles: 'ALLOWED_LOGS_VIEWING'},
-	{ key: '/history/irrelevant', value: 'Нераспознанные намерения', icon: 'question circle', requiredRoles: 'ALLOWED_HISTORY_VIEWING'}
+	{ key: '/history/irrelevant', value: 'Нераспознанные намерения', icon: 'question circle', requiredRoles: 'ALLOWED_HISTORY_VIEWING'},
+	{ key: '/monitoring', value: 'Мониторинг', icon: 'info circle', requiredRoles: 'ALLOWED_MONITORING_VIEWING'}
 ];
 
 class Sidebar extends React.Component {
