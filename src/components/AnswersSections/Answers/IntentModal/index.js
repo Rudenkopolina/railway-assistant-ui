@@ -305,8 +305,8 @@ class IntentModal extends React.Component {
               }
             />
           </div>
-          {!supportedTTS && this.renderAudio()}
-          {supportedTTS && (
+          {supportedTTS && this.renderAudio()}
+          {!supportedTTS && (
             <div className='modal-actions-flex'>
             <div className='modal-actions-audio-player'><AudioPlayer id={1} url={this.getRecordSrc()} /> <span>Прослушать</span></div>
               <AudioRecorder onSaveRecord={this.onRecord} />
