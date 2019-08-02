@@ -13,7 +13,7 @@ class StatusCard extends React.Component {
 	render() {
 		return (
 			<div key={this.props.index}
-					 className={`status-card ${this.props.status ? 'enabled' : 'disabled'} ${this.props.updating ? 'updating' : ''}`}>
+					 className={`status-card ${this.props.status ? 'status-card-enabled' : 'status-card-disabled'} ${this.props.updating ? 'status-card-updating' : ''}`}>
 				<div className='status-card-updated'>
 					<Icon name='redo alternate' className='status-card-refresh-icon'
 								onClick={() => this.props.onUpdateClick(this.props.index)}/>

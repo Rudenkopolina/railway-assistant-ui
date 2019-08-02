@@ -12,17 +12,17 @@
   color: #436dd2;
 }
 
-.enabled {
+.status-card-enabled {
   box-shadow: 0px 0px 2px 2px rgba(67, 212, 69, 0.87);
   transition: box-shadow 0.1s ease-in-out;
 }
 
-.disabled {
+.status-card-disabled {
   box-shadow: 0px 0px 2px 2px rgba(226, 49, 25, 0.8);
   transition: box-shadow 0.1s ease-in-out;
 }
 
-.updating {
+.status-card-updating {
   filter: blur(4px);
 }
 
