@@ -1,0 +1,22 @@
+.monitoring-container {
+  width: 100%;
+  min-height: calc(100vh - 39px);
+  background-color: #f9f9fb;
+  margin-left: 60px;
+  padding: 15px 30px;
+}
+
+.monitoring-title {
+  font-size: 18px;
+  margin: 12px 0 0 20px;
+  padding: 0px 0 17px 0;
+  color: #363f56;
+  border-bottom: 2px solid #436dd2;
+  width: 170px;
+}
+
+.monitoring-cards-wrapper {
+  display: flex;
+  flex-wrap: wrap;
+  padding: 20px;
+}
