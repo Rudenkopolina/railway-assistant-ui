@@ -1,18 +1,33 @@
-.recorder-container{
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 10px;
+.recorder-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 10px;
+}
+
+.recorder {
+  background-color: #dde5fa;
+  height: 54px;
+  width: 620px;
+  padding: 0 10px;
+  border-radius: 12px;
+  margin-bottom: 16px;
 }
 
 .recorder-actions {
-    display: flex;
+  display: flex;
 }
 
 .recorder-action {
-    width: 185px !important;
+  width: 185px !important;
 }
 
-.audio-player{
-    padding: 22px;
+.audio-player {
+  padding: 0px;
+  margin-bottom: 15px;
+}
+
+canvas {
+  height: 54px;
+  width: 600px;
 }

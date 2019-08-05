@@ -140,7 +140,7 @@ class Keywords extends React.Component {
 }
 
 Keywords.propTypes = {
-  keys: PropTypes.array.isRequired,
+  keys: PropTypes.array,
   handleUpdateKeys: PropTypes.func.isRequired,
   answerId: PropTypes.number
 };

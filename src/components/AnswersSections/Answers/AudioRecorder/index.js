@@ -8,6 +8,7 @@ export class AudioRecorder extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      recordedBlob: null,
       blobObject: null,
       isRecording: false
     };
@@ -48,17 +49,18 @@ export class AudioRecorder extends React.Component {
     const reader = new FileReader();
     reader.readAsDataURL(blobObject.blob);
     reader.onloadend = () => {
-      this.setState({ blobObject: reader.result.split(',')[1] });
+      this.setState({ blobObject: reader.result.split(',')[1], recordedBlob: blobObject.blobURL });
     };
   
   };
 
   render() {
-    const { blobObject, isRecording } = this.state;
+    const { blobObject, isRecording, recordedBlob } = this.state;
     return (
       <div>
         {!blobObject && (
           <div className='recorder-container'>
+          <div className='recorder'>
             <ReactMic
               record={isRecording}
               className='sound-wave'
@@ -66,8 +68,8 @@ export class AudioRecorder extends React.Component {
               onData={this.onData}
               onSave={this.onSave}
               strokeColor='#436dd2'
-              backgroundColor='#ffffff'
-            />
+              backgroundColor='#dde5fa'
+            /></div>
             <div className='rexorder-actions'>
               <Button
                 basic
@@ -94,7 +96,7 @@ export class AudioRecorder extends React.Component {
         {blobObject && (
           <div className='recorder-container'>
             <div className='audio-player'>
-              <audio ref='audioSource' controls='controls' src={blobObject} />
+              <audio ref='audioSource' controls='controls' src={recordedBlob} />
             </div>
             <div className='rexorder-actions'>
               <Button

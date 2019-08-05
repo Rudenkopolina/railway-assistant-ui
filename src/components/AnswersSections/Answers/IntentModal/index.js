@@ -147,7 +147,9 @@ class IntentModal extends React.Component {
   getRecordSrc = () => {
     const { isShowExamples = true, answer } = this.props;
     const title = isShowExamples ? 'reference' : 'common';
-    return urls.responses.audioUrl(title, answer.id);
+    if (answer) {
+      return urls.responses.audioUrl(title, answer.id);
+    }
   };
 
   getOptions = () => {
@@ -275,14 +277,12 @@ class IntentModal extends React.Component {
     );
   };
 
-  renderContent = () => {
-   
+  renderContent = () => {      
     const isDisabled = this.isDisabled();
     const { modalAnswer } = this.state;
     const {
       isShowExamples = true,
       isDescriptionChangeable = true,
-      answer,
       modalTitle,
       supportedTTS
     } = this.props;
@@ -307,8 +307,11 @@ class IntentModal extends React.Component {
           </div>
           {supportedTTS && this.renderAudio()}
           {!supportedTTS && (
-            <div className='modal-actions-flex'>
-            <div className='modal-actions-audio-player'><AudioPlayer id={1} url={this.getRecordSrc()} /> <span>Прослушать</span></div>
+            <div className='modal-formfield'>
+              <div className='modal-formfield-title'>
+              <span className='unsupported-tts-label'>Для вашего региона нет поддержки генерации речи</span>
+              <AudioPlayer id={1} url={this.getRecordSrc()} />
+              </div>
               <AudioRecorder onSaveRecord={this.onRecord} />
             </div>)}
         </div>
@@ -354,7 +357,7 @@ IntentModal.propTypes = {
   isShowExamples: PropTypes.bool,
   isDescriptionChangeable: PropTypes.bool,
   categoryId: PropTypes.number,
-  supportedTTS: PropTypes.bool.isRequired
+  supportedTTS: PropTypes.bool
 };
 
 export default connect(

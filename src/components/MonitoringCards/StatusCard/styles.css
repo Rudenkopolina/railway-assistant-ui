@@ -1,61 +1,81 @@
 .status-card {
-  cursor: default;
   background-color: #fff;
-  margin: 20px;
-  padding: 10px;
+  margin: 10px;
+  padding: 20px;
   width: 300px;
-  height: 180px;
-  font-size: 18px;
+  height: 168px;
+  font-size: 14px;
   display: flex;
-  align-items: center;
   flex-direction: column;
-  color: #436dd2;
-}
-
-.enabled {
-  box-shadow: 0px 0px 2px 2px rgba(67, 212, 69, 0.87);
-  transition: box-shadow 0.1s ease-in-out;
-}
-
-.disabled {
-  box-shadow: 0px 0px 2px 2px rgba(226, 49, 25, 0.8);
-  transition: box-shadow 0.1s ease-in-out;
-}
-
-.updating {
-  filter: blur(4px);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.15);
 }
 
 .status-card-description {
-  margin: 15px 0px 0px 0px;
-  font-size: 22px;
-  color: #436dd2;
   display: flex;
-  justify-content: center;
-  text-align: center;
+  flex-direction: column;
 }
 
-.status-card-updated {
-  margin: 0px 0px 0px 0px;
+.status-card-title {
+  font-weight: 500;
+  font-size: 1.3em;
+  line-height: 1.2;
+  margin-bottom: 5px;
+}
+
+.status-card-tag {
+  align-self: flex-start;
+  padding: 2px 21px;
+  margin: 15px 0 5px;
+  margin-right: 7px;
+  height: 27px;
+  font-size: 1em;
+  line-height: 20px;
+  border: 1px solid;
+  border-radius: 4px;
+  outline: none;
+}
+
+.status-card-actions {
   display: flex;
-  justify-content: space-between;
-  width: 100%;
+  flex-direction: column;
 }
 
-.status-card-popup-content {
-  font-size: 16px;
-  color: #000000;
+.status-card-refresh-button {
+  height: 27px;
+  font-size: 1em !important;
+  margin: 10px 0 !important;
+  padding: 0 21px !important;
 }
 
-.status-card-icon {
-  cursor: default;
-  padding: 32.5px 0;
+.status-card-update {
+  margin: 0;
+  display: flex;
+  align-self: flex-start;
+  flex-direction: column;
+}
+.status-card-update-label {
+  font-size: 15px;
 }
 
-.status-card-popup-icon {
-  cursor: pointer;
+.status-card-update-status {
+  font-size: 0.9em;
+  color: rgba(0, 0, 0, 0.4);
 }
 
-.status-card-refresh-icon {
-  cursor: pointer;
+.status-enabled {
+  color: #52c41a;
+  background: #f6ffed;
+  border-color: #b7eb8f;
+}
+
+.status-disabled {
+  color: #f5222d;
+  background: #fff1f0;
+  border-color: #ffa39e;
+}
+
+.status-updating {
+  color: #faad14;
+  background: #fffbe6;
+  border-color: #ffe58f;
 }
