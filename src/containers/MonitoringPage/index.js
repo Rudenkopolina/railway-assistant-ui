@@ -1,29 +1,27 @@
 import React from 'react';
 import { withRouter } from 'react-router-dom';
-import './styles.css';
 import { connect } from 'react-redux';
-import {
-  getMonitoring,
-  updateMonitoringItem
-} from '../../redux/actions/monitoring';
+import { getMonitoring, updateMonitoringItem } from '../../redux/actions/monitoring';
 import MonitoringCards from '../../components/MonitoringCards';
+import './styles.css';
 class MonitoringPage extends React.Component {
-  componentWillMount() {
-    this.props.getMonitoring();
-  }
+	componentDidMount() {
+		const { getMonitoring } = this.props;
+		getMonitoring();
+	}
 
   onItemUpdateClick = itemIndex => {
-    this.props.updateMonitoringItem(itemIndex);
+	const { updateMonitoringItem } = this.props;
+    updateMonitoringItem(itemIndex);
   };
 
   render() {
-    return <MonitoringCards monitoring={this.props.monitoring} />;
+	const { monitoring } = this.props;
+    return <MonitoringCards onItemUpdateClick={this.onItemUpdateClick} monitoring={monitoring} />;
   }
 }
 
-const mapStateToProps = ({ monitoring }) => ({
-  monitoring
-});
+const mapStateToProps = ({ monitoring }) => ({ monitoring });
 
 const mapDispatchToProps = dispatch => ({
   getMonitoring: () => dispatch(getMonitoring()),
