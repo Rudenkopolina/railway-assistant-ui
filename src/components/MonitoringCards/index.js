@@ -10,7 +10,7 @@ import StatusCard from './StatusCard';
 class MonitoringCards extends React.Component {
   render() {
     return (<div className='monitoring-container'>
-     <div className='monitoring-title'>История разговоров</div>
+     <div className='monitoring-title'>Мониторинг</div>
 				<div className='monitoring-cards-wrapper'>
 					{this.props.monitoring.items.map((item, index) => {
 						return (
