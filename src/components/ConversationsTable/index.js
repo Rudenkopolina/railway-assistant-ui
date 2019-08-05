@@ -26,8 +26,8 @@ class ConversationsTable extends React.Component {
     }
   }
 
-  setNewFilterParameters = (fromDate, toDate, source, type) => {
-    this.props.getFilteredConversations({ fromDate, toDate, source, type });
+  setNewFilterParameters = (fromDate, toDate, source, type, text) => {
+    this.props.getFilteredConversations({ fromDate, toDate, source, type, text });
   };
 
   propComparator = value => {

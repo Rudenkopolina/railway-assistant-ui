@@ -32,7 +32,8 @@ class History extends React.Component {
           .utc()
           .format('YYYY-MM-DD HH:mm:ss'),
         source: undefined,
-        type: undefined
+        type: undefined,
+        text: ''
       }
     };
   }
@@ -45,13 +46,15 @@ class History extends React.Component {
 				filter.fromDate,
 				filter.toDate,
 				filter.source,
-				filter.type
+				filter.type,
+        filter.text
 			);
 			this.props.getIntentsPages(
 				filter.fromDate,
 				filter.toDate,
 				filter.source,
-				filter.type
+				filter.type,
+        filter.text
 			);
 		}
 	}
@@ -67,13 +70,15 @@ class History extends React.Component {
         filter.fromDate,
         filter.toDate,
         filter.source,
-        filter.type
+        filter.type,
+        filter.text
       );
       this.props.getIntentsPages(
         filter.fromDate,
         filter.toDate,
         filter.source,
-        filter.type
+        filter.type,
+        filter.text
       );
       this.props.getAvailableIntents();
     }
@@ -86,7 +91,8 @@ class History extends React.Component {
       filter.fromDate,
       filter.toDate,
       filter.source,
-      filter.type
+      filter.type,
+      filter.text
     );
 	this.setState((state, props)=> ({ currentPage: state.currentPage + 1 }));
   };
@@ -142,10 +148,10 @@ const mapStateToProps = ({ auth, intentLogs, availableIntents }) => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  getIntents: (page, fromDate, toDate, source, type) =>
-    dispatch(getIntents(page, fromDate, toDate, source, type)),
-  getIntentsPages: (fromDate, toDate, source, type) =>
-    dispatch(getIntentsPages(fromDate, toDate, source, type)),
+  getIntents: (page, fromDate, toDate, source, type, text) =>
+    dispatch(getIntents(page, fromDate, toDate, source, type, text)),
+  getIntentsPages: (fromDate, toDate, source, type, text) =>
+    dispatch(getIntentsPages(fromDate, toDate, source, type, text)),
   clearIntents: () => dispatch(clearIntents()),
   getAvailableIntents: () => dispatch(getAvailableIntents()),
   correctIntents: (message, intent) => dispatch(correctIntents(message, intent))

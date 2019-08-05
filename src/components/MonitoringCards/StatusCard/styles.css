@@ -21,7 +21,14 @@
   line-height: 1.2;
   margin-bottom: 5px;
 }
-
+.status-card-update-status {
+  font-size: 0.9em;
+  color: rgba(0, 0, 0, 0.4);
+}
+.status-card-actions {
+  display: flex;
+  flex-direction: column;
+}
 .status-card-tag {
   align-self: flex-start;
   padding: 2px 21px;
@@ -35,31 +42,11 @@
   outline: none;
 }
 
-.status-card-actions {
-  display: flex;
-  flex-direction: column;
-}
-
 .status-card-refresh-button {
   height: 27px;
   font-size: 1em !important;
   margin: 10px 0 !important;
   padding: 0 21px !important;
-}
-
-.status-card-update {
-  margin: 0;
-  display: flex;
-  align-self: flex-start;
-  flex-direction: column;
-}
-.status-card-update-label {
-  font-size: 15px;
-}
-
-.status-card-update-status {
-  font-size: 0.9em;
-  color: rgba(0, 0, 0, 0.4);
 }
 
 .status-enabled {

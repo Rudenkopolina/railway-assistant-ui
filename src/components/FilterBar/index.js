@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
-import { Checkbox, Button } from 'semantic-ui-react';
+import {Checkbox, Button, Input} from 'semantic-ui-react';
 import './styles.css';
 import moment from 'moment';
 import { DateTimeInput } from 'semantic-ui-calendar-react';
@@ -18,7 +18,8 @@ class ConversationFilterBar extends React.Component {
       },
       fromDate: '',
       toDate: '',
-      source: 'ALL'
+      source: 'ALL',
+      text: ''
     };
   }
 
@@ -41,7 +42,7 @@ class ConversationFilterBar extends React.Component {
     };
 
   makeSearch = () => {
-    const { fromDate, toDate, source, type } = this.state;
+    const { fromDate, toDate, source, type, text } = this.state;
     this.props.setNewFilterParameters(
       fromDate
         ? moment(fromDate, 'DD-MM-YYYY HH:mm')
@@ -54,7 +55,8 @@ class ConversationFilterBar extends React.Component {
             .format('YYYY-MM-DD HH:mm:ss')
         : null,
       !!source.localeCompare('ALL') ? source : null,
-      type ? type : null
+      type ? type : null,
+      text ? text : ""
     );
   };
 
@@ -88,6 +90,15 @@ class ConversationFilterBar extends React.Component {
             value={this.state.toDate}
           />
         </div>
+        <div className='side-margin'>
+          <Input
+            icon='comment'
+            iconPosition='left'
+            placeholder='Текст запроса'
+            value={this.state.text}
+            onChange={({ target }) => this.onFilterChange("text", target.value)}
+          />
+        </div>
         <div className='flex-filter center-filter-items'>
           {Object.keys(messenger).map((m, i) => (
             <Checkbox
@@ -99,6 +110,7 @@ class ConversationFilterBar extends React.Component {
             />
           ))}
         </div>
+
         <Button
           className='side-margin'
           circular

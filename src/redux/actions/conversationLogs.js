@@ -21,7 +21,7 @@ export const CORRECT_INTENTS = 'CORRECT_INTENTS';
 export const CORRECT_INTENTS_SUCCESS = 'CORRECT_INTENTS_SUCCESS';
 export const CORRECT_INTENTS_FAIL = 'CORRECT_INTENTS_FAIL';
 
-export function getConversations(page, fromDate, toDate, source, type) {
+export function getConversations(page, fromDate, toDate, source, type, text) {
   return async dispatch => {
     dispatch({
       type: GET_CONVERSATIONS
@@ -34,6 +34,7 @@ export function getConversations(page, fromDate, toDate, source, type) {
       if (toDate) query += `&to=${toDate}`;
       if (source) query += `&source=${source}`;
       if (type) query += `&type=${type}`;
+      if (text) query += `&text=${text}`;
 
       const response = await request(urls.responses.getConversations(page, query));
 
@@ -67,7 +68,7 @@ export function clearConversations() {
   };
 }
 
-export function getConversationsPages(fromDate, toDate, source, type) {
+export function getConversationsPages(fromDate, toDate, source, type, text) {
   return async dispatch => {
     dispatch({
       type: GET_CONVERSATIONS_PAGES
@@ -80,6 +81,7 @@ export function getConversationsPages(fromDate, toDate, source, type) {
       if (toDate) query += `&to=${toDate}`;
       if (source) query += `&source=${source}`;
       if (type) query += `&type=${type}`;
+      if (text) query += `&text=${text}`;
 
       const response = await request(urls.responses.getConversationsPages(query));
 

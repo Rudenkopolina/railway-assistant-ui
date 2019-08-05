@@ -33,7 +33,8 @@ class LogsConversations extends React.Component {
           .utc()
           .format('YYYY-MM-DD HH:mm:ss'),
         source: null,
-        type: null
+        type: null,
+        text: ''
       }
     };
   }
@@ -46,13 +47,15 @@ class LogsConversations extends React.Component {
         filter.fromDate,
         filter.toDate,
         filter.source,
-        filter.type
+        filter.type,
+        filter.text
       );
       this.props.getConversationsPages(
         filter.fromDate,
         filter.toDate,
         filter.source,
-        filter.type
+        filter.type,
+        filter.text
       );
     }
   }
@@ -68,13 +71,15 @@ class LogsConversations extends React.Component {
         filter.fromDate,
         filter.toDate,
         filter.source,
-        filter.type
+        filter.type,
+        filter.text
       );
       this.props.getConversationsPages(
         filter.fromDate,
         filter.toDate,
         filter.source,
-        filter.type
+        filter.type,
+        filter.text
       );
       this.props.getAvailableIntents();
     }
@@ -87,7 +92,8 @@ class LogsConversations extends React.Component {
       filter.fromDate,
       filter.toDate,
       filter.source,
-      filter.type
+      filter.type,
+      filter.text
     );
     this.setState((state, props) => ({ currentPage: state.currentPage + 1 }));
   };
@@ -162,10 +168,10 @@ const mapStateToProps = ({ auth, conversationLogs, availableIntents }) => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  getConversations: (page, fromDate, toDate, source, type) =>
-    dispatch(getConversations(page, fromDate, toDate, source, type)),
-  getConversationsPages: (fromDate, toDate, source, type) =>
-    dispatch(getConversationsPages(fromDate, toDate, source, type)),
+  getConversations: (page, fromDate, toDate, source, type, text) =>
+    dispatch(getConversations(page, fromDate, toDate, source, type, text)),
+  getConversationsPages: (fromDate, toDate, source, type, text) =>
+    dispatch(getConversationsPages(fromDate, toDate, source, type, text)),
   getConversationsMessages: session =>
     dispatch(getConversationsMessages(session)),
   clearConversations: () => dispatch(clearConversations()),

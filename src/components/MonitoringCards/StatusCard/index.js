@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import { Button } from 'semantic-ui-react';
 import moment from 'moment';
 import './styles.css';
+
 class StatusCard extends React.Component {
   render() {
     const {

@@ -17,7 +17,7 @@ export const CORRECT_INTENTS = 'CORRECT_INTENTS';
 export const CORRECT_INTENTS_SUCCESS = 'CORRECT_INTENTS_SUCCESS';
 export const CORRECT_INTENTS_FAIL = 'CORRECT_INTENTS_FAIL';
 
-export function getIntents(page, fromDate, toDate, source, type) {
+export function getIntents(page, fromDate, toDate, source, type, text) {
   return async dispatch => {
     dispatch({
       type: GET_INTENTS
@@ -30,6 +30,7 @@ export function getIntents(page, fromDate, toDate, source, type) {
       if (toDate) query += `&to=${toDate}`;
       if (source) query += `&source=${source}`;
       if (type) query += `&type=${type}`;
+      if (text) query += `&text=${text}`;
 
       const response = await request(urls.responses.getIntents(page, query));
 
@@ -63,7 +64,7 @@ export function clearIntents() {
   };
 }
 
-export function getIntentsPages(fromDate, toDate, source, type) {
+export function getIntentsPages(fromDate, toDate, source, type, text) {
   return async dispatch => {
     dispatch({
       type: GET_INTENTS_PAGES
@@ -76,6 +77,7 @@ export function getIntentsPages(fromDate, toDate, source, type) {
       if (toDate) query += `&to=${toDate}`;
       if (source) query += `&source=${source}`;
       if (type) query += `&type=${type}`;
+      if (text) query += `&text=${text}`;
 
       const response = await request(urls.responses.getIntentsPages(query));
 
