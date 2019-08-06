@@ -49,7 +49,11 @@ module.exports = {
 			getAvailableIntents: '/api/text/intents',
 			correctIntents: '/api/text/intents/correct',
 			getMonitoring: '/api/monitoring',
-			getMonitoringItem: (id) => `/api/monitoring/${id}`
+			getMonitoringItem: (id) => `/api/monitoring/${id}`,
+			getRecordingAudio: (id) => {
+				const token = localStorage.getItem('jwtToken');
+				return encodeURI(`${baseUrl}/api/pstn/recordings/${id}?token=${token.substring(1, token.length - 1)}`);
+			}
 		}
 	},
 	baseUrl
