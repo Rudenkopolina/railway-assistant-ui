@@ -4,6 +4,8 @@ import {Modal, Icon, Popup} from 'semantic-ui-react';
 import './styles.css';
 import moment from "moment";
 import 'moment/locale/ru'
+import AudioPlayer from "../../AnswersSections/Answers/AudioPlayer";
+import {urls} from "../../../config";
 
 class ConversationModal extends React.Component {
 
@@ -57,6 +59,10 @@ class ConversationModal extends React.Component {
     />));
   };
 
+  drawAudioPlayer = (id, recordingId) => {
+    if (recordingId) return (<AudioPlayer id={id} url={urls.responses.getRecordingAudio(recordingId)}/>)
+  };
+
   renderContent = () => {
     return (
         <div className='modal-wrapper-conversation'>
@@ -68,7 +74,10 @@ class ConversationModal extends React.Component {
               <div className='session-info'>Начало: {(moment(this.props.conversation.timestamp_start)).format('HH:mm:ss')}</div>
               <div className='session-info'>Продолжительность: {moment.duration(moment(this.props.conversation.timestamp_end) - moment(this.props.conversation.timestamp_start)).locale('ru').asSeconds()} секунды</div>
             </div>
+          <div className='flex'>
+            <div className='session-info'>{this.drawAudioPlayer(1 ,this.props.conversation.recordingId)}</div>
             <div className='session-info'>{this.drawSource(this.props.conversation.source)}</div>
+          </div>
           </div>
           </div>
           <div className='body-conversation'>
