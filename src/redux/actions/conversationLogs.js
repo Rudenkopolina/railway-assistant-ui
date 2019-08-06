@@ -21,20 +21,19 @@ export const CORRECT_INTENTS = 'CORRECT_INTENTS';
 export const CORRECT_INTENTS_SUCCESS = 'CORRECT_INTENTS_SUCCESS';
 export const CORRECT_INTENTS_FAIL = 'CORRECT_INTENTS_FAIL';
 
-export function getConversations(page, fromDate, toDate, source, type, text) {
+export function getConversations(page, filter) {
   return async dispatch => {
     dispatch({
       type: GET_CONVERSATIONS
     });
-
     try {
       let query = "";
 
-      if (fromDate) query += `&from=${fromDate}`;
-      if (toDate) query += `&to=${toDate}`;
-      if (source) query += `&source=${source}`;
-      if (type) query += `&type=${type}`;
-      if (text) query += `&text=${text}`;
+      if (filter.fromDate) query += `&from=${filter.fromDate}`;
+      if (filter.toDate) query += `&to=${filter.toDate}`;
+      if (filter.source) query += `&source=${filter.source}`;
+      if (filter.type) query += `&type=${filter.type}`;
+      if (filter.text) query += `&text=${filter.text}`;
 
       const response = await request(urls.responses.getConversations(page, query));
 
@@ -55,7 +54,6 @@ export function clearConversations() {
     dispatch({
       type: CLEAR_CONVERSATIONS
     });
-
     try {
       dispatch({
         type: CLEAR_CONVERSATIONS_SUCCESS,
@@ -68,20 +66,19 @@ export function clearConversations() {
   };
 }
 
-export function getConversationsPages(fromDate, toDate, source, type, text) {
+export function getConversationsPages(fromDate, filter) {
   return async dispatch => {
     dispatch({
       type: GET_CONVERSATIONS_PAGES
     });
-
     try {
       let query = "";
 
-      if (fromDate) query += `&from=${fromDate}`;
-      if (toDate) query += `&to=${toDate}`;
-      if (source) query += `&source=${source}`;
-      if (type) query += `&type=${type}`;
-      if (text) query += `&text=${text}`;
+      if (filter.fromDate) query += `&from=${filter.fromDate}`;
+      if (filter.toDate) query += `&to=${filter.toDate}`;
+      if (filter.source) query += `&source=${filter.source}`;
+      if (filter.type) query += `&type=${filter.type}`;
+      if (filter.text) query += `&text=${filter.text}`;
 
       const response = await request(urls.responses.getConversationsPages(query));
 
@@ -125,7 +122,7 @@ export function correctIntents(log, intent) {
     });
 
     try {
-      const response = await request(urls.responses.correctIntents, {
+      await request(urls.responses.correctIntents, {
         method: "POST",
         body: { "intentId": intent.id, "logId": log.id }
       });

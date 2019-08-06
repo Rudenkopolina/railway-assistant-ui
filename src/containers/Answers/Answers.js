@@ -26,7 +26,7 @@ class Answer extends React.Component {
     filterString: ''
   };
 
-  componentWillMount() {
+  componentDidMount() {
     const { user } = this.props.auth;
     const titles = [];
     if (user.permissions.ALLOWED_ANSWERS_VIEWING) {

@@ -27,73 +27,43 @@ class History extends React.Component {
       visibleIntentsEditorModal: false,
       selectedMessage: {},
       filter: {
-        fromDate: undefined,
+        fromDate: null,
         toDate: moment()
           .utc()
           .format('YYYY-MM-DD HH:mm:ss'),
-        source: undefined,
-        type: undefined,
+        source: null,
+        type: null,
         text: ''
       }
     };
   }
 
 	componentDidUpdate(prevProps, prevState) {
-		const { filter, currentPage } = this.state;
+    const { filter, currentPage } = this.state;
+    const { getIntents, getIntentsPages } = this.props;
 		if (filter !== prevState.filter) {
-			this.props.getIntents(
-				currentPage,
-				filter.fromDate,
-				filter.toDate,
-				filter.source,
-				filter.type,
-        filter.text
-			);
-			this.props.getIntentsPages(
-				filter.fromDate,
-				filter.toDate,
-				filter.source,
-				filter.type,
-        filter.text
-			);
+			getIntents(currentPage,	filter);
+			getIntentsPages(filter);
 		}
 	}
 
-  componentWillMount() {
+  componentDidMount() {
 	const { user } = this.props.auth;
-	const { filter, currentPage } = this.state;
+  const { filter, currentPage } = this.state;
+  const { clearIntents, getIntents, getIntentsPages, getAvailableIntents } = this.props;
 
     if (user.permissions.ALLOWED_HISTORY_VIEWING) {
-      this.props.clearIntents();
-      this.props.getIntents(
-        currentPage,
-        filter.fromDate,
-        filter.toDate,
-        filter.source,
-        filter.type,
-        filter.text
-      );
-      this.props.getIntentsPages(
-        filter.fromDate,
-        filter.toDate,
-        filter.source,
-        filter.type,
-        filter.text
-      );
-      this.props.getAvailableIntents();
+      clearIntents();
+      getIntents(currentPage, filter);
+      getIntentsPages(filter);
+      getAvailableIntents();
     }
   }
 
   onMoreClick = () => {
-	const { filter, currentPage } = this.state;
-    this.props.getIntents(
-      currentPage + 1,
-      filter.fromDate,
-      filter.toDate,
-      filter.source,
-      filter.type,
-      filter.text
-    );
+  const { filter, currentPage } = this.state;
+  const { getIntents } = this.props;
+  getIntents(currentPage + 1, filter);
 	this.setState((state, props)=> ({ currentPage: state.currentPage + 1 }));
   };
 
@@ -102,16 +72,22 @@ class History extends React.Component {
   };
 
   onSearchClick = filter => {
-    this.props.clearIntents();
+    const { clearIntents } = this.props;
+    clearIntents();
     if (!filter.toDate) {
-      filter.toDate = this.state.activationTimestamp;
+      this.setState((state, props) => ({
+        filter: {...filter, toDate: state.activationTimestamp}, currentPage: 1
+      }));
+      return; 
     }
-    this.setState({ currentPage: 1, filter: filter });
+    this.setState({ filter, currentPage: 1 });
   };
 
+
   onChangeIntent = (message, intent) => {
+    const { correctIntents } = this.props;
     this.setState({ visibleIntentsEditorModal: false, selectedMessage: {} });
-    this.props.correctIntents(message, intent);
+    correctIntents(message, intent);
   };
 
   onIntentsModalClose = () => {

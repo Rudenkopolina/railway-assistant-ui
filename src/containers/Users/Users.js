@@ -21,7 +21,7 @@ class Users extends React.Component {
       filterString: ''
   };
 
-  componentWillMount() {
+  componentDidMount() {
     const { user } = this.props.auth;
     const titles = [];
     if (user.permissions.ALLOWED_USERS_VIEWING) {

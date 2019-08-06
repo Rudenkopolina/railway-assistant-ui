@@ -351,7 +351,7 @@ const mapStateToProps = ({ categories }) => ({
 
 IntentModal.propTypes = {
   buttonText: PropTypes.string.isRequired,
-  modalTitle: PropTypes.string.isRequired,
+  modalTitle: PropTypes.string,
   onSave: PropTypes.func.isRequired,
   answer: PropTypes.object,
   isShowExamples: PropTypes.bool,

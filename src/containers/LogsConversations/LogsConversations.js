@@ -41,65 +41,36 @@ class LogsConversations extends React.Component {
 
   componentDidUpdate(prevProps, prevState) {
     const { filter, currentPage } = this.state;
+    const { getConversations, getConversationsPages } = this.props;
     if (filter !== prevState.filter) {
-      this.props.getConversations(
-        currentPage,
-        filter.fromDate,
-        filter.toDate,
-        filter.source,
-        filter.type,
-        filter.text
-      );
-      this.props.getConversationsPages(
-        filter.fromDate,
-        filter.toDate,
-        filter.source,
-        filter.type,
-        filter.text
-      );
+    getConversations(currentPage, filter);
+    getConversationsPages(filter);
     }
   }
 
-  componentWillMount() {
+  componentDidMount() {
     const { user } = this.props.auth;
     const { filter, currentPage } = this.state;
+    const { clearConversations, getConversations, getConversationsPages, getAvailableIntents } = this.props;
 
     if (user.permissions.ALLOWED_LOGS_VIEWING) {
-      this.props.clearConversations();
-      this.props.getConversations(
-        currentPage,
-        filter.fromDate,
-        filter.toDate,
-        filter.source,
-        filter.type,
-        filter.text
-      );
-      this.props.getConversationsPages(
-        filter.fromDate,
-        filter.toDate,
-        filter.source,
-        filter.type,
-        filter.text
-      );
-      this.props.getAvailableIntents();
+      clearConversations();
+      getConversations(currentPage, filter);
+      getConversationsPages(filter);
+      getAvailableIntents();
     }
   }
 
   onMoreClick = () => {
     const { filter, currentPage } = this.state;
-    this.props.getConversations(
-      currentPage + 1,
-      filter.fromDate,
-      filter.toDate,
-      filter.source,
-      filter.type,
-      filter.text
-    );
+    const { getConversations } = this.props;
+    getConversations(currentPage + 1, filter)
     this.setState((state, props) => ({ currentPage: state.currentPage + 1 }));
   };
 
   onConversationClick = item => {
-    this.props.getConversationsMessages(item.session);
+    const { getConversationsMessages } = this.props;
+    getConversationsMessages(item.session);
     this.setState({ visibleModal: true, selectedConversation: item });
   };
 
@@ -112,11 +83,15 @@ class LogsConversations extends React.Component {
   };
 
   onSearchClick = filter => {
-    this.props.clearConversations();
+    const { clearConversations } = this.props;
+    clearConversations();
     if (!filter.toDate) {
-      filter.toDate = this.state.activationTimestamp;
+      this.setState((state, props) => ({
+        filter: {...filter, toDate: state.activationTimestamp}, currentPage: 1
+      }));
+      return;    
     }
-    this.setState({ filter: filter, currentPage: 1 });
+    this.setState({ filter, currentPage: 1 });
   };
 
   onEditClick = message => {
@@ -127,8 +102,9 @@ class LogsConversations extends React.Component {
   };
 
   onChangeIntent = (message, intent) => {
+    const { correctIntents } = this.props;
     this.setState({ visibleIntentsEditorModal: false, selectedMessage: {} });
-    this.props.correctIntents(message, intent);
+    correctIntents(message, intent);
   };
 
   render() {

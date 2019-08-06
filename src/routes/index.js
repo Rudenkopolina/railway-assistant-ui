@@ -11,7 +11,7 @@ import Account from '../containers/Account/Account';
 import Layout from '../containers/Layout';
 import Users from '../containers/Users/Users';
 import UsageStatistics from '../containers/Statistics/Statistics';
-import EnvironmentPage from "../containers/EnvironmentPage";
+import Environment from "../containers/Environment";
 import LogsConversations from "../containers/LogsConversations/LogsConversations";
 import MonitoringPage from "../containers/MonitoringPage";
 
@@ -55,7 +55,7 @@ function Routes() {
 
 			<ProtectedRoute
 				path={'/group/environment'}
-				component={() => <Layout><EnvironmentPage/></Layout> }
+				component={() => <Layout><Environment/></Layout> }
 				saveUrlOnFail
 			/>
 

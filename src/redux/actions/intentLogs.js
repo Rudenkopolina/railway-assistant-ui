@@ -17,7 +17,7 @@ export const CORRECT_INTENTS = 'CORRECT_INTENTS';
 export const CORRECT_INTENTS_SUCCESS = 'CORRECT_INTENTS_SUCCESS';
 export const CORRECT_INTENTS_FAIL = 'CORRECT_INTENTS_FAIL';
 
-export function getIntents(page, fromDate, toDate, source, type, text) {
+export function getIntents(page, filter) {
   return async dispatch => {
     dispatch({
       type: GET_INTENTS
@@ -26,11 +26,11 @@ export function getIntents(page, fromDate, toDate, source, type, text) {
     try {
       let query = "";
 
-      if (fromDate) query += `&from=${fromDate}`;
-      if (toDate) query += `&to=${toDate}`;
-      if (source) query += `&source=${source}`;
-      if (type) query += `&type=${type}`;
-      if (text) query += `&text=${text}`;
+      if (filter.fromDate) query += `&from=${filter.fromDate}`;
+      if (filter.toDate) query += `&to=${filter.toDate}`;
+      if (filter.source) query += `&source=${filter.source}`;
+      if (filter.type) query += `&type=${filter.type}`;
+      if (filter.text) query += `&text=${filter.text}`;
 
       const response = await request(urls.responses.getIntents(page, query));
 
@@ -64,7 +64,7 @@ export function clearIntents() {
   };
 }
 
-export function getIntentsPages(fromDate, toDate, source, type, text) {
+export function getIntentsPages(filter) {
   return async dispatch => {
     dispatch({
       type: GET_INTENTS_PAGES
@@ -73,11 +73,11 @@ export function getIntentsPages(fromDate, toDate, source, type, text) {
     try {
       let query = "";
 
-      if (fromDate) query += `&from=${fromDate}`;
-      if (toDate) query += `&to=${toDate}`;
-      if (source) query += `&source=${source}`;
-      if (type) query += `&type=${type}`;
-      if (text) query += `&text=${text}`;
+      if (filter.fromDate) query += `&from=${filter.fromDate}`;
+      if (filter.toDate) query += `&to=${filter.toDate}`;
+      if (filter.source) query += `&source=${filter.source}`;
+      if (filter.type) query += `&type=${filter.type}`;
+      if (filter.text) query += `&text=${filter.text}`;
 
       const response = await request(urls.responses.getIntentsPages(query));
 
@@ -100,7 +100,7 @@ export function correctIntents(log, intent) {
     });
 
     try {
-      const response = await request(urls.responses.correctIntents, {
+      await request(urls.responses.correctIntents, {
         method: "POST",
         body: { "intentId": intent.id, "logId": log.id }
       });

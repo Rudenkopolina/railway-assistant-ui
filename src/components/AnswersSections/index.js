@@ -8,7 +8,7 @@ import NewCategoryModal from './NewCategoryModal';
 import Protected from '../common/protected/container';
 import {Icon} from 'semantic-ui-react';
 import './styles.css';
-import ChooseCategoryModal from "./ChooseCategoryModal";
+import ChooseCategoryModal from './ChooseCategoryModal';
 
 class AnswersSections extends React.Component {
   constructor(props) {
@@ -19,7 +19,7 @@ class AnswersSections extends React.Component {
     };
   }
 
-  componentWillMount() {
+  componentDidMount() {
     const { categories } = this.props;
     if (!!categories.length) {
       const category = categories[0].id;

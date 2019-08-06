@@ -22,15 +22,13 @@ const timeIntervals = ['24 часа', '72 часа', '15 дней', '30 дней
 const timeIntervalsString = ['oneDay', 'threeDays', 'fifteenDays', 'thirtyDays'];
 const statisticsHeaders = ['Общее число обращений:', 'Среднее количество шагов в обращении:', 'Средняя длительность обращения (в секундах):'];
 const statisticsHeadersString = ['distinctConversations', 'stepsConversations', 'durationConversations'];
-const usageStatisticsHeaders= ['Преобразователь голоса в текст, количество запросов:', 'Преобразователь текста в голос, количество запросов:','Обработчик текстовых сообщений, количество запросов:']
-const usageStatisticsHeadersString= ['speechToText', 'textToSpeech', 'textProcessor']
+const usageStatisticsHeaders = ['Преобразователь голоса в текст, количество запросов:', 'Преобразователь текста в голос, количество запросов:', 'Обработчик текстовых сообщений, количество запросов:']
+const usageStatisticsHeadersString = ['speechToText', 'textToSpeech', 'textProcessor']
 
 class Statistics extends React.Component {
   componentWillMount() {
     const { user } = this.props.auth;
-
     let titles = [];
-
     if (user.permissions.ALLOWED_CONVERSATION_STATISTICS_VIEWING) {
       titles.push({
         name: 'Статистика разговоров',
