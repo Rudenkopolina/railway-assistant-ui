@@ -32,8 +32,7 @@ class Answer extends React.Component {
     if (user.permissions.ALLOWED_ANSWERS_VIEWING) {
       titles.push({
         name: 'Базовые сообщения',
-        key: 'common',
-        requiredRoles: 'ALLOWED_ANSWERS_VIEWING'
+        key: 'common'
       });
       this.props.getCommonResponses();
     }
@@ -41,12 +40,10 @@ class Answer extends React.Component {
       titles.push({
         name: 'База знаний',
         key: 'reference',
-        requiredRoles: 'ALLOWED_KNOWLEDGEBASE_VIEWING'
       });
       this.props.getReferenceResponses();
       this.props.getCategories();
     }
-
     this.setState({ titles, activeTab: titles[0].key });
   }
 
@@ -71,25 +68,24 @@ class Answer extends React.Component {
   getContent = () => {
     const { activeTab, filterString } = this.state;
     const { user } = this.props.auth;
+    const {data, categories, onDeleteAnswer, changeResponse, createCategory, deleteCategory, moveToCategory} = this.props;
     const isReferanseTab = activeTab === 'reference';
-    const answers = isReferanseTab
-      ? this.props.data.reference
-      : this.props.data.common;
+    const answers = isReferanseTab ? data.reference : data.common;
     return (
       <Protected requiredAnyRoles={['ALLOWED_KNOWLEDGEBASE_VIEWING', 'ALLOWED_ANSWERS_VIEWING']}>
         <AnswersSections
-          categories={this.props.categories.categories}
+          categories={categories.categories}
           title={activeTab}
           key={activeTab}
           answers={answers}
-          onDeleteAnswer={this.props.onDeleteAnswer}
-          changeResponse={this.props.changeResponse}
+          onDeleteAnswer={onDeleteAnswer}
+          changeResponse={changeResponse}
           createResponse={this.createResponse}
-          onCreateCategory={this.props.createCategory}
-          onDeleteCategory={this.props.deleteCategory}
+          onCreateCategory={createCategory}
+          onDeleteCategory={deleteCategory}
           filterString={filterString}
           isReferanseTab={isReferanseTab}
-          onMoveResponse={this.props.moveToCategory}
+          onMoveResponse={moveToCategory}
           supportedTTS={user.supportedTTS}
         />
       </Protected>

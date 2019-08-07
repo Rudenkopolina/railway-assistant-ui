@@ -1,21 +1,24 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
-import {Icon, Table} from 'semantic-ui-react';
-
-import './styles.css';
-import moment from 'moment';
+import { Table } from 'semantic-ui-react';
 import FilterBar from '../FilterBar';
-
+import HistoryTableRow from './HistoryTableRow';
+import './styles.css';
 
 class HistoryTable extends React.Component {
-
   setNewFilterParameters = (fromDate, toDate, source, type, text) => {
-    this.props.getFilteredConversations({ fromDate, toDate, source, type, text });
+    this.props.getFilteredConversations({
+      fromDate,
+      toDate,
+      source,
+      type,
+      text
+    });
   };
 
   drawMoreButton = () => {
-    const {currentPage, pages, onMoreClick} = this.props;
+    const { currentPage, pages, onMoreClick } = this.props;
     if (currentPage < pages) {
       return (
         <tfoot>
@@ -37,18 +40,8 @@ class HistoryTable extends React.Component {
     }
   };
 
-  drawConversationType = (type) => {
-    switch(type) {
-      case "VOICE": return (<div><Icon name='microphone' size='small'/>Голос</div>);
-      case "TEXT": return (<div><Icon name='align justify' size='small'/>Текст</div>);
-      case "MIXED": return (<div><Icon name='sync' size='small'/>Смешанный</div>);
-      case "UNKN": return (<div><Icon name='question circle' size='small'/>Неизвестен</div>);
-      default: return (<div><Icon name='question circle' size='small'/>Неизвестен</div>);
-    }
-  };
-
   render() {
-    const {messages} = this.props;
+    const { messages, availableIntents } = this.props;
     return (
       <div className='table-container-history'>
         <div className='table-container-flex-history'>
@@ -56,9 +49,7 @@ class HistoryTable extends React.Component {
             История нераспознанных сообщений
           </div>
           <div className='element-mb'>
-            <FilterBar
-              setNewFilterParameters={this.setNewFilterParameters}
-            />
+            <FilterBar setNewFilterParameters={this.setNewFilterParameters} />
           </div>
         </div>
         <Table celled compact>
@@ -69,37 +60,18 @@ class HistoryTable extends React.Component {
               </Table.HeaderCell>
               <Table.HeaderCell textAlign='center'>Сессия</Table.HeaderCell>
               <Table.HeaderCell textAlign='center'>Сообщение</Table.HeaderCell>
-              <Table.HeaderCell textAlign='center'>Распознаное системой намерение</Table.HeaderCell>
-              <Table.HeaderCell textAlign='center'>Скорректированное намерение</Table.HeaderCell>
+              <Table.HeaderCell textAlign='center'>
+                Распознаное системой намерение
+              </Table.HeaderCell>
+              <Table.HeaderCell textAlign='center'>
+                Скорректированное намерение
+              </Table.HeaderCell>
               <Table.HeaderCell textAlign='center'>Тип</Table.HeaderCell>
             </Table.Row>
           </Table.Header>
           <Table.Body>
-            {messages.map((message, index) => (
-              <Table.Row
-                className='history-table-row'
-                key={index}
-                onClick={() => this.props.onConversationClick(message)}
-              >
-                <Table.Cell textAlign='center'>
-                  {moment(message.timestamp).format('DD.MM.YYYY HH:mm:ss')}
-                </Table.Cell>
-                <Table.Cell textAlign='center'>
-                  {message.session}
-                </Table.Cell>
-                <Table.Cell textAlign='center'>
-                  {message.requestText}
-                </Table.Cell>
-                <Table.Cell textAlign='center'>
-                  {message.detectedIntentDescription}
-                </Table.Cell>
-                <Table.Cell textAlign='center'>
-                  {message.correctedIntentDescription }
-                </Table.Cell>
-                <Table.Cell textAlign='center'>
-                  {this.drawConversationType(message.type)}
-                </Table.Cell>
-              </Table.Row>
+            {messages.map(message => (
+              <HistoryTableRow  key={message.id} message={message} availableIntents={availableIntents} />
             ))}
           </Table.Body>
           {this.drawMoreButton()}
@@ -110,9 +82,9 @@ class HistoryTable extends React.Component {
 }
 HistoryTable.propTypes = {
   messages: PropTypes.array.isRequired,
+  availableIntents: PropTypes.object,
   pages: PropTypes.number.isRequired,
   onMoreClick: PropTypes.func.isRequired,
-  onConversationClick: PropTypes.func.isRequired,
   currentPage: PropTypes.number.isRequired,
   getFilteredConversations: PropTypes.func.isRequired
 };

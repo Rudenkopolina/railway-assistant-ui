@@ -9,51 +9,43 @@ class IntentsEditorModal extends React.Component {
     selectedId: -1
   };
 
-  onModalClose = () => {
-    this.setState({ selectedId: -1 });
-    this.props.onModalClose();
-  };
-
-  onChangeIntent = () => {
+  onSave = () => {
     const { availableIntents, message, onChangeIntent } = this.props;
     const { selectedId } = this.state;
     onChangeIntent(message, availableIntents[selectedId]);
-    this.setState({ selectedId: -1 });
+    this.setState({ selectedId: -1 });  
   };
 
-  onIntentChange = (event, value) => {
+  onIntentChange = (e, value) => {
     this.setState({ selectedId: value.value });
   };
 
   renderConfidence = message => {
     if (message.intents) {
       return (
-        <div>
-          {message.intents[0].confidence >= 0.3 ? (
+        <>
+          {message.intents[0].confidence >= 0.3 && (
             <div>
-              Системой было определено намерение '{message.intents[0].intent}' с
-              вероятностью{' '}
+              Системой было определено намерение '
+              {message.intents[0].intent}' с вероятностью
               {parseFloat(
                 Math.round(message.intents[0].confidence * 100) / 100
               ).toFixed(2)}
             </div>
-          ) : (
-            <div>Информация о намерениях не доступна</div>
           )}
-        </div>
+        </>
       );
     } else return <div>Информация о намерениях не доступна</div>;
   };
 
   renderContent = () => {
-    const { availableIntents, message } = this.props;
+    const { availableIntents, message, onTrigerModal } = this.props;
     const { selectedId } = this.state;
     const options = availableIntents.map((intent, index) => ({
       text: intent.description,
       value: index,
       key: index
     }));
-
     return (
       <div className='modal-wrapper-intents-editor'>
         <div className='intents-editor-container'>
@@ -72,7 +64,7 @@ class IntentsEditorModal extends React.Component {
         </div>
 
         <div className='intents-editor-change'>
-        <div className='intents-editor-label'>Изменить намерение</div>
+          <div className='intents-editor-label'>Изменить намерение</div>
           <Dropdown
             className='intents-editor-dropdown'
             fluid
@@ -86,7 +78,10 @@ class IntentsEditorModal extends React.Component {
 
         {message.correctedIntent ? (
           <div className='intents-editor-history'>
-            <Icon className='intents-calendar-icon' name='calendar alternate outline' />
+            <Icon
+              className='intents-calendar-icon'
+              name='calendar alternate outline'
+            />
             Намерение исправлено на {message.correctedIntentDescription}
           </div>
         ) : (
@@ -94,23 +89,36 @@ class IntentsEditorModal extends React.Component {
         )}
 
         <div className='intents-editor-modal-actions'>
-          <Button className='intents-editor-modal-button' basic onClick={this.onModalClose}>Отменить</Button>
-          <Button className='intents-editor-modal-button' primary basic onClick={this.onChangeIntent}>Сохранить</Button>
-          </div>     
+          <Button
+            className='intents-editor-modal-button'
+            basic
+            onClick={onTrigerModal}
+          >
+            Отменить
+          </Button>
+          <Button
+            className='intents-editor-modal-button'
+            primary
+            basic
+            onClick={this.onSave}
+          >
+            Сохранить
+          </Button>
+        </div>
       </div>
     );
   };
 
   render() {
+    const { isModalOpen, onTrigerModal } = this.props;
     return (
       <Modal
         size='mini'
         dimmer='blurring'
-        closeOnDimmerClick={true}
-        open={this.props.visible}
-        content={this.renderContent()}
-        onClose={this.props.onModalClose}
-        closeOnEscape={true}
+        closeOnDimmerClick={false}
+        open={isModalOpen}
+        content={this.renderContent}
+        onClose={onTrigerModal}
         closeIcon
       />
     );
@@ -118,8 +126,8 @@ class IntentsEditorModal extends React.Component {
 }
 
 IntentsEditorModal.propTypes = {
-  visible: PropTypes.bool.isRequired,
-  onModalClose: PropTypes.func.isRequired,
+  isModalOpen: PropTypes.bool.isRequired,
+  onTrigerModal: PropTypes.func.isRequired,
   availableIntents: PropTypes.array.isRequired,
   message: PropTypes.object.isRequired,
   onChangeIntent: PropTypes.func.isRequired

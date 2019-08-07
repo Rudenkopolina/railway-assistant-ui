@@ -1,36 +1,22 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import './History.css';
 import { withRouter } from 'react-router-dom';
 import moment from 'moment';
 import HistoryTable from '../../components/HistoryTable';
-import 'react-notifications/lib/notifications.css';
-import {
-  clearIntents,
-  getIntents,
-  getIntentsPages
-} from '../../redux/actions/intentLogs';
+import { clearIntents, getIntents, getIntentsPages, correctIntents } from '../../redux/actions/intentLogs';
 import { getAvailableIntents } from '../../redux/actions/availableIntents';
-import { correctIntents } from '../../redux/actions/intentLogs';
-import IntentsEditorModal from '../../components/ConversationsTable/IntentsEditorModal';
+import 'react-notifications/lib/notifications.css';
+import './History.css';
 
-class History extends React.Component {
+class History extends React.PureComponent {
   constructor(props) {
     super(props);
     this.state = {
       currentPage: 1,
-      visibleModal: false,
-      activationTimestamp: moment()
-        .utc()
-        .format('YYYY-MM-DD HH:mm:ss'),
-      selectedConversation: {},
-      visibleIntentsEditorModal: false,
-      selectedMessage: {},
+      activationTimestamp: moment().utc().format('YYYY-MM-DD HH:mm:ss'),
       filter: {
         fromDate: null,
-        toDate: moment()
-          .utc()
-          .format('YYYY-MM-DD HH:mm:ss'),
+        toDate: moment().utc().format('YYYY-MM-DD HH:mm:ss'),
         source: null,
         type: null,
         text: ''
@@ -50,10 +36,14 @@ class History extends React.Component {
   componentDidMount() {
 	const { user } = this.props.auth;
   const { filter, currentPage } = this.state;
-  const { clearIntents, getIntents, getIntentsPages, getAvailableIntents } = this.props;
+  const { 
+    clearIntents, 
+    getIntents, getIntentsPages, 
+    getAvailableIntents 
+  } = this.props;
 
     if (user.permissions.ALLOWED_HISTORY_VIEWING) {
-      clearIntents();
+      clearIntents(); //??
       getIntents(currentPage, filter);
       getIntentsPages(filter);
       getAvailableIntents();
@@ -64,18 +54,14 @@ class History extends React.Component {
   const { filter, currentPage } = this.state;
   const { getIntents } = this.props;
   getIntents(currentPage + 1, filter);
-	this.setState((state, props)=> ({ currentPage: state.currentPage + 1 }));
-  };
-
-  onConversationClick = item => {
-    this.setState({ visibleIntentsEditorModal: true, selectedMessage: item });
+	this.setState(state => ({ currentPage: state.currentPage + 1 }));
   };
 
   onSearchClick = filter => {
     const { clearIntents } = this.props;
     clearIntents();
     if (!filter.toDate) {
-      this.setState((state, props) => ({
+      this.setState(state => ({
         filter: {...filter, toDate: state.activationTimestamp}, currentPage: 1
       }));
       return; 
@@ -83,32 +69,15 @@ class History extends React.Component {
     this.setState({ filter, currentPage: 1 });
   };
 
-
-  onChangeIntent = (message, intent) => {
-    const { correctIntents } = this.props;
-    this.setState({ visibleIntentsEditorModal: false, selectedMessage: {} });
-    correctIntents(message, intent);
-  };
-
-  onIntentsModalClose = () => {
-    this.setState({ visibleIntentsEditorModal: false, selectedMessage: {} });
-  };
-
   render() {
-    return (
+    const { intentLogs, availableIntents } = this.props;
+    return (  
       <div className='history-table-container container'>
-        <IntentsEditorModal
-          visible={this.state.visibleIntentsEditorModal}
-          onModalClose={this.onIntentsModalClose}
-          availableIntents={this.props.availableIntents.intents}
-          message={this.state.selectedMessage}
-          onChangeIntent={this.onChangeIntent}
-        />
         <HistoryTable
-          messages={this.props.intentLogs.intents}
+          messages={intentLogs.intents}
+          availableIntents={availableIntents}
           currentPage={this.state.currentPage}
-          pages={this.props.intentLogs.pages}
-          onConversationClick={this.onConversationClick}
+          pages={intentLogs.pages}
           onMoreClick={this.onMoreClick}
           getFilteredConversations={this.onSearchClick}
         />

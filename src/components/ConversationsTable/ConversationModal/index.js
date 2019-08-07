@@ -9,6 +9,11 @@ import {urls} from "../../../config";
 
 class ConversationModal extends React.Component {
 
+  componentDidMount() {
+    const {getConversationsMessages, conversation} = this.props;
+    getConversationsMessages(conversation.session)
+  }
+
   drawSource = (type) => {
     switch(type) {
       case "TELEGRAM": return (<div>Отправлено из Telegram</div>);
@@ -64,31 +69,31 @@ class ConversationModal extends React.Component {
   };
 
   renderContent = () => {
-    return (
+    const {conversation, messages, onEditClick} = this.props;
+        return (
         <div className='modal-wrapper-conversation'>
           <div className='header'>
-            {/* <div className='session-title'>{this.props.conversation.session}</div> */}
-          <div className='session-dates'>{(moment(this.props.conversation.timestamp_start)).format('DD.MM.YYYY')} </div>
+          <div className='session-dates'>{(moment(conversation.timestamp_start)).format('DD.MM.YYYY')} </div>
           <div className='flex'>
             <div className='left-content'>
-              <div className='session-info'>Начало: {(moment(this.props.conversation.timestamp_start)).format('HH:mm:ss')}</div>
-              <div className='session-info'>Продолжительность: {moment.duration(moment(this.props.conversation.timestamp_end) - moment(this.props.conversation.timestamp_start)).locale('ru').asSeconds()} секунды</div>
+              <div className='session-info'>Начало: {(moment(conversation.timestamp_start)).format('HH:mm:ss')}</div>
+              <div className='session-info'>Продолжительность: {moment.duration(moment(conversation.timestamp_end) - moment(conversation.timestamp_start)).locale('ru').asSeconds()} секунды</div>
             </div>
           <div className='flex'>
-            <div className='session-info'>{this.drawAudioPlayer(1 ,this.props.conversation.recordingId)}</div>
-            <div className='session-info'>{this.drawSource(this.props.conversation.source)}</div>
+            <div className='session-info'>{this.drawAudioPlayer(1, conversation.recordingId)}</div>
+            <div className='session-info'>{this.drawSource(conversation.source)}</div>
           </div>
           </div>
           </div>
           <div className='body-conversation'>
-            {this.props.messages.map((message, index) => {
+            {messages.selectedConversationMessages.map((message, index) => {
               return (
                 <div key={index}>
                   <div className='line'> 
                     <div className='message-conversation message-conversation-user'>{message.requestText}</div>
                     <div className='message-conversation-info'>
                       <div className='intent'>{this.drawIntents(message.intents, message.detectedIntent, message.correctedIntent, message.detectedIntentDescription, message.correctedIntentDescription)}</div>
-                      <div className='edit-button' onClick={(event) => this.props.onEditClick(message)}>{this.drawEditButton(message.intents)}</div>
+                      <div className='edit-button' onClick={onEditClick(message)}>{this.drawEditButton(message.intents)}</div>
                       {this.drawEntities(message.entities)}
                     </div>
                     <div className='message-conversation-time'>Пользователь, {moment(message.timestamp).format('HH:mm:ss')}
@@ -108,13 +113,14 @@ class ConversationModal extends React.Component {
   };
 
   render() {
+    const { visible, onModalClose } = this.props;
     return (
       <Modal
         size='small'
         closeOnDimmerClick={true}
-        open={this.props.visible}
+        open={visible}
         content={this.renderContent()}
-        onClose={this.props.onModalClose}
+        onClose={onModalClose}
         closeOnEscape={true}
         closeIcon
       />
@@ -124,9 +130,10 @@ class ConversationModal extends React.Component {
 
 ConversationModal.propTypes = {
   conversation: PropTypes.object.isRequired,
+  getConversationsMessages: PropTypes.func.isRequired,
   visible: PropTypes.bool.isRequired,
   onModalClose: PropTypes.func.isRequired,
-  messages: PropTypes.array.isRequired,
+  messages: PropTypes.object.isRequired,
   onEditClick: PropTypes.func.isRequired
 };
 

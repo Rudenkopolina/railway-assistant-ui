@@ -1,37 +1,26 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import './LogsConversations.css';
 import { withRouter } from 'react-router-dom';
 import moment from 'moment';
 import {
   getConversations,
   clearConversations,
   getConversationsMessages,
-  getConversationsPages
+  getConversationsPages,
+  correctIntents
 } from '../../redux/actions/conversationLogs';
 import ConversationsTable from '../../components/ConversationsTable';
-import ConversationModal from '../../components/ConversationsTable/ConversationModal';
-import { getAvailableIntents } from '../../redux/actions/availableIntents';
-import { correctIntents } from '../../redux/actions/conversationLogs';
-import IntentsEditorModal from '../../components/ConversationsTable/IntentsEditorModal';
+import './styles.css';
 
-class LogsConversations extends React.Component {
+class LogsConversations extends React.PureComponent {
   constructor(props) {
     super(props);
     this.state = {
       currentPage: 1,
-      visibleModal: false,
-      visibleIntentsEditorModal: false,
-      activationTimestamp: moment()
-        .utc()
-        .format('YYYY-MM-DD HH:mm:ss'),
-      selectedConversation: {},
-      selectedMessage: {},
+      activationTimestamp: moment().utc().format('YYYY-MM-DD HH:mm:ss'),
       filter: {
         fromDate: null,
-        toDate: moment()
-          .utc()
-          .format('YYYY-MM-DD HH:mm:ss'),
+        toDate: moment().utc().format('YYYY-MM-DD HH:mm:ss'),
         source: null,
         type: null,
         text: ''
@@ -43,43 +32,32 @@ class LogsConversations extends React.Component {
     const { filter, currentPage } = this.state;
     const { getConversations, getConversationsPages } = this.props;
     if (filter !== prevState.filter) {
-    getConversations(currentPage, filter);
-    getConversationsPages(filter);
+      getConversations(currentPage, filter);
+      getConversationsPages(filter);
     }
   }
 
   componentDidMount() {
     const { user } = this.props.auth;
     const { filter, currentPage } = this.state;
-    const { clearConversations, getConversations, getConversationsPages, getAvailableIntents } = this.props;
+    const {
+      clearConversations,
+      getConversations,
+      getConversationsPages
+    } = this.props;
 
     if (user.permissions.ALLOWED_LOGS_VIEWING) {
-      clearConversations();
+      clearConversations(); // ??
       getConversations(currentPage, filter);
       getConversationsPages(filter);
-      getAvailableIntents();
     }
   }
 
   onMoreClick = () => {
     const { filter, currentPage } = this.state;
     const { getConversations } = this.props;
-    getConversations(currentPage + 1, filter)
-    this.setState((state, props) => ({ currentPage: state.currentPage + 1 }));
-  };
-
-  onConversationClick = item => {
-    const { getConversationsMessages } = this.props;
-    getConversationsMessages(item.session);
-    this.setState({ visibleModal: true, selectedConversation: item });
-  };
-
-  onModalClose = () => {
-    this.setState({ visibleModal: false, selectedConversation: {} });
-  };
-
-  onIntentsModalClose = () => {
-    this.setState({ visibleIntentsEditorModal: false, selectedMessage: {} });
+    getConversations(currentPage + 1, filter);
+    this.setState(state => ({ currentPage: state.currentPage + 1 }));
   };
 
   onSearchClick = filter => {
@@ -87,48 +65,22 @@ class LogsConversations extends React.Component {
     clearConversations();
     if (!filter.toDate) {
       this.setState((state, props) => ({
-        filter: {...filter, toDate: state.activationTimestamp}, currentPage: 1
+        filter: { ...filter, toDate: state.activationTimestamp },
+        currentPage: 1
       }));
-      return;    
+      return;
     }
     this.setState({ filter, currentPage: 1 });
   };
 
-  onEditClick = message => {
-    this.setState({
-      visibleIntentsEditorModal: true,
-      selectedMessage: message
-    });
-  };
-
-  onChangeIntent = (message, intent) => {
-    const { correctIntents } = this.props;
-    this.setState({ visibleIntentsEditorModal: false, selectedMessage: {} });
-    correctIntents(message, intent);
-  };
-
   render() {
+    const {getConversationsMessages, conversationLogs} = this.props;
     return (
       <div className='conversations-table-container container'>
-        <IntentsEditorModal
-          visible={this.state.visibleIntentsEditorModal}
-          onModalClose={this.onIntentsModalClose}
-          availableIntents={this.props.availableIntents.intents}
-          message={this.state.selectedMessage}
-          onChangeIntent={this.onChangeIntent}
-        />
-        <ConversationModal
-          conversation={this.state.selectedConversation}
-          messages={this.props.conversationLogs.selectedConversationMessages}
-          visible={this.state.visibleModal}
-          onModalClose={this.onModalClose}
-          onEditClick={this.onEditClick}
-        />
         <ConversationsTable
-          conversations={this.props.conversationLogs.conversations}
+          getConversationsMessages={getConversationsMessages}
+          conversations={conversationLogs}
           currentPage={this.state.currentPage}
-          pages={this.props.conversationLogs.pages}
-          onConversationClick={this.onConversationClick}
           onMoreClick={this.onMoreClick}
           getFilteredConversations={this.onSearchClick}
         />
@@ -151,7 +103,6 @@ const mapDispatchToProps = dispatch => ({
   getConversationsMessages: session =>
     dispatch(getConversationsMessages(session)),
   clearConversations: () => dispatch(clearConversations()),
-  getAvailableIntents: () => dispatch(getAvailableIntents()),
   correctIntents: (message, intent) => dispatch(correctIntents(message, intent))
 });
 

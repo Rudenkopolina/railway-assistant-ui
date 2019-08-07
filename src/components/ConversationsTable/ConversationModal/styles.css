@@ -26,10 +26,7 @@
 }
 
 .session-dates {
-  /* color: #727c8a;
-  font-size: 12px; */
   font-size: 1.4em;
-  /* line-height: 2em; */
   color: rgba(0, 0, 0, 0.75);
   text-align: center;
   margin-bottom: 10px;
@@ -38,7 +35,6 @@
 .session-info {
   font-size: 0.9em;
   line-height: 1.2em;
-  /* text-align: center; */
   color: rgba(0, 0, 0, 0.55);
 }
 
@@ -97,9 +93,9 @@
   margin: -3px 0px 0px 3px;
 }
 
-.message-conversation-icon{
+.message-conversation-icon {
   cursor: default;
-  margin-left:3px !important;
+  margin-left: 3px !important;
 }
 
 .time-system {

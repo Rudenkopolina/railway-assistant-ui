@@ -1,11 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {Icon, Modal} from 'semantic-ui-react';
+import { Icon, Modal, Button } from 'semantic-ui-react';
 import AudioPlayer from '../AudioPlayer';
 import Truncate from 'react-truncate';
 import IntentModal from '../IntentModal';
 import './styles.css';
-import {urls} from '../../../../config';
+import { urls } from '../../../../config';
 
 const titlesForModal = {
   common: 'Изменить типовую фразу',
@@ -15,7 +15,12 @@ const titlesForModal = {
 class AnswerCard extends React.Component {
   state = {
     isKeywordsShown: false,
-    chosen: false
+    chosen: false,
+    isModalOpen: false
+  };
+
+  onTrigerModal = () => {
+    this.setState(state => ({ isModalOpen: !state.isModalOpen }));
   };
 
   deleteAnswer = (event, answer) => {
@@ -24,8 +29,7 @@ class AnswerCard extends React.Component {
   };
 
   toggleKeywordsView = () => {
-    const { isKeywordsShown } = this.state;
-    this.setState({ isKeywordsShown: !isKeywordsShown });
+    this.setState(state => ({ isKeywordsShown: !state.isKeywordsShown }));
   };
 
   getAudioSrc = id => {
@@ -33,32 +37,20 @@ class AnswerCard extends React.Component {
     return urls.responses.audioUrl(title, id);
   };
 
-  checkAnswer = async (event) => {
+  checkAnswer = async event => {
     if (event.target.dataset.space && this.props.title === 'reference') {
-      await this.setState({ 'chosen': !this.state.chosen });
-      this.props.onResponseSelected(this._reactInternalFiber.key, this.state.chosen);
+      await this.setState(state => ({ chosen: !state.chosen }));
+      this.props.onResponseSelected(
+        this._reactInternalFiber.key,
+        this.state.chosen
+      );
     }
   };
 
-  renderActions = () => {
-    const { answer, index, onUpdateAnswer, isShowExamples, title } = this.props;
-    return (
-      <IntentModal
-        key={answer.id}
-        buttonText='Детали'
-        modalTitle={titlesForModal[title]}
-        onSave={data => onUpdateAnswer(data, answer.id, index)}
-        answer={answer}
-        isShowExamples={isShowExamples}
-        isDescriptionChangeable={title === 'reference'}
-        supportedTTS={this.props.supportedTTS}
-      />
-    );
-  };
-
   renderDelete = () => {
-    if (this.props.title === 'common') return (<div />);
-    const { answer, onDeleteAnswer } = this.props;
+    const { answer, title, onDeleteAnswer } = this.props;
+    if (title === 'common') return <div />;
+
     return (
       <div className='answer-action'>
         {onDeleteAnswer && (
@@ -84,12 +76,32 @@ class AnswerCard extends React.Component {
   };
 
   render() {
-    const { answer } = this.props;
+    const {
+      answer,
+      index,
+      onUpdateAnswer,
+      isShowExamples,
+      title,
+      supportedTTS
+    } = this.props;
+    const { isModalOpen, chosen } = this.state;
     return (
-      <div className={answer.updating ? 'answer-row-wrapper-updating' : this.state.chosen ? 'answer-row-wrapper selected' : 'answer-row-wrapper'} onClick={(e) => this.checkAnswer(e)} data-space='answer-card'>
+      <div
+        className={
+          answer.updating
+            ? 'answer-row-wrapper-updating'
+            : chosen
+            ? 'answer-row-wrapper selected'
+            : 'answer-row-wrapper'
+        }
+        onClick={e => this.checkAnswer(e)}
+        data-space='answer-card'
+      >
         <div data-space='answer-card' className='answer-card-content'>
           <div data-space='answer-card' className='answer-card-title'>
-            <div data-space='answer-card' className='answer-overflow'>{answer.responseName}</div>
+            <div data-space='answer-card' className='answer-overflow'>
+              {answer.responseName}
+            </div>
             {this.renderDelete()}
           </div>
           <div data-space='answer-card' className='answer-card-description'>
@@ -102,7 +114,22 @@ class AnswerCard extends React.Component {
           <div className='icon-position'>
             <AudioPlayer id={answer.id} url={this.getAudioSrc(answer.id)} />
           </div>
-          {this.renderActions()}
+          <Button primary size='tiny' basic onClick={this.onTrigerModal}>
+            Детали
+          </Button>
+          {isModalOpen && (
+            <IntentModal
+              key={answer.id}
+              onTrigerModal={this.onTrigerModal}
+              isModalOpen={isModalOpen}
+              modalTitle={titlesForModal[title]}
+              onSave={data => onUpdateAnswer(data, answer.id, index)}
+              answer={answer}
+              isShowExamples={isShowExamples}
+              isDescriptionChangeable={title === 'reference'}
+              supportedTTS={supportedTTS}
+            />
+          )}
         </div>
       </div>
     );

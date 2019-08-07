@@ -24,13 +24,12 @@ const keywordsList = [
 
 class IntentModal extends React.Component {
   state = {
-    isModalOpen: false,
     modalAnswer: {
       responseName: '',
       responseDescription: '',
       responseBuffer: '',
       textTranscription: '',
-      inputType: '',
+      inputType: 0,
       audioTranscription: '',
       examples: [],
       categoryId: null
@@ -40,7 +39,7 @@ class IntentModal extends React.Component {
   };
 
   handleUpdateKeys = keys => {
-    this.setState((state, props) => ({
+    this.setState(state => ({
       modalAnswer: { ...state.modalAnswer, examples: keys }
     }));
   };
@@ -56,7 +55,7 @@ class IntentModal extends React.Component {
         audioTranscription: answer.audioTranscription || '',
         examples: answer.examples || [],
         categoryId: answer.categoryId,
-        inputType: answer.inputType || ''
+        inputType: answer.inputType || 0
       };
     }
     this.setState({ modalAnswer });
@@ -129,14 +128,10 @@ class IntentModal extends React.Component {
     }));
   };
 
-  onTrigerModal = () => {
-    this.setState((state, props) => ({ isModalOpen: !state.isModalOpen }));
-  };
-
   onSendData = () => {
     const { modalAnswer } = this.state;
     this.props.onSave(modalAnswer);
-    this.setState({ isModalOpen: false });
+    this.props.onTrigerModal();
   };
 
   getAudioSrc = () => {
@@ -153,7 +148,8 @@ class IntentModal extends React.Component {
   };
 
   getOptions = () => {
-    return this.props.categories.map(item => ({
+    const { categories } = this.props;
+    return categories.map(item => ({
       value: item.id,
       text: item.category
     }));
@@ -277,14 +273,15 @@ class IntentModal extends React.Component {
     );
   };
 
-  renderContent = () => {      
+  renderContent = () => {    
     const isDisabled = this.isDisabled();
     const { modalAnswer } = this.state;
     const {
       isShowExamples = true,
       isDescriptionChangeable = true,
       modalTitle,
-      supportedTTS
+      supportedTTS,
+      onTrigerModal
     } = this.props;
     return (
       <div className='modal-wrapper'>
@@ -316,7 +313,7 @@ class IntentModal extends React.Component {
             </div>)}
         </div>
         <div className='modal-actions actions'>
-          <Button onClick={this.onTrigerModal}>Отменить</Button>
+          <Button onClick={onTrigerModal}>Отменить</Button>
           <Button onClick={this.onSendData} primary disabled={isDisabled}>
             Сохранить
           </Button>
@@ -327,18 +324,14 @@ class IntentModal extends React.Component {
   };
 
   render() {
+    const { isModalOpen, onTrigerModal } = this.props;
     return (
       <Modal
-        trigger={
-          <Button primary size='tiny' basic onClick={this.onTrigerModal}>
-            {this.props.buttonText}
-          </Button>
-        }
         size='large'
         closeOnDimmerClick={false}
-        onClose={this.onTrigerModal}
-        open={this.state.isModalOpen}
-        content={this.renderContent()}
+        onClose={onTrigerModal}
+        open={isModalOpen}
+        content={this.renderContent}
         closeIcon
       />
     );
@@ -350,8 +343,7 @@ const mapStateToProps = ({ categories }) => ({
 });
 
 IntentModal.propTypes = {
-  buttonText: PropTypes.string.isRequired,
-  modalTitle: PropTypes.string,
+  modalTitle: PropTypes.string.isRequired,
   onSave: PropTypes.func.isRequired,
   answer: PropTypes.object,
   isShowExamples: PropTypes.bool,

@@ -1,11 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
-import {Icon, Table} from 'semantic-ui-react';
-
-import './styles.css';
-import moment from 'moment';
+import { Table } from 'semantic-ui-react';
 import FilterBar from '../FilterBar';
+import ConversationsTableRow from './ConversationsTableRow';
+import './styles.css';
 
 class ConversationsTable extends React.Component {
   constructor(props) {
@@ -21,13 +20,42 @@ class ConversationsTable extends React.Component {
   static getDerivedStateFromProps(props) {
     if (props.conversations) {
       return {
-        conversations: props.conversations
+        conversations: props.conversations.conversations
       };
     }
   }
 
   setNewFilterParameters = (fromDate, toDate, source, type, text) => {
-    this.props.getFilteredConversations({ fromDate, toDate, source, type, text });
+    this.props.getFilteredConversations({
+      fromDate,
+      toDate,
+      source,
+      type,
+      text
+    });
+  };
+
+  drawMoreButton = () => {
+    const { currentPage, conversations, onMoreClick } = this.props;  
+    if (currentPage < conversations.pages) {
+      return (
+        <tfoot>
+          <tr>
+            <th colSpan='5'>
+              <div className='block-pagination'>
+                <button
+                  className='ui right labeled icon button'
+                  onClick={onMoreClick}
+                >
+                  <i className='right arrow icon' />
+                  Загрузить ещё
+                </button>
+              </div>
+            </th>
+          </tr>
+        </tfoot>
+      );
+    }
   };
 
   propComparator = value => {
@@ -52,37 +80,6 @@ class ConversationsTable extends React.Component {
     });
   };
 
-  drawMoreButton = () => {
-    if (this.props.currentPage < this.props.pages) {
-      return (
-        <tfoot>
-          <tr>
-            <th colSpan='5'>
-              <div className='block-pagination'>
-                <button
-                  className='ui right labeled icon button'
-                  onClick={this.props.onMoreClick}
-                >
-                  <i className='right arrow icon' />
-                  Загрузить ещё
-                </button>
-              </div>
-            </th>
-          </tr>
-        </tfoot>
-      );
-    }
-  };
-
-  drawConversationType = (type) => {
-    switch(type) {
-      case "VOICE": return (<div><Icon name='microphone' size='small'/>Голос</div>);
-      case "TEXT": return (<div><Icon name='align justify' size='small'/>Текст</div>);
-      case "MIXED": return (<div><Icon name='sync' size='small'/>Смешанный</div>);
-      default: return (<div><Icon name='question circle' size='small'/>Неизвестен</div>);
-    }
-  };
-
   render() {
     const { column, direction, conversations } = this.state;
     return (
@@ -90,9 +87,7 @@ class ConversationsTable extends React.Component {
         <div className='table-container-flex'>
           <div className='chat-history-title'>История разговоров</div>
           <div className='element-mb'>
-            <FilterBar
-              setNewFilterParameters={this.setNewFilterParameters}
-            />
+            <FilterBar setNewFilterParameters={this.setNewFilterParameters} />
           </div>
         </div>
         <Table sortable celled compact>
@@ -123,34 +118,8 @@ class ConversationsTable extends React.Component {
               <Table.HeaderCell textAlign='center'>Тип</Table.HeaderCell>
             </Table.Row>
           </Table.Header>
-          <Table.Body>
-            {conversations.map((conversation, index) => (
-              <Table.Row
-                className='table-row'
-                key={index}
-                onClick={() => this.props.onConversationClick(conversation)}
-              >
-                <Table.Cell textAlign='center'>
-                  {moment(conversation.timestamp_start).format(
-                    'DD.MM.YYYY HH:mm:ss'
-                  )}
-                </Table.Cell>
-                <Table.Cell textAlign='center'>
-                  {moment(conversation.timestamp_end).format(
-                    'DD.MM.YYYY HH:mm:ss'
-                  )}
-                </Table.Cell>
-                <Table.Cell textAlign='center'>
-                  {conversation.session}
-                </Table.Cell>
-                <Table.Cell textAlign='center'>
-                  {conversation.iterations}
-                </Table.Cell>
-                <Table.Cell textAlign='center'>
-                  {this.drawConversationType(conversation.type)}
-                </Table.Cell>
-              </Table.Row>
-            ))}
+          <Table.Body>            
+            {conversations.map(conversation => <ConversationsTableRow key={conversation.session} conversation={conversation} messages={this.props.conversations} getConversationsMessages={this.props.getConversationsMessages} /> )}              
           </Table.Body>
           {this.drawMoreButton()}
         </Table>
@@ -159,11 +128,10 @@ class ConversationsTable extends React.Component {
   }
 }
 ConversationsTable.propTypes = {
-  conversations: PropTypes.array.isRequired,
-  pages: PropTypes.number.isRequired,
-  onMoreClick: PropTypes.func.isRequired,
-  onConversationClick: PropTypes.func.isRequired,
+  conversations: PropTypes.object.isRequired,
   currentPage: PropTypes.number.isRequired,
+  getConversationsMessages: PropTypes.func.isRequired,
+  onMoreClick: PropTypes.func.isRequired, 
   getFilteredConversations: PropTypes.func.isRequired
 };
 
