@@ -1,5 +1,5 @@
 .home-wrapper {
-  width: 70%;
+  width: 80%;
 }
 
 .home {
@@ -40,9 +40,7 @@
 .cards-wrapper {
   display: flex;
   flex-wrap: wrap;
-  margin: 50px;
   justify-content: center;
-  width: 95%;
 }
 
 .home-icon {

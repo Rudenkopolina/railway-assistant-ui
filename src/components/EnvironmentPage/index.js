@@ -8,7 +8,7 @@ class EnvironmentPage extends React.Component {
   render() {
     const { environment } = this.props;
     return (
-      <div>
+      <div className='container'>
         <div className='environment-header'>Подключенное окружение</div>
         <div className='environment-cards-wrapper'>
           {environment.map(environment => (

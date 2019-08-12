@@ -15,7 +15,7 @@ class Account extends React.Component {
 	render() {
 		const { user } = this.props;
 		return (
-			<div className='container'>
+			<div className='account container'>
 				<div className='account-info-wrapper'>
 					<div className='account-icon'>
 						<Icon name='user' size='massive' />

@@ -7,3 +7,7 @@
 .side-margin {
   margin: 0 10px;
 }
+
+.button-margin {
+  margin: 8px !important;
+}

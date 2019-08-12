@@ -1,7 +1,4 @@
 .statistics-header {
-  display: flex;
-  margin: 0 20px;
-  height: 50px;
   border-bottom: 2px solid #ececf0;
 }
 
@@ -16,7 +13,7 @@
   color: #93a3b8;
   font-weight: 500;
   cursor: pointer;
-  padding: 12px 0 0 0;
+  min-height: 38px;
 }
 
 .statistics-menu-item-active {
@@ -26,7 +23,7 @@
 
 .statistics-card {
   background-color: #fff;
-  margin: 20px;
+  margin: 20px 0;
   padding: 20px;
   width: 100%;
   font-size: 15px;

@@ -107,14 +107,14 @@ class Users extends React.Component {
                 {title.name}
               </div>
             ))}
-            <div className='element-mb'>
+            <div className='element-mb-filter'>
               <Filter
                 filterString={filterString}
                 onFilterChange={this.onFilterChange}
               />
             </div>
           </div>
-          <div className='users-menu-item element-mb'>
+          <div className='users-menu-item'>
             <RoleModal
               buttonText='Cоздать роль'
               onSave={(data) => this.onCreate('roles', data)}

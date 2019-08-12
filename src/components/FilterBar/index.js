@@ -112,7 +112,7 @@ class ConversationFilterBar extends React.Component {
         </div>
 
         <Button
-          className='side-margin'
+          className='button-margin'
           circular
           icon='search'
           onClick={this.makeSearch}

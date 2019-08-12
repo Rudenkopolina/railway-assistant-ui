@@ -14,9 +14,7 @@ class Environment extends React.Component {
   render() {
     const { environment } = this.props.environment;
     return (
-      <div className='environment-wrapper'>
         <EnvironmentPage environment={environment} />
-      </div>
     );
   }
 }

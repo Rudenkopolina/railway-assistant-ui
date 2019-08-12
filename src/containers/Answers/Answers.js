@@ -109,7 +109,7 @@ class Answer extends React.Component {
                 {title.name}
               </div>
             ))}
-            <div className='element-mb'>
+            <div className='element-mb-filter'>
               <Filter
                 filterString={filterString}
                 onFilterChange={this.onFilterChange}

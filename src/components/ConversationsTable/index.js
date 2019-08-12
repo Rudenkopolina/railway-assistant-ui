@@ -86,9 +86,9 @@ class ConversationsTable extends React.Component {
       <div className='table-container'>
         <div className='table-container-flex'>
           <div className='chat-history-title'>История разговоров</div>
-          <div className='element-mb'>
+          
             <FilterBar setNewFilterParameters={this.setNewFilterParameters} />
-          </div>
+        
         </div>
         <Table sortable celled compact>
           <Table.Header>

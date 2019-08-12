@@ -8,15 +8,17 @@
 
 .monitoring-title {
   font-size: 18px;
-  margin: 12px 0 0 20px;
-  padding: 0px 0 17px 0;
-  color: #363f56;
+  margin-right: 20px;
+  margin-bottom: -2px;
+  font-weight: 500;
+  min-height: 38px;
   border-bottom: 2px solid #436dd2;
-  width: 102px;
+  color: #363f56;
+  width: 105px;
 }
 
 .monitoring-cards-wrapper {
   display: flex;
   flex-wrap: wrap;
-  padding: 20px;
+  padding: 20px 0;
 }

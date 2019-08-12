@@ -48,9 +48,7 @@ class HistoryTable extends React.Component {
           <div className='chat-irrelevant-history-title'>
             История нераспознанных сообщений
           </div>
-          <div className='element-mb'>
-            <FilterBar setNewFilterParameters={this.setNewFilterParameters} />
-          </div>
+          <FilterBar setNewFilterParameters={this.setNewFilterParameters} />        
         </div>
         <Table celled compact>
           <Table.Header>

@@ -8,7 +8,7 @@ class MonitoringCards extends React.Component {
   render() {
     const { monitoring, onItemUpdateClick } = this.props;
     return (
-      <div className='monitoring-container'>
+      <div className='container'>
         <div className='monitoring-title'>Мониторинг</div>
         <div className='monitoring-cards-wrapper'>
           {monitoring.items.map(item => (

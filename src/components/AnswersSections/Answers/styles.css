@@ -1,7 +1,7 @@
 .answer-table-container {
   display: flex;
+  padding-top: 20px;
   justify-content: flex-start;
   flex-flow: row wrap;
-  padding: 20px;
   box-sizing: content-box;
 }
