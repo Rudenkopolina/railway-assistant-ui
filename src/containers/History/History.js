@@ -70,16 +70,16 @@ class History extends React.PureComponent {
   };
 
   render() {
-    const { intentLogs, availableIntents } = this.props;
+    const { intentLogs, availableIntents, correctIntents} = this.props;
     return (  
       <div className='history-table-container'>
         <HistoryTable
-          messages={intentLogs.intents}
-          availableIntents={availableIntents}
+          messages={intentLogs}
+          availableIntents={availableIntents}  
           currentPage={this.state.currentPage}
-          pages={intentLogs.pages}
           onMoreClick={this.onMoreClick}
           getFilteredConversations={this.onSearchClick}
+          correctIntents={correctIntents}
         />
       </div>
     );

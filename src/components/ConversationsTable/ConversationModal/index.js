@@ -1,27 +1,33 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {Modal, Icon, Popup} from 'semantic-ui-react';
+import { Modal } from 'semantic-ui-react';
+import AudioPlayer from '../../AnswersSections/Answers/AudioPlayer';
+import MessageComponent from './MessageComponent';
+import { urls } from '../../../config';
+import moment from 'moment';
+import 'moment/locale/ru';
 import './styles.css';
-import moment from "moment";
-import 'moment/locale/ru'
-import AudioPlayer from "../../AnswersSections/Answers/AudioPlayer";
-import {urls} from "../../../config";
 
-class ConversationModal extends React.Component {
-
+class ConversationModal extends React.PureComponent {
   componentDidMount() {
-    const {getConversationsMessages, conversation} = this.props;
-    getConversationsMessages(conversation.session)
+    const { getConversationsMessages, conversation } = this.props;
+    getConversationsMessages(conversation.session);
   }
 
-  drawSource = (type) => {
-    switch(type) {
-      case "TELEGRAM": return (<div>Отправлено из Telegram</div>);
-      case "VIBER": return (<div>Отправлено из Viber</div>);
-      case "MIXED": return (<div>Смешанные способы отправки</div>);
-      case "PSTN": return (<div>Отправлено из телефонной сети</div>);
-      case "UNKN": return (<div>Источник неизвестен</div>);
-      default: return (<div>Источник неизвестен</div>);
+  drawSource = type => {
+    switch (type) {
+      case 'TELEGRAM':
+        return <div>Отправлено из Telegram</div>;
+      case 'VIBER':
+        return <div>Отправлено из Viber</div>;
+      case 'MIXED':
+        return <div>Смешанные способы отправки</div>;
+      case 'PSTN':
+        return <div>Отправлено из телефонной сети</div>;
+      case 'UNKN':
+        return <div>Источник неизвестен</div>;
+      default:
+        return <div>Источник неизвестен</div>;
     }
   };
 
@@ -29,86 +35,84 @@ class ConversationModal extends React.Component {
     let offset = 0;
 
     entities.forEach(entity => {
-      let popup = `<span class='entity' title=${entity.entity}>${message.substring(entity.location[0] + offset, entity.location[1] + offset)}</span>`;
-      message = message.substring(0, offset + entity.location[0]) + popup + message.substring(entity.location[1] + offset);
+      let popup = `<span class='entity' title=${
+        entity.entity
+      }>${message.substring(
+        entity.location[0] + offset,
+        entity.location[1] + offset
+      )}</span>`;
+      message =
+        message.substring(0, offset + entity.location[0]) +
+        popup +
+        message.substring(entity.location[1] + offset);
       offset += popup.length - entity.location[1];
     });
 
-    return (<div dangerouslySetInnerHTML= {{__html: message}}/>);
-  };
-
-  drawIntents = (intents, detectedIntent, correctedIntent, detectedIntentDescription, correctedIntentDescription) => {
-    return (<Popup
-      content={intents[0] && intents[0].confidence >= 0.3 ? <div>Системой было определено намерение '{intents[0].intent}' с вероятностью {parseFloat(Math.round(intents[0].confidence * 100) / 100).toFixed(2)}</div> : <div>Информация о намерениях не доступна</div>}
-      position='right center'
-      trigger={
-        <div>#{correctedIntent ? correctedIntentDescription ? correctedIntentDescription : correctedIntent : detectedIntentDescription ? detectedIntentDescription : detectedIntent}</div>
-      }
-    />);
-  };
-
-  drawEditButton = (intents) => {
-    if (intents[0] && intents[0].confidence < 1.0) {
-      return (<Icon name='edit' size='small'/>)
-    }
-  };
-
-  drawEntities = (entities) => {
-    return (entities.map((entity, index) => <Popup
-      key={index}
-      content={<div>{entity.entity}</div>}
-      position='right center'
-      trigger={
-        <div className='intent'>@{entity.value}</div>
-      }
-    />));
+    return <div dangerouslySetInnerHTML={{ __html: message }} />;
   };
 
   drawAudioPlayer = (id, recordingId) => {
-    if (recordingId) return (<AudioPlayer id={id} url={urls.responses.getRecordingAudio(recordingId)}/>)
+    if (recordingId)
+      return (
+        <AudioPlayer
+          id={id}
+          url={urls.responses.getRecordingAudio(recordingId)}
+        />
+      );
   };
 
   renderContent = () => {
-    const {conversation, messages, onEditClick} = this.props;
-        return (
-        <div className='modal-wrapper-conversation'>
-          <div className='header'>
-          <div className='session-dates'>{(moment(conversation.timestamp_start)).format('DD.MM.YYYY')} </div>
+    const {
+      conversation,
+      messages,
+      availableIntents,
+      correctIntents
+    } = this.props;
+    return (
+      <div className='modal-wrapper-conversation'>
+        <div className='header'>
+          <div className='session-dates'>
+            {moment(conversation.timestamp_start).format('DD.MM.YYYY')}{' '}
+          </div>
           <div className='flex'>
             <div className='left-content'>
-              <div className='session-info'>Начало: {(moment(conversation.timestamp_start)).format('HH:mm:ss')}</div>
-              <div className='session-info'>Продолжительность: {moment.duration(moment(conversation.timestamp_end) - moment(conversation.timestamp_start)).locale('ru').asSeconds()} секунды</div>
+              <div className='session-info'>
+                Начало:
+                {moment(conversation.timestamp_start).format('HH:mm:ss')}
+              </div>
+              <div className='session-info'>
+                Продолжительность:
+                {moment
+                  .duration(
+                    moment(conversation.timestamp_end) -
+                      moment(conversation.timestamp_start)
+                  )
+                  .locale('ru')
+                  .asSeconds()}
+                секунды
+              </div>
             </div>
-          <div className='flex'>
-            <div className='session-info'>{this.drawAudioPlayer(1, conversation.recordingId)}</div>
-            <div className='session-info'>{this.drawSource(conversation.source)}</div>
-          </div>
-          </div>
-          </div>
-          <div className='body-conversation'>
-            {messages.selectedConversationMessages.map((message, index) => {
-              return (
-                <div key={index}>
-                  <div className='line'> 
-                    <div className='message-conversation message-conversation-user'>{message.requestText}</div>
-                    <div className='message-conversation-info'>
-                      <div className='intent'>{this.drawIntents(message.intents, message.detectedIntent, message.correctedIntent, message.detectedIntentDescription, message.correctedIntentDescription)}</div>
-                      <div className='edit-button' onClick={onEditClick(message)}>{this.drawEditButton(message.intents)}</div>
-                      {this.drawEntities(message.entities)}
-                    </div>
-                    <div className='message-conversation-time'>Пользователь, {moment(message.timestamp).format('HH:mm:ss')}
-                    <Icon className='message-conversation-icon' name='envelope outline' />
-                    </div>
-                  </div>
-                  <div className='line'>
-                    <div className='message-conversation message-conversation-system'>{message.responseText}</div>
-                    <div className='message-conversation-time time-system'>Система, {moment(message.timestamp).format('HH:mm:ss')}</div>
-                  </div>
-                </div>
-              );
-            })}
+            <div className='flex'>
+              <div className='session-info'>
+                {this.drawAudioPlayer(1, conversation.recordingId)}
+              </div>
+              <div className='session-info'>
+                {this.drawSource(conversation.source)}
+              </div>
+            </div>
           </div>
         </div>
+        <div className='body-conversation'>
+          {messages.selectedConversationMessages.map(message => (
+            <MessageComponent
+              key={message.id}
+              message={message}
+              availableIntents={availableIntents}
+              correctIntents={correctIntents}
+            />
+          ))}
+        </div>
+      </div>
     );
   };
 
@@ -134,7 +138,8 @@ ConversationModal.propTypes = {
   visible: PropTypes.bool.isRequired,
   onModalClose: PropTypes.func.isRequired,
   messages: PropTypes.object.isRequired,
-  onEditClick: PropTypes.func.isRequired
+  correctIntents: PropTypes.func.isRequired,
+  availableIntents: PropTypes.object.isRequired
 };
 
 export default ConversationModal;

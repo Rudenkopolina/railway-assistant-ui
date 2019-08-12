@@ -36,7 +36,7 @@ class ConversationsTable extends React.Component {
   };
 
   drawMoreButton = () => {
-    const { currentPage, conversations, onMoreClick } = this.props;  
+    const { currentPage, conversations, onMoreClick } = this.props;
     if (currentPage < conversations.pages) {
       return (
         <tfoot>
@@ -82,13 +82,12 @@ class ConversationsTable extends React.Component {
 
   render() {
     const { column, direction, conversations } = this.state;
+    const { correctIntents, availableIntents } = this.props;
     return (
       <div className='table-container'>
         <div className='table-container-flex'>
           <div className='chat-history-title'>История разговоров</div>
-          
-            <FilterBar setNewFilterParameters={this.setNewFilterParameters} />
-        
+          <FilterBar setNewFilterParameters={this.setNewFilterParameters} />
         </div>
         <Table sortable celled compact>
           <Table.Header>
@@ -118,8 +117,17 @@ class ConversationsTable extends React.Component {
               <Table.HeaderCell textAlign='center'>Тип</Table.HeaderCell>
             </Table.Row>
           </Table.Header>
-          <Table.Body>            
-            {conversations.map(conversation => <ConversationsTableRow key={conversation.session} conversation={conversation} messages={this.props.conversations} getConversationsMessages={this.props.getConversationsMessages} /> )}              
+          <Table.Body>
+            {conversations.map(conversation => (
+              <ConversationsTableRow
+                key={conversation.session}
+                conversation={conversation}
+                messages={this.props.conversations}
+                getConversationsMessages={this.props.getConversationsMessages}
+                correctIntents={correctIntents}
+                availableIntents={availableIntents}
+              />
+            ))}
           </Table.Body>
           {this.drawMoreButton()}
         </Table>
@@ -127,12 +135,15 @@ class ConversationsTable extends React.Component {
     );
   }
 }
+
 ConversationsTable.propTypes = {
   conversations: PropTypes.object.isRequired,
   currentPage: PropTypes.number.isRequired,
   getConversationsMessages: PropTypes.func.isRequired,
-  onMoreClick: PropTypes.func.isRequired, 
-  getFilteredConversations: PropTypes.func.isRequired
+  onMoreClick: PropTypes.func.isRequired,
+  getFilteredConversations: PropTypes.func.isRequired,
+  correctIntents: PropTypes.func.isRequired,
+  availableIntents: PropTypes.object.isRequired
 };
 
 export default withRouter(ConversationsTable);

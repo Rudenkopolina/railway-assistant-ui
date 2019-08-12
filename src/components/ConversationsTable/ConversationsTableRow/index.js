@@ -54,17 +54,19 @@ class ConversationsTableRow extends React.Component {
     }
   };
 
-  onEditClick = message => {
-
-  };
-
   onTrigerModal = () => {
     this.setState(state => ({ isModalOpen: !state.isModalOpen }));
   };
 
   render() {
     const { isModalOpen } = this.state;
-    const { conversation, messages, getConversationsMessages } = this.props;
+    const {
+      conversation,
+      messages,
+      getConversationsMessages,
+      correctIntents,
+      availableIntents
+    } = this.props;
     return (
       <>
         <Table.Row className='history-table-row' onClick={this.onTrigerModal}>
@@ -87,24 +89,10 @@ class ConversationsTableRow extends React.Component {
             getConversationsMessages={getConversationsMessages}
             visible={isModalOpen}
             onModalClose={this.onTrigerModal}
-            onEditClick={this.onEditClick}
+            correctIntents={correctIntents}
+            availableIntents={availableIntents}
           />
         )}
-        {/* {isModalOpen && <IntentsEditorModal
-                isModalOpen={isModalOpen}
-                onTrigerModal={this.onTrigerModal}
-                availableIntents={this.props.availableIntents.intents}
-                message={message}
-                onChangeIntent={this.onChangeIntent}
-            />} */}
-
-        {/* <IntentsEditorModal
-          visible={this.state.visibleIntentsEditorModal}
-          onModalClose={this.onIntentsModalClose}
-          availableIntents={this.props.availableIntents.intents}
-          message={this.state.selectedMessage}
-          onChangeIntent={this.onChangeIntent}
-        /> */}
       </>
     );
   }
@@ -113,7 +101,9 @@ class ConversationsTableRow extends React.Component {
 ConversationsTableRow.propTypes = {
   conversation: PropTypes.object.isRequired,
   messsages: PropTypes.object,
-  getConversationsMessages: PropTypes.func.isRequired
+  getConversationsMessages: PropTypes.func.isRequired,
+  correctIntents: PropTypes.func.isRequired,
+  availableIntents: PropTypes.object.isRequired
 };
 
 export default withRouter(ConversationsTableRow);

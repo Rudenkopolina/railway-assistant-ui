@@ -64,7 +64,7 @@ class LogsConversations extends React.PureComponent {
     const { clearConversations } = this.props;
     clearConversations();
     if (!filter.toDate) {
-      this.setState((state, props) => ({
+      this.setState(state => ({
         filter: { ...filter, toDate: state.activationTimestamp },
         currentPage: 1
       }));
@@ -74,15 +74,17 @@ class LogsConversations extends React.PureComponent {
   };
 
   render() {
-    const {getConversationsMessages, conversationLogs} = this.props;
+    const {getConversationsMessages, conversationLogs, availableIntents} = this.props;
     return (
       <div className='conversations-table-container'>
         <ConversationsTable
-          getConversationsMessages={getConversationsMessages}
           conversations={conversationLogs}
+          availableIntents={availableIntents} 
           currentPage={this.state.currentPage}
           onMoreClick={this.onMoreClick}
           getFilteredConversations={this.onSearchClick}
+          correctIntents={correctIntents}
+          getConversationsMessages={getConversationsMessages}           
         />
       </div>
     );

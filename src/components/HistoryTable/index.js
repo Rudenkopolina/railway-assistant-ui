@@ -18,8 +18,8 @@ class HistoryTable extends React.Component {
   };
 
   drawMoreButton = () => {
-    const { currentPage, pages, onMoreClick } = this.props;
-    if (currentPage < pages) {
+    const { currentPage, messages, onMoreClick } = this.props;
+    if (currentPage < messages.pages) {
       return (
         <tfoot>
           <tr>
@@ -41,7 +41,8 @@ class HistoryTable extends React.Component {
   };
 
   render() {
-    const { messages, availableIntents } = this.props;
+    const { availableIntents, correctIntents } = this.props;
+    const { intents } = this.props.messages;
     return (
       <div className='table-container-history'>
         <div className='table-container-flex-history'>
@@ -68,8 +69,8 @@ class HistoryTable extends React.Component {
             </Table.Row>
           </Table.Header>
           <Table.Body>
-            {messages.map(message => (
-              <HistoryTableRow  key={message.id} message={message} availableIntents={availableIntents} />
+            {intents.map(message => (
+              <HistoryTableRow  key={message.id} message={message} availableIntents={availableIntents} correctIntents={correctIntents} />
             ))}
           </Table.Body>
           {this.drawMoreButton()}
@@ -79,12 +80,12 @@ class HistoryTable extends React.Component {
   }
 }
 HistoryTable.propTypes = {
-  messages: PropTypes.array.isRequired,
-  availableIntents: PropTypes.object,
-  pages: PropTypes.number.isRequired,
+  messages: PropTypes.object.isRequired,
+  availableIntents: PropTypes.object.isRequired,
   onMoreClick: PropTypes.func.isRequired,
   currentPage: PropTypes.number.isRequired,
-  getFilteredConversations: PropTypes.func.isRequired
+  getFilteredConversations: PropTypes.func.isRequired,
+  correctIntents: PropTypes.func.isRequired
 };
 
 export default withRouter(HistoryTable);

@@ -4,16 +4,21 @@ import { Button, Dropdown, Icon, Modal } from 'semantic-ui-react';
 import './styles.css';
 import 'moment/locale/ru';
 
-class IntentsEditorModal extends React.Component {
+class IntentsEditorModal extends React.PureComponent {
   state = {
     selectedId: -1
   };
 
   onSave = () => {
-    const { availableIntents, message, onChangeIntent } = this.props;
+    const {
+      availableIntents,
+      message,
+      correctIntents,
+      onTrigerModal
+    } = this.props;
     const { selectedId } = this.state;
-    onChangeIntent(message, availableIntents[selectedId]);
-    this.setState({ selectedId: -1 });  
+    correctIntents(message, availableIntents[selectedId]);
+    onTrigerModal();
   };
 
   onIntentChange = (e, value) => {
@@ -26,8 +31,8 @@ class IntentsEditorModal extends React.Component {
         <>
           {message.intents[0].confidence >= 0.3 && (
             <div>
-              Системой было определено намерение '
-              {message.intents[0].intent}' с вероятностью
+              Системой было определено намерение '{message.intents[0].intent}' с
+              вероятностью
               {parseFloat(
                 Math.round(message.intents[0].confidence * 100) / 100
               ).toFixed(2)}
@@ -130,7 +135,7 @@ IntentsEditorModal.propTypes = {
   onTrigerModal: PropTypes.func.isRequired,
   availableIntents: PropTypes.array.isRequired,
   message: PropTypes.object.isRequired,
-  onChangeIntent: PropTypes.func.isRequired
+  correctIntents: PropTypes.func.isRequired
 };
 
 export default IntentsEditorModal;

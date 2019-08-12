@@ -58,52 +58,45 @@ class HistoryTableRow extends React.Component {
     this.setState(state => ({ isModalOpen: !state.isModalOpen }));
   };
 
-  onChangeIntent = (message, intent) => {
-    const { correctIntents } = this.props;
-    this.onTrigerModal();
-    correctIntents(message, intent);
-  };
-
-
-
   render() {
     const { isModalOpen } = this.state;
-    const { message, availableIntents } = this.props;
+    const { message, availableIntents, correctIntents } = this.props;
     return (
-        <>
-      <Table.Row
-        className='history-table-row'
-        onClick={this.onTrigerModal}
-      >
-        <Table.Cell textAlign='center'>
-          {moment(message.timestamp).format('DD.MM.YYYY HH:mm:ss')}
-        </Table.Cell>
-        <Table.Cell textAlign='center'>{message.session}</Table.Cell>
-        <Table.Cell textAlign='center'>{message.requestText}</Table.Cell>
-        <Table.Cell textAlign='center'>
-          {message.detectedIntentDescription}
-        </Table.Cell>
-        <Table.Cell textAlign='center'>
-          {message.correctedIntentDescription}
-        </Table.Cell>
-        <Table.Cell textAlign='center'>
-          {this.drawConversationType(message.type)}
-        </Table.Cell>
-      </Table.Row>
-            {isModalOpen && <IntentsEditorModal
-                isModalOpen={isModalOpen}
-                onTrigerModal={this.onTrigerModal}
-                availableIntents={availableIntents.intents}
-                message={message}
-                onChangeIntent={this.onChangeIntent}
-            />}
+      <>
+        <Table.Row
+          className='history-table-row'
+          onClick={this.onTrigerModal}
+        >
+          <Table.Cell textAlign='center'>
+            {moment(message.timestamp).format('DD.MM.YYYY HH:mm:ss')}
+          </Table.Cell>
+          <Table.Cell textAlign='center'>{message.session}</Table.Cell>
+          <Table.Cell textAlign='center'>{message.requestText}</Table.Cell>
+          <Table.Cell textAlign='center'>
+            {message.detectedIntentDescription}
+          </Table.Cell>
+          <Table.Cell textAlign='center'>
+            {message.correctedIntentDescription}
+          </Table.Cell>
+          <Table.Cell textAlign='center'>
+            {this.drawConversationType(message.type)}
+          </Table.Cell>
+        </Table.Row>
+        {isModalOpen && <IntentsEditorModal
+          isModalOpen={isModalOpen}
+          onTrigerModal={this.onTrigerModal}
+          availableIntents={availableIntents.intents}
+          message={message}
+          correctIntents={correctIntents}
+        />}
       </>
     );
   }
 }
 
 HistoryTableRow.propTypes = {
-  message: PropTypes.object.isRequired
+  message: PropTypes.object.isRequired,
+  correctIntents: PropTypes.func.isRequired
 };
 
 export default withRouter(HistoryTableRow);
