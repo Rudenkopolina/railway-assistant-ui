@@ -1,11 +1,12 @@
 .flex-filter {
   display: flex;
+  flex-wrap: wrap;
 }
 .center-filter-items {
   align-items: center;
 }
 .side-margin {
-  margin: 0 10px;
+  margin: auto 20px auto 0;
 }
 
 .button-margin {

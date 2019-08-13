@@ -109,14 +109,13 @@ class ConversationFilterBar extends React.Component {
               onChange={this.onCheckBoxChange}
             />
           ))}
+          <Button
+            className='button-margin'
+            circular
+            icon='search'
+            onClick={this.makeSearch}
+          />
         </div>
-
-        <Button
-          className='button-margin'
-          circular
-          icon='search'
-          onClick={this.makeSearch}
-        />
       </div>
     );
   }

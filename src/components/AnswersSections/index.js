@@ -148,7 +148,7 @@ class AnswersSections extends React.Component {
     ));
 
     return (
-      <div>
+      <>
         {isReferanseTab && (
           <div className='categories-container'>
             {tabs}
@@ -177,7 +177,7 @@ class AnswersSections extends React.Component {
           onResponseSelected={this.onResponseSelected}
           supportedTTS={this.props.supportedTTS}
         />
-      </div>
+      </>
     );
   }
 }

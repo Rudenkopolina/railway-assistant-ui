@@ -51,7 +51,7 @@ class HistoryTable extends React.Component {
           </div>
           <FilterBar setNewFilterParameters={this.setNewFilterParameters} />        
         </div>
-        <Table celled compact>
+        <Table celled>
           <Table.Header>
             <Table.Row className='history-table-row'>
               <Table.HeaderCell textAlign='center'>

@@ -158,12 +158,12 @@ class IntentModal extends React.Component {
   renderDescriptionCommon = () => {
     const { modalAnswer } = this.state;
     return (
-      <div>
+      <>
         <div className='modal-description-name'>{modalAnswer.responseName}</div>
         <div className='modal-description'>
           {modalAnswer.responseDescription}
         </div>
-      </div>
+      </>
     );
   };
 

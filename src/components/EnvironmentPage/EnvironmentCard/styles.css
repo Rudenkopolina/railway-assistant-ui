@@ -19,8 +19,8 @@
 }
 
 .environment-description {
-font-size: 0.9em;
-    color: rgba(0, 0, 0, 0.4);
+  font-size: 14px;
+  color: rgba(0, 0, 0, 0.4);
 }
 
 .environment-icon {

@@ -1,6 +1,6 @@
 import React from 'react';
 import { withRouter } from 'react-router-dom';
-import { Dropdown, Icon } from 'semantic-ui-react';
+import { Icon } from 'semantic-ui-react';
 import './styles.css';
 
 class Header extends React.Component {
@@ -11,17 +11,8 @@ class Header extends React.Component {
   render() {
     return (
       <div className='header-wrapper'>
-        <div>
-          <Icon name='user' />
-          {this.props.user}
-          <Dropdown item icon='ellipsis horizontal' className='header-menu'>
-            <Dropdown.Menu direction='left' className='header-menu-item'>
-              <div className='header-menu-content' onClick={this.logOut}>
-                Выйти
-              </div>
-            </Dropdown.Menu>
-          </Dropdown>
-        </div>
+        {this.props.user}
+        <Icon name='log out' className='header-icon' onClick={this.logOut} />
       </div>
     );
   }

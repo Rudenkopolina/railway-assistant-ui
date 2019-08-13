@@ -4,6 +4,7 @@
 }
 .table-container-flex-history {
   display: flex;
+  flex-wrap: wrap;
 }
 .chat-irrelevant-history-title {
   font-size: 18px;
@@ -12,7 +13,7 @@
   padding: 0px 0 17px 0;
   color: #363f56;
   border-bottom: 2px solid #436dd2;
-  width: 315px;
+  min-width: 315px;
   margin-bottom: 15px;
 }
 

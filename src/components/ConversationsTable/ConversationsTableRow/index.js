@@ -69,7 +69,7 @@ class ConversationsTableRow extends React.Component {
     } = this.props;
     return (
       <>
-        <Table.Row className='history-table-row' onClick={this.onTrigerModal}>
+        <Table.Row className='table-row' onClick={this.onTrigerModal}>
           <Table.Cell textAlign='center'>
             {moment(conversation.timestamp_start).format('DD.MM.YYYY HH:mm:ss')}
           </Table.Cell>

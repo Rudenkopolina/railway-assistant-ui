@@ -57,7 +57,7 @@ export class AudioRecorder extends React.Component {
   render() {
     const { blobObject, isRecording, recordedBlob } = this.state;
     return (
-      <div>
+      <>
         {!blobObject && (
           <div className='recorder-container'>
           <div className='recorder'>
@@ -120,7 +120,7 @@ export class AudioRecorder extends React.Component {
             </div>
           </div>
         )}
-      </div>
+      </>
     );
   }
 }
