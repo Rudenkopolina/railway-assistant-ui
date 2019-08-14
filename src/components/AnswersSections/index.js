@@ -6,7 +6,7 @@ import Answers from './Answers';
 import IntentModal from './Answers/IntentModal';
 import NewCategoryModal from './NewCategoryModal';
 import Protected from '../common/protected/container';
-import {Icon} from 'semantic-ui-react';
+import { Icon, Button } from 'semantic-ui-react';
 import './styles.css';
 import ChooseCategoryModal from './ChooseCategoryModal';
 
@@ -15,7 +15,8 @@ class AnswersSections extends React.Component {
     super(props);
     this.state = {
       activeTab: null,
-      chosenResponses: []
+      chosenResponses: [],
+      isModalOpen: false
     };
   }
 
@@ -26,6 +27,10 @@ class AnswersSections extends React.Component {
       this.setCategory(category);
     }
   }
+
+  onTrigerModal = () => {
+    this.setState(state => ({ isModalOpen: !state.isModalOpen }));
+  };
 
   setCategory = categoryId => {
     if (categoryId !== this.state.activeTab) {
@@ -47,17 +52,25 @@ class AnswersSections extends React.Component {
 
   onResponseSelected = async (id, state) => {
     const { chosenResponses } = this.state;
-    state ? await chosenResponses.push(id) : await chosenResponses.splice(chosenResponses.indexOf(id), 1);
-    this.setState({chosenResponses});
+    state
+      ? await chosenResponses.push(id)
+      : await chosenResponses.splice(chosenResponses.indexOf(id), 1);
+    this.setState({ chosenResponses });
   };
 
   drawMoreButton = () => {
     if (this.state.chosenResponses.length > 0) {
-      return (<ChooseCategoryModal onChooseCategory={this.onMove} categories={this.props.categories} chosenResponsesCount={this.state.chosenResponses.length} />);
+      return (
+        <ChooseCategoryModal
+          onChooseCategory={this.onMove}
+          categories={this.props.categories}
+          chosenResponsesCount={this.state.chosenResponses.length}
+        />
+      );
     }
   };
 
-  onMove = (categoryId) => {
+  onMove = categoryId => {
     this.props.onMoveResponse(categoryId, this.state.chosenResponses);
     this.setCategory(categoryId);
   };
@@ -87,30 +100,29 @@ class AnswersSections extends React.Component {
     }
     return filterStringLowerCase
       ? displayCategory.filter(
-          answer =>
-            answer.responseName.toLowerCase().indexOf(filterStringLowerCase) >
-              -1 ||
-            answer.responseDescription
-              .toLowerCase()
-              .indexOf(filterStringLowerCase) > -1 ||
-            answer.textTranscription
-              .toLowerCase()
-              .indexOf(filterStringLowerCase) > -1 ||
-            answer.audioTranscription
-              .toLowerCase()
-              .indexOf(filterStringLowerCase) > -1 ||
-            answer.examples.some(
-              example =>
-                example.toLowerCase().indexOf(filterStringLowerCase) > -1
-            )
-        )
+        answer =>
+          answer.responseName.toLowerCase().indexOf(filterStringLowerCase) >
+          -1 ||
+          answer.responseDescription
+            .toLowerCase()
+            .indexOf(filterStringLowerCase) > -1 ||
+          answer.textTranscription
+            .toLowerCase()
+            .indexOf(filterStringLowerCase) > -1 ||
+          answer.audioTranscription
+            .toLowerCase()
+            .indexOf(filterStringLowerCase) > -1 ||
+          answer.examples.some(
+            example =>
+              example.toLowerCase().indexOf(filterStringLowerCase) > -1
+          )
+      )
       : displayCategory;
   };
 
-
   render() {
-    const { categories, answers, isReferanseTab } = this.props;
-    const { activeTab } = this.state;
+    const { categories, answers, isReferanseTab, supportedTTS, createResponse, onCreateCategory } = this.props;
+    const { activeTab, isModalOpen } = this.state;
     const filterCategory = answers.filter(item => {
       return item.categoryId === activeTab;
     });
@@ -122,7 +134,6 @@ class AnswersSections extends React.Component {
     }, 10);
 
     const tabs = categories.map((category, index) => (
-      
       <span key={index} className='category-button-container'>
         <div
           className={cx('category-button', {
@@ -135,15 +146,16 @@ class AnswersSections extends React.Component {
             {this.getNumberOfAnswers(category.id)}
           </span>
         </div>
-        {!this.getTotalNumberOfAnswers(category.id) && category.id !== smallestIndex && (
-          <span className='remove-icon ml-icon'>
-            <Icon
-              name='delete'
-              size='small'
-              onClick={event => this.deleteCategory(event, category.id)}
-            />
-          </span>
-        )}
+        {!this.getTotalNumberOfAnswers(category.id) &&
+          category.id !== smallestIndex && (
+            <span className='remove-icon ml-icon'>
+              <Icon
+                name='delete'
+                size='small'
+                onClick={event => this.deleteCategory(event, category.id)}
+              />
+            </span>
+          )}
       </span>
     ));
 
@@ -152,16 +164,24 @@ class AnswersSections extends React.Component {
         {isReferanseTab && (
           <div className='categories-container'>
             {tabs}
-            <NewCategoryModal onCreateCategory={this.props.onCreateCategory} />
+            <NewCategoryModal onCreateCategory={onCreateCategory} />
             {this.drawMoreButton()}
             <div className='header-button'>
               <Protected requiredRoles='ALLOWED_KNOWLEDGEBASE_CREATION'>
-                <IntentModal
-                  buttonText='Добавить ответ'
-                  modalTitle='Добавить справочный ответ'
-                  onSave={data => this.props.createResponse(data)}
-                  categoryId={activeTab}
-                />
+                <Button primary size='tiny' basic onClick={this.onTrigerModal}>
+                  Добавить ответ
+                </Button>
+                {isModalOpen && (
+                  <IntentModal
+                    onTrigerModal={this.onTrigerModal}
+                    isModalOpen={isModalOpen}
+                    modalTitle='Добавить справочный ответ'
+                    onSave={data => createResponse(data)}
+                    isShowExamples={false}
+                    categoryId={activeTab}
+                    supportedTTS={supportedTTS}
+                  />
+                )}
               </Protected>
             </div>
           </div>

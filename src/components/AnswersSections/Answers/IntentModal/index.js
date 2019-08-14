@@ -35,7 +35,8 @@ class IntentModal extends React.Component {
       categoryId: null
     },
     playedId: null,
-    disable: true
+    disable: true,
+    showRecorder: false
   };
 
   handleUpdateKeys = keys => {
@@ -45,8 +46,9 @@ class IntentModal extends React.Component {
   };
 
   componentDidMount() {
-    const { answer } = this.props;
+    const { answer, supportedTTS } = this.props;
     let modalAnswer = {};
+    let showRecorder = false;
     if (answer) {
       modalAnswer = {
         responseName: answer.responseName || '',
@@ -58,7 +60,10 @@ class IntentModal extends React.Component {
         inputType: answer.inputType || 0
       };
     }
-    this.setState({ modalAnswer });
+    if (supportedTTS) {
+      showRecorder = !supportedTTS
+    }
+    this.setState({ modalAnswer, showRecorder });
   }
 
   isDisabled = () => {
@@ -113,7 +118,7 @@ class IntentModal extends React.Component {
   };
 
   onHandlerFormField = (value, title) => {
-    this.setState((state, props) => ({
+    this.setState(state => ({
       modalAnswer: { ...state.modalAnswer, [title]: value, inputType: 0 }
     }));
   };
@@ -127,6 +132,10 @@ class IntentModal extends React.Component {
       }
     }));
   };
+
+  showRecorder = () => {
+    this.setState(state => ({showRecorder: !state.showRecorder}))
+  }
 
   onSendData = () => {
     const { modalAnswer } = this.state;
@@ -260,6 +269,7 @@ class IntentModal extends React.Component {
             id={1} // ??
             url={this.getAudioSrc()}
           />
+          <Button basic color='blue' content='Записать ответ' icon='microphone' className='modal-formfield-button' onClick={this.showRecorder} />
         </div>
         <TextArea
           className='modal-formfield-textarea modal-field'
@@ -275,14 +285,15 @@ class IntentModal extends React.Component {
 
   renderContent = () => {    
     const isDisabled = this.isDisabled();
-    const { modalAnswer } = this.state;
+    const { modalAnswer, showRecorder } = this.state;
     const {
       isShowExamples = true,
       isDescriptionChangeable = true,
-      modalTitle,
       supportedTTS,
+      modalTitle,
       onTrigerModal
     } = this.props;
+
     return (
       <div className='modal-wrapper'>
         <div className='modal-header'>{modalTitle}</div>
@@ -302,12 +313,13 @@ class IntentModal extends React.Component {
               }
             />
           </div>
-          {supportedTTS && this.renderAudio()}
-          {!supportedTTS && (
+          {!showRecorder && this.renderAudio()}
+          {showRecorder && (
             <div className='modal-formfield'>
               <div className='modal-formfield-title'>
-              <span className='unsupported-tts-label'>Для вашего региона нет поддержки генерации речи</span>
+              {!supportedTTS && <span className='unsupported-tts-label'>Для вашего региона нет поддержки генерации речи</span>}
               <AudioPlayer id={1} url={this.getRecordSrc()} />
+              {supportedTTS && <Button basic color='blue' content='Вернуться к генерации' className='modal-formfield-button' onClick={this.showRecorder} />}
               </div>
               <AudioRecorder onSaveRecord={this.onRecord} />
             </div>)}

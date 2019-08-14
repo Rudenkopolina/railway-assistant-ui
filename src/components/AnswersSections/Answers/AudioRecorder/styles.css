@@ -8,7 +8,7 @@
 .recorder {
   background-color: #dde5fa;
   height: 54px;
-  width: 620px;
+  width: 102%;
   padding: 0 10px;
   border-radius: 12px;
   margin-bottom: 16px;
@@ -29,5 +29,5 @@
 
 canvas {
   height: 54px;
-  width: 600px;
+  width: 100%;
 }

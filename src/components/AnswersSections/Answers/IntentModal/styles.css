@@ -20,6 +20,8 @@
 }
 
 .modal-formfield-title {
+  display: flex;
+  align-items: center;
   padding: 20px 0px 5px;
   font-size: 14px;
 }
@@ -60,6 +62,14 @@
   border-radius: 0.28571429rem;
   outline: none;
   resize: vertical;
+}
+
+.modal-formfield-button {
+  height: 27px;
+  font-size: 1em !important;
+  margin: 0 !important;
+  margin-left: auto !important;
+  padding: 0 21px !important;
 }
 
 .modal-formfield-textarea:focus {
