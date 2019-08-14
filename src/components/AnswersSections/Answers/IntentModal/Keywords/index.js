@@ -74,7 +74,17 @@ class Keywords extends React.Component {
           return;
         }
 
-        this.updateModal([...keys, keyToCheck]);
+        const isDuplicate =
+          keys.findIndex(key => response.keyword === key.toLowerCase()) !== -1;
+
+        if (isDuplicate) {
+          this.setState({
+            error: 'Такой ключ уже есть'
+          });
+          return;
+        }
+
+        this.updateModal([...keys, response.keyword]);
 
         this.setState(
           {
