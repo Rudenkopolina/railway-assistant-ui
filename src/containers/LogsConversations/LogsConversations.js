@@ -77,7 +77,7 @@ class LogsConversations extends React.PureComponent {
   };
 
   render() {
-    const {getConversationsMessages, conversationLogs, availableIntents} = this.props;
+    const {getConversationsMessages, conversationLogs, availableIntents, correctIntents} = this.props;
     return (
       <div className='conversations-table-container'>
         <ConversationsTable
