@@ -40,7 +40,7 @@ function Routes() {
 			/>
 
 			<ProtectedRoute
-        requiredAnyRoles={['ALLOWED_USERS_EDITING', 'ALLOWED_ROLES_EDITING']}
+        		requiredAnyRoles={['ALLOWED_USERS_EDITING', 'ALLOWED_ROLES_EDITING']}
 				path={'/users'}
 				component={() => <Layout><Users/></Layout>}
 				saveUrlOnFail

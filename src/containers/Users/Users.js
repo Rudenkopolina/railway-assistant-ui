@@ -32,7 +32,8 @@ class Users extends React.Component {
       });
       this.props.getAllUsers();
     }
-    if (user.permissions.ALLOWED_ROLES_EDITING) {
+    if (user.permissions.ALLOWED_USERS_VIEWING && user.permissions.ALLOWED_ROLES_EDITING) {
+
       titles.push({
         name: 'Редактор Ролей',
         key: 'roles',
@@ -81,7 +82,7 @@ class Users extends React.Component {
         );
       case 'roles':
         return (
-          <Protected requiredRoles='ALLOWED_ROLES_EDITING'>
+          <Protected requiredAnyRoles={['ALLOWED_ROLES_VIEWING', 'ALLOWED_ROLES_EDITING']}>
           <RoleTable roles={privileges.privileges} onUpdateRole={this.props.onUpdateRole} permissions={permissions.permissions} />
           </Protected>
         );
@@ -92,6 +93,7 @@ class Users extends React.Component {
 
   render() {
     const { activeTab, titles, filterString } = this.state;
+    const { user } = this.props.auth;
     return (
       <div className='users-container'>
         <div className='users-header'>
@@ -115,10 +117,10 @@ class Users extends React.Component {
             </div>
           </div>
           <div className='users-menu-item'>
-            <RoleModal
+            {user.permissions.ALLOWED_ROLES_CREATION && (<RoleModal
               buttonText='Cоздать роль'
               onSave={(data) => this.onCreate('roles', data)}
-            />
+            />)}
             <UserModal
               buttonText='Добавить сотрудника' roles={this.props.privileges.privileges}
               onSave={user => {
