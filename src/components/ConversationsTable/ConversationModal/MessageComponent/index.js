@@ -5,7 +5,7 @@ import moment from 'moment';
 import 'moment/locale/ru';
 import IntentsEditorModal from '../../IntentsEditorModal';
 
-class MessageComponent extends React.PureComponent {
+class MessageComponent extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
