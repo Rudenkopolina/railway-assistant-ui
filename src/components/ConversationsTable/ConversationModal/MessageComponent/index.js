@@ -69,8 +69,7 @@ class MessageComponent extends React.PureComponent {
     ));
   };
 
-  onEditClick = event => {
-    event.preventDefault();
+  onEditClick = () => {
     this.setState(state => ({ isEditModalOpen: !state.isEditModalOpen }));
   };
 
@@ -95,9 +94,7 @@ class MessageComponent extends React.PureComponent {
             </div>
             <div
               className='edit-button'
-              onClick={e => {
-                this.onEditClick(e);
-              }}
+              onClick={this.onEditClick}
             >
               {this.drawEditButton(message.intents)}
             </div>

@@ -9,6 +9,7 @@ import {
   getConversationsPages,
   correctIntents
 } from '../../redux/actions/conversationLogs';
+import { getAvailableIntents } from '../../redux/actions/availableIntents';
 import ConversationsTable from '../../components/ConversationsTable';
 import './styles.css';
 
@@ -43,13 +44,15 @@ class LogsConversations extends React.PureComponent {
     const {
       clearConversations,
       getConversations,
-      getConversationsPages
+      getConversationsPages,
+      getAvailableIntents
     } = this.props;
 
     if (user.permissions.ALLOWED_LOGS_VIEWING) {
       clearConversations(); // ??
       getConversations(currentPage, filter);
       getConversationsPages(filter);
+      getAvailableIntents();
     }
   }
 
@@ -105,6 +108,7 @@ const mapDispatchToProps = dispatch => ({
   getConversationsMessages: session =>
     dispatch(getConversationsMessages(session)),
   clearConversations: () => dispatch(clearConversations()),
+  getAvailableIntents: () => dispatch(getAvailableIntents()),
   correctIntents: (message, intent) => dispatch(correctIntents(message, intent))
 });
 
