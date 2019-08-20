@@ -44,7 +44,7 @@ class Keywords extends React.Component {
     const { inputValue } = this.state;
     const { answerId, keys } = this.props;
     const keyToCheck = inputValue.trim().toLowerCase();
-    const isDuplicate =
+    const isDuplicate = keys &&
       keys.findIndex(key => keyToCheck === key.toLowerCase()) !== -1;
 
     if (isDuplicate) {
@@ -59,7 +59,12 @@ class Keywords extends React.Component {
         method: 'POST',
         body: { keyword: keyToCheck }
       }).then(response => {
-        if (response.isUsed && response.responses && response.responses[0] && !(response.responses[0].id === answerId)) {
+        if (
+          response.isUsed &&
+          response.responses &&
+          response.responses[0] &&
+          !(response.responses[0].id === answerId)
+        ) {
           this.setState({
             error: `Ключ уже используется в ${
               response.responses[0].responseDescription
@@ -74,7 +79,7 @@ class Keywords extends React.Component {
           return;
         }
 
-        const isDuplicate =
+        const isDuplicate = keys &&
           keys.findIndex(key => response.keyword === key.toLowerCase()) !== -1;
 
         if (isDuplicate) {
@@ -84,7 +89,7 @@ class Keywords extends React.Component {
           return;
         }
 
-        this.updateModal([...keys, response.keyword]);
+        this.updateModal([...keys || '', response.keyword]);
 
         this.setState(
           {
@@ -103,18 +108,18 @@ class Keywords extends React.Component {
     const { keys } = this.props;
     return (
       <div>
-        {keys.map((key, index) => (
-          <span className='span-tag' key={index}>
-            <span className='tag'>{key}</span>
-            <Closeicon
-              buttonClick={e => {
-                e.preventDefault();
-                this.removeKey(index);
-              }}
-            />
-          </span>
-        ))}
-
+        {keys &&
+          keys.map((key, index) => (
+            <span className='span-tag' key={index}>
+              <span className='tag'>{key}</span>
+              <Closeicon
+                buttonClick={e => {
+                  e.preventDefault();
+                  this.removeKey(index);
+                }}
+              />
+            </span>
+          ))}
         {inputVisible && (
           <span style={{ display: 'inline-block', marginBottom: '10px' }}>
             <input

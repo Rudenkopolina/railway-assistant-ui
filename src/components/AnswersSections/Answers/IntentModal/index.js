@@ -46,7 +46,7 @@ class IntentModal extends React.Component {
   };
 
   componentDidMount() {
-    const { answer, supportedTTS } = this.props;
+    const { answer, supportedTTS, categoryId } = this.props;
     let modalAnswer = {};
     let showRecorder = false;
     if (answer) {
@@ -58,6 +58,11 @@ class IntentModal extends React.Component {
         examples: answer.examples || [],
         categoryId: answer.categoryId,
         inputType: answer.inputType || 0
+      };
+    }
+    if(categoryId){
+      modalAnswer = {
+        categoryId
       };
     }
     if (supportedTTS) {
@@ -124,7 +129,7 @@ class IntentModal extends React.Component {
   };
 
   onRecord = record => {
-    this.setState((state, props) => ({
+    this.setState(state => ({
       modalAnswer: {
         ...state.modalAnswer,
         responseBuffer: record,
@@ -185,7 +190,7 @@ class IntentModal extends React.Component {
           onChange={e =>
             this.onHandlerFormField(e.target.value, 'responseName')
           }
-          value={modalAnswer.responseName}
+          value={modalAnswer.responseName || ''}
           className='modal-field'
           placeholder='Справка о...'
         />
@@ -291,7 +296,8 @@ class IntentModal extends React.Component {
       isDescriptionChangeable = true,
       supportedTTS,
       modalTitle,
-      onTrigerModal
+      onTrigerModal,
+      answers
     } = this.props;
 
     return (
@@ -301,7 +307,7 @@ class IntentModal extends React.Component {
           {isDescriptionChangeable
             ? this.renderDescription()
             : this.renderDescriptionCommon()}
-          {isShowExamples && this.renderKeywords()}
+          {(isShowExamples || !answers) && this.renderKeywords()}
           <div className='modal-formfield'>
             <div className='modal-formfield-title'>Текстовый ответ</div>
             <TextArea
