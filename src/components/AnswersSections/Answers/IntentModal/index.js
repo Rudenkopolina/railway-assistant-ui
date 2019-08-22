@@ -307,7 +307,7 @@ class IntentModal extends React.Component {
           {isDescriptionChangeable
             ? this.renderDescription()
             : this.renderDescriptionCommon()}
-          {(isShowExamples || !answers) && this.renderKeywords()}
+            {(isShowExamples) && this.renderKeywords()}
           <div className='modal-formfield'>
             <div className='modal-formfield-title'>Текстовый ответ</div>
             <TextArea

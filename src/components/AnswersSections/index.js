@@ -177,7 +177,7 @@ class AnswersSections extends React.Component {
                     isModalOpen={isModalOpen}
                     modalTitle='Добавить справочный ответ'
                     onSave={data => createResponse(data)}
-                    isShowExamples={false}
+                    isShowExamples={true}
                     categoryId={activeTab}
                     supportedTTS={supportedTTS}
                   />
