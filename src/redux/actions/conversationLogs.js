@@ -66,7 +66,7 @@ export function clearConversations() {
   };
 }
 
-export function getConversationsPages(fromDate, filter) {
+export function getConversationsPages(filter) {
   return async dispatch => {
     dispatch({
       type: GET_CONVERSATIONS_PAGES
