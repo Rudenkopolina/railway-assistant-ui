@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Button, Modal, Input } from 'semantic-ui-react';
+import { LABELS } from '../../../constants/labels_en';
 
 class AddCategoryModal extends React.Component {
   constructor(props) {
@@ -22,7 +23,7 @@ class AddCategoryModal extends React.Component {
     this.setState({
       inputValue: ''
     });
-  };
+  }; 
 
   render() {
     const { inputValue } = this.state;
@@ -31,15 +32,15 @@ class AddCategoryModal extends React.Component {
         <Modal
           closeIcon
           trigger={
-            <Button content='Добавить' icon='add' size='tiny' primary basic />
+            <Button content={LABELS.ADD_BUTTON_LABEL} icon='add' size='tiny' primary basic />
           }
           closeOnEscape={true}
           size={'mini'}
           content={
             <div className='modal-wrapper'>
-              <div className='modal-header'>Создать новую категорию</div>
+              <div className='modal-header'>{LABELS.ADD_NEW_CATEGORY}</div>
               <Input
-                placeholder='Введите название...'
+                placeholder={LABELS.NEW_CATEGORY_NAME_PLACEHOLDER}
                 value={inputValue}
                 onChange={this.onInputChange}
               />
@@ -49,13 +50,13 @@ class AddCategoryModal extends React.Component {
             {
               key: 'cancel',
               basic: true,
-              content: 'Отменить'
+              content: LABELS.CANCEL
             },
             {
               key: 'add',
               primary: true,
               basic: true,
-              content: 'Добавить',
+              content: LABELS.ADD_BUTTON_LABEL,
               onClick: event => this.onCategoryCreate(event)
             }
           ]}

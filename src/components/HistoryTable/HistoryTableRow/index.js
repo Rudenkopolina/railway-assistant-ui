@@ -5,6 +5,7 @@ import { Icon, Table } from 'semantic-ui-react';
 import moment from 'moment';
 import IntentsEditorModal from '../../ConversationsTable/IntentsEditorModal';
 import './styles.css';
+import { LABELS } from '../../../constants/labels_en';
 
 class HistoryTableRow extends React.Component {
   constructor(props) {
@@ -20,35 +21,35 @@ class HistoryTableRow extends React.Component {
         return (
           <div>
             <Icon name='microphone' size='small' />
-            Голос
+            {LABELS.VOICE}
           </div>
         );
       case 'TEXT':
         return (
           <div>
             <Icon name='align justify' size='small' />
-            Текст
+            {LABELS.TEXT}
           </div>
         );
       case 'MIXED':
         return (
           <div>
             <Icon name='sync' size='small' />
-            Смешанный
+            {LABELS.MIXED}
           </div>
         );
       case 'UNKN':
         return (
           <div>
             <Icon name='question circle' size='small' />
-            Неизвестен
+            {LABELS.UNKN}
           </div>
         );
       default:
         return (
           <div>
             <Icon name='question circle' size='small' />
-            Неизвестен
+            {LABELS.UNKN}
           </div>
         );
     }
@@ -63,32 +64,33 @@ class HistoryTableRow extends React.Component {
     const { message, availableIntents, correctIntents } = this.props;
     return (
       <>
-        <Table.Row
-          className='history-table-row'
-          onClick={this.onTrigerModal}
-        >
+        <Table.Row className='history-table-row' onClick={this.onTrigerModal}>
           <Table.Cell textAlign='center'>
             {moment(message.timestamp).format('DD.MM.YYYY HH:mm:ss')}
           </Table.Cell>
           <Table.Cell textAlign='center'>{message.session}</Table.Cell>
           <Table.Cell textAlign='center'>{message.requestText}</Table.Cell>
           <Table.Cell textAlign='center'>
-            {message.detectedIntentDescription}
+            {/* {message.detectedIntentDescription} */}
+            {message.detectedIntent}
           </Table.Cell>
           <Table.Cell textAlign='center'>
-            {message.correctedIntentDescription}
+            {/* {message.correctedIntentDescription} */}
+            {message.correctedIntent}
           </Table.Cell>
           <Table.Cell textAlign='center'>
             {this.drawConversationType(message.type)}
           </Table.Cell>
         </Table.Row>
-        {isModalOpen && <IntentsEditorModal
-          isModalOpen={isModalOpen}
-          onTrigerModal={this.onTrigerModal}
-          availableIntents={availableIntents.intents}
-          message={message}
-          correctIntents={correctIntents}
-        />}
+        {isModalOpen && (
+          <IntentsEditorModal
+            isModalOpen={isModalOpen}
+            onTrigerModal={this.onTrigerModal}
+            availableIntents={availableIntents.intents}
+            message={message}
+            correctIntents={correctIntents}
+          />
+        )}
       </>
     );
   }

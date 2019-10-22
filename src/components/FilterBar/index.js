@@ -5,6 +5,7 @@ import {Checkbox, Button, Input} from 'semantic-ui-react';
 import './styles.css';
 import moment from 'moment';
 import { DateTimeInput } from 'semantic-ui-calendar-react';
+import { LABELS } from '../../constants/labels_en';
 
 class ConversationFilterBar extends React.Component {
   constructor(props) {
@@ -66,10 +67,10 @@ class ConversationFilterBar extends React.Component {
       <div className='flex-filter'>
         <div className='side-margin'>
           <DateTimeInput
-            localization='ru'
+            // localization='ru'
             id='1'
             name='fromDate'
-            placeholder='Дата начала'
+            placeholder={LABELS.START_DATE}
             iconPosition='left'
             onChange={(event, { name, value }) =>
               this.onFilterChange(name, value)
@@ -79,10 +80,10 @@ class ConversationFilterBar extends React.Component {
         </div>
         <div className='side-margin'>
           <DateTimeInput
-            localization='ru'
+            // localization='ru'
             id='2'
             name='toDate'
-            placeholder='Дата конца'
+            placeholder={LABELS.END_DATE}
             iconPosition='left'
             onChange={(event, { name, value }) =>
               this.onFilterChange(name, value)
@@ -94,7 +95,7 @@ class ConversationFilterBar extends React.Component {
           <Input
             icon='comment'
             iconPosition='left'
-            placeholder='Текст запроса'
+            placeholder={LABELS.REQUEST}
             value={this.state.text}
             onChange={({ target }) => this.onFilterChange("text", target.value)}
           />

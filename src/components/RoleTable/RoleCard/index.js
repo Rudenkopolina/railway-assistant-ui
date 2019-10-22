@@ -20,7 +20,7 @@ class RoleCard extends React.Component {
   //       <div
   //       className="action-button"
   //       onClick={() => this.props.onSave(this.state.role)}
-  //       >Сохранить
+  //       >{LABELS.SAVE}
   //       </div>
   //     }
   //     </div>

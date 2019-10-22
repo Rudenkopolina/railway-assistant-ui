@@ -13,7 +13,6 @@ export function getAvailableIntents() {
 
     try {
       const response = await request(urls.responses.getAvailableIntents);
-
       dispatch({
         type: GET_AVAILABLE_INTENTS_SUCCESS,
         intents: response.intents

@@ -3,6 +3,7 @@ import { withRouter } from 'react-router-dom';
 import { ReactMic } from 'react-mic';
 import { Icon, Button } from 'semantic-ui-react';
 import './styles.css';
+import { LABELS } from '../../../../constants/labels_en';
 
 export class AudioRecorder extends React.Component {
   constructor(props) {
@@ -49,9 +50,11 @@ export class AudioRecorder extends React.Component {
     const reader = new FileReader();
     reader.readAsDataURL(blobObject.blob);
     reader.onloadend = () => {
-      this.setState({ blobObject: reader.result.split(',')[1], recordedBlob: blobObject.blobURL });
+      this.setState({
+        blobObject: reader.result.split(',')[1],
+        recordedBlob: blobObject.blobURL
+      });
     };
-  
   };
 
   render() {
@@ -60,16 +63,17 @@ export class AudioRecorder extends React.Component {
       <>
         {!blobObject && (
           <div className='recorder-container'>
-          <div className='recorder'>
-            <ReactMic
-              record={isRecording}
-              className='sound-wave'
-              onStop={this.onStop}
-              onData={this.onData}
-              onSave={this.onSave}
-              strokeColor='#436dd2'
-              backgroundColor='#dde5fa'
-            /></div>
+            <div className='recorder'>
+              <ReactMic
+                record={isRecording}
+                className='sound-wave'
+                onStop={this.onStop}
+                onData={this.onData}
+                onSave={this.onSave}
+                strokeColor='#436dd2'
+                backgroundColor='#dde5fa'
+              />
+            </div>
             <div className='rexorder-actions'>
               <Button
                 basic
@@ -78,7 +82,7 @@ export class AudioRecorder extends React.Component {
                 className='recorder-action'
                 onClick={this.startRecording}
               >
-                <Icon name='microphone' /> Запись
+                <Icon name='microphone' /> {LABELS.START_RECORD}
               </Button>
               <Button
                 basic
@@ -88,7 +92,7 @@ export class AudioRecorder extends React.Component {
                 onClick={this.stopRecording}
               >
                 <Icon name='stop' />
-                Остановить запись
+                {LABELS.STOP_RECORD}
               </Button>
             </div>
           </div>
@@ -106,7 +110,7 @@ export class AudioRecorder extends React.Component {
                 onClick={this.deleteRecording}
               >
                 <Icon name='trash' />
-                Перезаписать
+                {LABELS.RERECORD}
               </Button>
               <Button
                 basic
@@ -115,7 +119,7 @@ export class AudioRecorder extends React.Component {
                 onClick={this.saveRecording}
               >
                 <Icon name='save outline' />
-                Сохранить запись
+                {LABELS.SAVE_RECORD}
               </Button>
             </div>
           </div>

@@ -7,6 +7,8 @@ import { withRouter } from 'react-router-dom';
 import { login } from '../../../redux/actions/auth';
 import UrlRestoringService from '../../../services/url_restoring_service';
 
+import { LABELS } from '../../../constants/labels_en';
+ 
 class Login extends React.Component {
   state = {
     email: '',
@@ -19,7 +21,7 @@ class Login extends React.Component {
 
 		if (prevAuth.pending && !auth.pending) {
 			if (!auth.user) {
-				this.setState({ message: 'Неверный логин или пароль.' });
+				this.setState({ message: LABELS.INCORRECT_INPUT });
 			} else {
 				history.push(UrlRestoringService.getUrl() || '/');
 			}
@@ -47,16 +49,16 @@ class Login extends React.Component {
       <div className='login-background-image' />
       <div className='login-background' />
         <div className='login-card'>
-          <span className='login-header-text'>Пожалуйста, выполните вход</span>
+          <span className='login-header-text'>{LABELS.LOGIN}</span>
           <Input
-            placeholder='Введите логин'
+            placeholder={LABELS.LOGIN_INPUT}
             className='login-field'
             value={this.state.email}
             onChange={e => this.handleChange(e, 'email')}
             onKeyPress={this.onKeyPress}
           />
           <Input
-            placeholder='Введите пароль'
+            placeholder={LABELS.PASSWORD}
             className='login-field'
             type='password'
             value={this.state.password}
@@ -65,7 +67,7 @@ class Login extends React.Component {
           />
           <div className='login-error-message'>{this.state.message}</div>
           <Button primary onClick={this.handleSubmit}>
-            Войти
+          {LABELS.SIGN_UP}
           </Button>
         </div>
       </div>

@@ -4,6 +4,7 @@ import { Icon, Popup } from 'semantic-ui-react';
 import moment from 'moment';
 import 'moment/locale/ru';
 import IntentsEditorModal from '../../IntentsEditorModal';
+import { LABELS } from '../../../../constants/labels_en';
 
 class MessageComponent extends React.Component {
   constructor(props) {
@@ -25,27 +26,27 @@ class MessageComponent extends React.Component {
         content={
           intents[0] && intents[0].confidence >= 0.3 ? (
             <div>
-              Системой было определено намерение '{intents[0].intent}' с
-              вероятностью
+              {LABELS.SYSTEM_RECOGNITION_INFO_START}{intents[0].intent}{LABELS.SYSTEM_RECOGNITION_INFO_END}
               {parseFloat(
                 Math.round(intents[0].confidence * 100) / 100
               ).toFixed(2)}
             </div>
           ) : (
-            <div>Информация о намерениях не доступна</div>
+            <div>{LABELS.INACCESSIBLE_INFO}</div>
           )
         }
         position='right center'
         trigger={
           <div>
-            #
-            {correctedIntent
+          
+            #{detectedIntent}
+            {/* {correctedIntent
               ? correctedIntentDescription
                 ? correctedIntentDescription
                 : correctedIntent
               : detectedIntentDescription
               ? detectedIntentDescription
-              : detectedIntent}
+              : detectedIntent} */}
           </div>
         }
       />
@@ -92,16 +93,13 @@ class MessageComponent extends React.Component {
                 message.correctedIntentDescription
               )}
             </div>
-            <div
-              className='edit-button'
-              onClick={this.onEditClick}
-            >
+            <div className='edit-button' onClick={this.onEditClick}>
               {this.drawEditButton(message.intents)}
             </div>
             {this.drawEntities(message.entities)}
           </div>
           <div className='message-conversation-time'>
-            Пользователь, {moment(message.timestamp).format('HH:mm:ss')}
+            {LABELS.USER}, {moment(message.timestamp).format('HH:mm:ss')}
             <Icon
               className='message-conversation-icon'
               name='envelope outline'
@@ -113,7 +111,7 @@ class MessageComponent extends React.Component {
             {message.responseText}
           </div>
           <div className='message-conversation-time time-system'>
-            Система, {moment(message.timestamp).format('HH:mm:ss')}
+            {LABELS.SYSTEM} {moment(message.timestamp).format('HH:mm:ss')}
           </div>
         </div>
         {isEditModalOpen && (

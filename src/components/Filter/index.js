@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Input } from 'semantic-ui-react';
+import { LABELS } from '../../constants/labels_en';
 import './styles.css';
 
 class Filter extends Component {
@@ -10,7 +11,7 @@ class Filter extends Component {
       <div className='filter-wrapper'>
         <Input
           icon='search'
-          placeholder='Фильтр...'
+          placeholder={LABELS.FILTER_LABEL}
           value={filterString}
           onChange={({ target }) => onFilterChange(target.value)}
         />

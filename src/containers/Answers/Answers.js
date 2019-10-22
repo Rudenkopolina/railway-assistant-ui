@@ -15,7 +15,12 @@ import {
   moveResponsesToCategory,
   responsePing
 } from '../../redux/actions/responses';
-import { getCategories, createCategory, deleteCategory } from '../../redux/actions/categories';
+import {
+  getCategories,
+  createCategory,
+  deleteCategory
+} from '../../redux/actions/categories';
+import { LABELS } from '../../constants/labels_en';
 
 import './styles.css';
 
@@ -31,15 +36,15 @@ class Answer extends React.Component {
     const titles = [];
     if (user.permissions.ALLOWED_ANSWERS_VIEWING) {
       titles.push({
-        name: 'Базовые сообщения',
+        name: LABELS.COMMON,
         key: 'common'
       });
       this.props.getCommonResponses();
     }
     if (user.permissions.ALLOWED_KNOWLEDGEBASE_VIEWING) {
       titles.push({
-        name: 'База знаний',
-        key: 'reference',
+        name: LABELS.REFERENCE,
+        key: 'reference'
       });
       this.props.getReferenceResponses();
       this.props.getCategories();
@@ -57,10 +62,18 @@ class Answer extends React.Component {
 
   createResponse = async data => {
     this.props.createResponse(data).then(() => {
-      let lastResponse = this.props.data.reference[this.props.data.reference.length - 1];
-      NotificationManager.info(`Начинается обработка ответа #${lastResponse.id}!`, "Информация");
+      let lastResponse = this.props.data.reference[
+        this.props.data.reference.length - 1
+      ];
+      NotificationManager.info(
+        `${LABELS.START_PROCESSING_INFO} ${lastResponse.id}`,
+        LABELS.NOTIFICATION_INFO
+      );
       this.props.responsePing(lastResponse.id).then(finished => {
-        NotificationManager.success(`Ответ #${lastResponse.id} успешно обработан!`, "Успешно");
+        NotificationManager.success(
+          `${LABELS.END_PROCESSING_INFO_START} ${lastResponse.id} ${LABELS.END_PROCESSING_INFO_START}`,
+          LABELS.NOTIFICATION_SUCCESS
+        );
       });
     });
   };
@@ -68,11 +81,24 @@ class Answer extends React.Component {
   getContent = () => {
     const { activeTab, filterString } = this.state;
     const { user } = this.props.auth;
-    const {data, categories, onDeleteAnswer, changeResponse, createCategory, deleteCategory, moveToCategory} = this.props;
+    const {
+      data,
+      categories,
+      onDeleteAnswer,
+      changeResponse,
+      createCategory,
+      deleteCategory,
+      moveToCategory
+    } = this.props;
     const isReferanseTab = activeTab === 'reference';
     const answers = isReferanseTab ? data.reference : data.common;
     return (
-      <Protected requiredAnyRoles={['ALLOWED_KNOWLEDGEBASE_VIEWING', 'ALLOWED_ANSWERS_VIEWING']}>
+      <Protected
+        requiredAnyRoles={[
+          'ALLOWED_KNOWLEDGEBASE_VIEWING',
+          'ALLOWED_ANSWERS_VIEWING'
+        ]}
+      >
         <AnswersSections
           categories={categories.categories}
           title={activeTab}
@@ -139,10 +165,12 @@ const mapDispatchToProps = dispatch => ({
   getCategories: () => dispatch(getCategories()),
   createCategory: categoryName => dispatch(createCategory(categoryName)),
   deleteCategory: id => dispatch(deleteCategory(id)),
-  changeResponse: (data, id, title) => dispatch(changeResponse(data, id, title)),
+  changeResponse: (data, id, title) =>
+    dispatch(changeResponse(data, id, title)),
   onDeleteAnswer: id => dispatch(deleteResponse(id)),
-  moveToCategory: (categoryId, responseIds) => dispatch(moveResponsesToCategory(categoryId, responseIds)),
-  responsePing: (id) => dispatch(responsePing(id))
+  moveToCategory: (categoryId, responseIds) =>
+    dispatch(moveResponsesToCategory(categoryId, responseIds)),
+  responsePing: id => dispatch(responsePing(id))
 });
 
 export default withRouter(

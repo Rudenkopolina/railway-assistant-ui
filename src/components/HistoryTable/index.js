@@ -5,6 +5,7 @@ import { Table } from 'semantic-ui-react';
 import FilterBar from '../FilterBar';
 import HistoryTableRow from './HistoryTableRow';
 import './styles.css';
+import { LABELS } from '../../constants/labels_en';
 
 class HistoryTable extends React.Component {
   setNewFilterParameters = (fromDate, toDate, source, type, text) => {
@@ -30,7 +31,7 @@ class HistoryTable extends React.Component {
                   onClick={onMoreClick}
                 >
                   <i className='right arrow icon' />
-                  Загрузить ещё
+                  {LABELS.LOAD_MORE}
                 </button>
               </div>
             </th>
@@ -47,7 +48,7 @@ class HistoryTable extends React.Component {
       <div className='table-container-history'>
         <div className='table-container-flex-history'>
           <div className='chat-irrelevant-history-title'>
-            История нераспознанных сообщений
+            {LABELS.UNRECOGNIZED_INTENTS}
           </div>
           <FilterBar setNewFilterParameters={this.setNewFilterParameters} />        
         </div>
@@ -55,17 +56,17 @@ class HistoryTable extends React.Component {
           <Table.Header>
             <Table.Row className='history-table-row'>
               <Table.HeaderCell textAlign='center'>
-                Дата сообщения
+                {LABELS.MESSAGE_DATE}
               </Table.HeaderCell>
-              <Table.HeaderCell textAlign='center'>Сессия</Table.HeaderCell>
-              <Table.HeaderCell textAlign='center'>Сообщение</Table.HeaderCell>
+              <Table.HeaderCell textAlign='center'>{LABELS.SESSION}</Table.HeaderCell>
+              <Table.HeaderCell textAlign='center'>{LABELS.MESSAGE}</Table.HeaderCell>
               <Table.HeaderCell textAlign='center'>
-                Распознаное системой намерение
+                {LABELS.RECOGNIZED_INTENT}
               </Table.HeaderCell>
               <Table.HeaderCell textAlign='center'>
-                Скорректированное намерение
+                {LABELS.CORRECTED_INTENT}
               </Table.HeaderCell>
-              <Table.HeaderCell textAlign='center'>Тип</Table.HeaderCell>
+              <Table.HeaderCell textAlign='center'>{LABELS.TYPE}</Table.HeaderCell>
             </Table.Row>
           </Table.Header>
           <Table.Body>

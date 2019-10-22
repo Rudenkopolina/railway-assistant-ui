@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Modal, Icon } from 'semantic-ui-react';
 import './styles.css';
+import { LABELS } from '../../../constants/labels_en';
 
 class UserCard extends React.Component {
   deleteUser = (event, id) => {
@@ -19,12 +20,12 @@ class UserCard extends React.Component {
             trigger={<Icon size='small' name='trash' className='remove-icon' />}
             closeOnEscape={true}
             size={'mini'}
-            content='Это действие нельзя будет отменить. Вы уверены, что хотите удалить этотого сотрудника из базы?'
+            content={LABELS.USER_REMOVAL_CONFIRMATION}
             actions={[
-              'Отменить',
+              LABELS.CANCEL,
               {
                 key: 'remove',
-                content: 'Удалить',
+                content: LABELS.DELETE,
                 className: 'negative',
                 onClick: event => this.deleteUser(event, user.id)
               }
@@ -44,7 +45,7 @@ class UserCard extends React.Component {
             <div className='user-overflow'> {user.surname} {user.name} </div>
             {this.renderActions()}
           </div>
-          <div className='user-role'>{user.privilege}</div>
+          {/* <div className='user-role'>{user.privilege}</div> */}
           <div className='user-card-description'>
             <a href={`mailto:${user.username}`} className='link'>
               {user.username}

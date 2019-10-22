@@ -1,5 +1,6 @@
 import React from 'react';
 import './styles.css';
+import { LABELS } from '../../../../../constants/labels_en';
 
 class AddButton extends React.Component {
   render() {
@@ -25,7 +26,7 @@ class AddButton extends React.Component {
               <path d='M176 474h672q8 0 8 8v60q0 8-8 8H176q-8 0-8-8v-60q0-8 8-8z' />
             </svg>
           </i>
-          Добавить
+          {LABELS.ADD_BUTTON_LABEL}
         </button>
       </span>
     );

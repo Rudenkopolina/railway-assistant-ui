@@ -9,18 +9,8 @@ import Keywords from './Keywords';
 import AudioRecorder from '../AudioRecorder';
 
 import { urls } from '../../../../config';
+import { LABELS } from '../../../../constants/labels_en';
 import './styles.css';
-
-const hint =
-  'Для передачи слов-омографов используйте + перед ударной гласной. Например, гот+ов.Чтобы отметить паузу между словами, используйте -.';
-const keywordsSent = `Ключевые слова - слова, которые фигурируют в вопросе так, как это спросил бы пользователь.`;
-const keywordsList = [
-  'Ключевое слово должно быть уникальным.',
-  'Вы можете добавлять несколько ключевых слов с разными формулировками и формами, а также синонимы слов.',
-  'Ключевое слово может содержать буквы, цифры, подчеркиванияи дефисы.',
-  'Не включайте пробелы в ключевые слова.',
-  'Ключевое слово не может быть длиннее 64 символов.'
-];
 
 class IntentModal extends React.Component {
   state = {
@@ -60,20 +50,19 @@ class IntentModal extends React.Component {
         inputType: answer.inputType || 0
       };
     }
-    if(categoryId){
+    if (categoryId) {
       modalAnswer = {
         categoryId
       };
     }
     if (supportedTTS) {
-      showRecorder = !supportedTTS
+      showRecorder = !supportedTTS;
     }
     this.setState({ modalAnswer, showRecorder });
   }
 
   isDisabled = () => {
-    const { isShowExamples = true, answer, supportedTTS 
-    } = this.props;
+    const { isShowExamples = true, answer, supportedTTS } = this.props;
     const {
       responseName,
       responseBuffer,
@@ -139,8 +128,8 @@ class IntentModal extends React.Component {
   };
 
   showRecorder = () => {
-    this.setState(state => ({showRecorder: !state.showRecorder}))
-  }
+    this.setState(state => ({ showRecorder: !state.showRecorder }));
+  };
 
   onSendData = () => {
     const { modalAnswer } = this.state;
@@ -185,25 +174,29 @@ class IntentModal extends React.Component {
     const { modalAnswer } = this.state;
     return (
       <div className='modal-formfield'>
-        <div className='modal-formfield-title'>Название</div>
+        <div className='modal-formfield-title'>{LABELS.ANSWER_NAME_LABEL}</div>
         <Input
           onChange={e =>
             this.onHandlerFormField(e.target.value, 'responseName')
           }
           value={modalAnswer.responseName || ''}
           className='modal-field'
-          placeholder='Справка о...'
+          placeholder={LABELS.NEW_ANSWER_NAME_PLACEHOLDER}
         />
-        <div className='modal-formfield-title'>Описание</div>
+        <div className='modal-formfield-title'>
+          {LABELS.ANSWER_DESCRIPTION_LABEL}
+        </div>
         <TextArea
           className='modal-formfield-textarea modal-field'
-          placeholder='Данный ответ будет ...'
+          placeholder={LABELS.NEW_ANSWER_DESCRIPTION_PLACEHOLDER}
           onChange={e =>
             this.onHandlerFormField(e.target.value, 'responseDescription')
           }
           value={modalAnswer.responseDescription}
         />
-        <div className='modal-formfield-title'>Категория</div>
+        <div className='modal-formfield-title'>
+          {LABELS.ANSWER_CATEGORY_LABEL}
+        </div>
         <Dropdown
           onChange={(e, modalAnswer) => {
             this.onHandlerFormField(modalAnswer.value, 'categoryId');
@@ -224,9 +217,9 @@ class IntentModal extends React.Component {
     const answerId = answer ? answer.id : null;
     const keywordsHint = (
       <div>
-        <p>{keywordsSent}</p>
+        <p>{LABELS.KEYWORDS_SENT}</p>
         <ul>
-          {keywordsList.map((key, i) => (
+          {LABELS.KEYWORDS_LIST.map((key, i) => (
             <li key={i}>{key}</li>
           ))}
         </ul>
@@ -235,7 +228,7 @@ class IntentModal extends React.Component {
     return (
       <div className='modal-formfield'>
         <div className='modal-formfield-title key-title'>
-          Ключевые слова
+          {LABELS.ANSWER_KEYWORDS_LABEL}
           <Popup
             content={keywordsHint}
             position='right center'
@@ -261,9 +254,9 @@ class IntentModal extends React.Component {
     return (
       <div className='modal-formfield'>
         <div className='modal-formfield-title'>
-          Голосовой ответ
+          {LABELS.ANSWER_VOICE_LABEL}
           <Popup
-            content={hint}
+            content={LABELS.HINT}
             position='right center'
             wide='very'
             trigger={
@@ -274,11 +267,18 @@ class IntentModal extends React.Component {
             id={1} // ??
             url={this.getAudioSrc()}
           />
-          <Button basic color='blue' content='Записать ответ' icon='microphone' className='modal-formfield-button' onClick={this.showRecorder} />
+          <Button
+            basic
+            color='blue'
+            content={LABELS.RECORD_BUTTON_LABEL}
+            icon='microphone'
+            className='modal-formfield-button'
+            onClick={this.showRecorder}
+          />
         </div>
         <TextArea
           className='modal-formfield-textarea modal-field'
-          placeholder='Голосовой ответ...'
+          placeholder={LABELS.ANSWER_VOICE_LABEL}
           value={modalAnswer.audioTranscription}
           onChange={e =>
             this.onHandlerFormField(e.target.value, 'audioTranscription')
@@ -288,7 +288,7 @@ class IntentModal extends React.Component {
     );
   };
 
-  renderContent = () => {    
+  renderContent = () => {
     const isDisabled = this.isDisabled();
     const { modalAnswer, showRecorder } = this.state;
     const {
@@ -307,12 +307,14 @@ class IntentModal extends React.Component {
           {isDescriptionChangeable
             ? this.renderDescription()
             : this.renderDescriptionCommon()}
-            {(isShowExamples) && this.renderKeywords()}
+          {isShowExamples && this.renderKeywords()}
           <div className='modal-formfield'>
-            <div className='modal-formfield-title'>Текстовый ответ</div>
+            <div className='modal-formfield-title'>
+              {LABELS.ANSWER_TEXT_LABEL}
+            </div>
             <TextArea
               className='modal-formfield-textarea modal-field'
-              placeholder='Текстовый ответ...'
+              placeholder={LABELS.ANSWER_TEXT_LABEL}
               value={modalAnswer.textTranscription}
               onChange={e =>
                 this.onHandlerFormField(e.target.value, 'textTranscription')
@@ -323,17 +325,30 @@ class IntentModal extends React.Component {
           {showRecorder && (
             <div className='modal-formfield'>
               <div className='modal-formfield-title'>
-              {!supportedTTS && <span className='unsupported-tts-label'>Для вашего региона нет поддержки генерации речи</span>}
-              <AudioPlayer id={1} url={this.getRecordSrc()} />
-              {supportedTTS && <Button basic color='blue' content='Вернуться к генерации' className='modal-formfield-button' onClick={this.showRecorder} />}
+                {!supportedTTS && (
+                  <span className='unsupported-tts-label'>
+                    {LABELS.NO_SUPPORT}
+                  </span>
+                )}
+                <AudioPlayer id={1} url={this.getRecordSrc()} />
+                {supportedTTS && (
+                  <Button
+                    basic
+                    color='blue'
+                    content={LABELS.BACK_TO_GENERATION}
+                    className='modal-formfield-button'
+                    onClick={this.showRecorder}
+                  />
+                )}
               </div>
               <AudioRecorder onSaveRecord={this.onRecord} />
-            </div>)}
+            </div>
+          )}
         </div>
         <div className='modal-actions actions'>
-          <Button onClick={onTrigerModal}>Отменить</Button>
+          <Button onClick={onTrigerModal}>{LABELS.CANCEL}</Button>
           <Button onClick={this.onSendData} primary disabled={isDisabled}>
-            Сохранить
+            {LABELS.SAVE}
           </Button>
         </div>
         <NotificationContainer />

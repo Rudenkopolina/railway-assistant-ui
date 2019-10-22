@@ -7,6 +7,7 @@ import { urls } from '../../../config';
 import moment from 'moment';
 import 'moment/locale/ru';
 import './styles.css';
+import { LABELS } from '../../../constants/labels_en';
 
 class ConversationModal extends React.PureComponent {
   componentDidMount() {
@@ -17,17 +18,17 @@ class ConversationModal extends React.PureComponent {
   drawSource = type => {
     switch (type) {
       case 'TELEGRAM':
-        return <div>Отправлено из Telegram</div>;
+        return <div>{LABELS.SENT_FROM_TELEGRAM}</div>;
       case 'VIBER':
-        return <div>Отправлено из Viber</div>;
+        return <div>{LABELS.SENT_FROM_VIBER}</div>;
       case 'MIXED':
-        return <div>Смешанные способы отправки</div>;
+        return <div>{LABELS.SENT_FROM_MIXED}</div>;
       case 'PSTN':
-        return <div>Отправлено из телефонной сети</div>;
+        return <div>{LABELS.SENT_FROM_PSTN}</div>;
       case 'UNKN':
-        return <div>Источник неизвестен</div>;
+        return <div>{LABELS.SENT_FROM_UNKN}</div>;
       default:
-        return <div>Источник неизвестен</div>;
+        return <div>{LABELS.SENT_FROM_UNKN}</div>;
     }
   };
 
@@ -77,11 +78,11 @@ class ConversationModal extends React.PureComponent {
           <div className='flex'>
             <div className='left-content'>
               <div className='session-info'>
-                Начало:
+                {LABELS.BEGINNING}
                 {moment(conversation.timestamp_start).format('HH:mm:ss')}
               </div>
               <div className='session-info'>
-                Продолжительность:
+                {LABELS.DURATION}
                 {moment
                   .duration(
                     moment(conversation.timestamp_end) -
@@ -89,7 +90,7 @@ class ConversationModal extends React.PureComponent {
                   )
                   .locale('ru')
                   .asSeconds()}
-                секунды
+                {LABELS.SECONDS}
               </div>
             </div>
             <div className='flex'>

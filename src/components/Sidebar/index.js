@@ -4,19 +4,20 @@ import { withRouter } from 'react-router-dom';
 import { Icon, Popup } from 'semantic-ui-react'
 import Protected from '../common/protected/container'
 import cx from 'classnames';
-import './styles.css'
+import { LABELS } from '../../constants/labels_en';
+import './styles.css' 
 
 
 const pageList = [
-	{ key: '/', value: 'Домашняя страница', icon: 'home', requiredRoles: ''},
-	{ key: '/account', value: 'Профиль', icon: 'user', requiredRoles: ''},
-	{ key: '/answers', value: 'Ответы', icon: 'comments', requiredAnyRoles: ['ALLOWED_ANSWERS_VIEWING', 'ALLOWED_KNOWLEDGEBASE_VIEWING']},
-	{ key: '/users', value: 'Сотрудники', icon: 'group', requiredRoles: 'ALLOWED_USERS_CREATION'},
-	{ key: '/statistics', value: 'Статистика использования', icon: 'dashboard', requiredAnyRoles: ['ALLOWED_USAGE_STATISTICS_VIEWING', 'ALLOWED_CONVERSATION_STATISTICS_VIEWING']},
-	{ key: '/group/environment', value: 'Подключённое окружение', icon: 'plug', requiredRoles: ''},
-	{ key: '/logs/conversations', value: 'История разговоров', icon: 'history', requiredRoles: 'ALLOWED_LOGS_VIEWING'},
-	{ key: '/history/irrelevant', value: 'Нераспознанные намерения', icon: 'question circle', requiredRoles: 'ALLOWED_HISTORY_VIEWING'},
-	{ key: '/monitoring', value: 'Мониторинг', icon: 'info circle', requiredRoles: 'ALLOWED_MONITORING_VIEWING'}
+	{ key: '/', value: LABELS.HOME, icon: 'home', requiredRoles: ''},
+	{ key: '/account', value: LABELS.PROFILE, icon: 'user', requiredRoles: ''},
+	{ key: '/answers', value: LABELS.ANSWERS, icon: 'comments', requiredAnyRoles: ['ALLOWED_ANSWERS_VIEWING', 'ALLOWED_KNOWLEDGEBASE_VIEWING']},
+	{ key: '/users', value: LABELS.EMPLOYEES, icon: 'group', requiredRoles: 'ALLOWED_USERS_CREATION'},
+	{ key: '/statistics', value: LABELS.USAGE_STATISTICS, icon: 'dashboard', requiredAnyRoles: ['ALLOWED_USAGE_STATISTICS_VIEWING', 'ALLOWED_CONVERSATION_STATISTICS_VIEWING']},
+	{ key: '/group/environment', value: LABELS.CONNECTED_ENVIRONMENT, icon: 'plug', requiredRoles: ''},
+	{ key: '/logs/conversations', value: LABELS.CONVERSATION_HISTORY, icon: 'history', requiredRoles: 'ALLOWED_LOGS_VIEWING'},
+	{ key: '/history/irrelevant', value: LABELS.UNRECOGNIZED_INTENTS, icon: 'question circle', requiredRoles: 'ALLOWED_HISTORY_VIEWING'},
+	{ key: '/monitoring', value: LABELS.MONITORING, icon: 'info circle', requiredRoles: 'ALLOWED_MONITORING_VIEWING'}
 ];
 
 class Sidebar extends React.Component {

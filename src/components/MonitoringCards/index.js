@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
 import StatusCard from './StatusCard';
+import { LABELS } from '../../constants/labels_en'
 import './styles.css';
 
 class MonitoringCards extends React.Component {
@@ -9,7 +10,7 @@ class MonitoringCards extends React.Component {
     const { monitoring, onItemUpdateClick } = this.props;
     return (
       <div className='container'>
-        <div className='monitoring-title'>Мониторинг</div>
+        <div className='monitoring-title'>{LABELS.MONITORING}</div>
         <div className='monitoring-cards-wrapper'>
           {monitoring.items.map(item => (
             <StatusCard

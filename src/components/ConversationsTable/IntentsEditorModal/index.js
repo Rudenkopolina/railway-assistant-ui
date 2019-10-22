@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { Button, Dropdown, Icon, Modal } from 'semantic-ui-react';
 import './styles.css';
 import 'moment/locale/ru';
+import { LABELS } from '../../../constants/labels_en';
 
 class IntentsEditorModal extends React.PureComponent {
   state = {
@@ -31,8 +32,9 @@ class IntentsEditorModal extends React.PureComponent {
         <>
           {message.intents[0].confidence >= 0.3 && (
             <div>
-              Системой было определено намерение '{message.intents[0].intent}' с
-              вероятностью
+              {LABELS.SYSTEM_RECOGNITION_INFO_START}
+              {message.intents[0].intent}
+              {LABELS.SYSTEM_RECOGNITION_INFO_END}
               {parseFloat(
                 Math.round(message.intents[0].confidence * 100) / 100
               ).toFixed(2)}
@@ -40,14 +42,15 @@ class IntentsEditorModal extends React.PureComponent {
           )}
         </>
       );
-    } else return <div>Информация о намерениях не доступна</div>;
+    } else return <div>{LABELS.INACCESSIBLE_INFO}</div>;
   };
 
   renderContent = () => {
     const { availableIntents, message, onTrigerModal } = this.props;
     const { selectedId } = this.state;
     const options = availableIntents.map((intent, index) => ({
-      text: intent.description,
+      // text: intent.description,
+      text: intent.name,
       value: index,
       key: index
     }));
@@ -57,11 +60,12 @@ class IntentsEditorModal extends React.PureComponent {
           <div className='intents-editor-user-message'>
             {message.requestText}
           </div>
-          <div className='intents-editor-label'>Сообщение пользователя</div>
+          <div className='intents-editor-label'>{LABELS.USER_MESSAGE}</div>
         </div>
         <div className='intents-editor-container'>
           <div className='intents-editor-intent'>
-            #{message.detectedIntentDescription}
+            {/* #{message.detectedIntentDescription} */}
+            #{message.detectedIntent}
           </div>
           <div className='intents-editor-label'>
             {this.renderConfidence(message)}
@@ -69,7 +73,7 @@ class IntentsEditorModal extends React.PureComponent {
         </div>
 
         <div className='intents-editor-change'>
-          <div className='intents-editor-label'>Изменить намерение</div>
+          <div className='intents-editor-label'>{LABELS.CHANGE_INTENT}</div>
           <Dropdown
             className='intents-editor-dropdown'
             fluid
@@ -87,7 +91,8 @@ class IntentsEditorModal extends React.PureComponent {
               className='intents-calendar-icon'
               name='calendar alternate outline'
             />
-            Намерение исправлено на {message.correctedIntentDescription}
+            {/* {LABELS.INTENT_CHANGED} {message.correctedIntentDescription} */}
+            {LABELS.INTENT_CHANGED} {message.correctedIntent}
           </div>
         ) : (
           <div />
@@ -99,7 +104,7 @@ class IntentsEditorModal extends React.PureComponent {
             basic
             onClick={onTrigerModal}
           >
-            Отменить
+            {LABELS.CANCEL}
           </Button>
           <Button
             className='intents-editor-modal-button'
@@ -107,7 +112,7 @@ class IntentsEditorModal extends React.PureComponent {
             basic
             onClick={this.onSave}
           >
-            Сохранить
+            {LABELS.SAVE}
           </Button>
         </div>
       </div>

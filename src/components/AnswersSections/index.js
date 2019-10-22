@@ -7,6 +7,7 @@ import IntentModal from './Answers/IntentModal';
 import NewCategoryModal from './NewCategoryModal';
 import Protected from '../common/protected/container';
 import { Icon, Button } from 'semantic-ui-react';
+import { LABELS } from '../../constants/labels_en';
 import './styles.css';
 import ChooseCategoryModal from './ChooseCategoryModal';
 
@@ -169,13 +170,13 @@ class AnswersSections extends React.Component {
             <div className='header-button'>
               <Protected requiredRoles='ALLOWED_KNOWLEDGEBASE_CREATION'>
                 <Button primary size='tiny' basic onClick={this.onTrigerModal}>
-                  Добавить ответ
+                  {LABELS.ADD_ANSWER_BUTTON_LABEL}
                 </Button>
                 {isModalOpen && (
                   <IntentModal
                     onTrigerModal={this.onTrigerModal}
                     isModalOpen={isModalOpen}
-                    modalTitle='Добавить справочный ответ'
+                    modalTitle={LABELS.ADD_NEW_ANSWER}
                     onSave={data => createResponse(data)}
                     isShowExamples={true}
                     categoryId={activeTab}

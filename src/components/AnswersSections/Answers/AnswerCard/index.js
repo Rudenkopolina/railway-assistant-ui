@@ -5,12 +5,8 @@ import AudioPlayer from '../AudioPlayer';
 import Truncate from 'react-truncate';
 import IntentModal from '../IntentModal';
 import './styles.css';
+import { LABELS } from '../../../../constants/labels_en';
 import { urls } from '../../../../config';
-
-const titlesForModal = {
-  common: 'Изменить типовую фразу',
-  reference: 'Изменить справочный ответ'
-};
 
 class AnswerCard extends React.Component {
   state = {
@@ -59,13 +55,13 @@ class AnswerCard extends React.Component {
             trigger={<Icon size='small' name='trash' className='remove-icon' />}
             closeOnEscape={true}
             size={'mini'}
-            content='Вы уверены, что хотите удалить этот ответ? Ответ будет потерян без возможности восстановления.'
+            content={LABELS.REMOVAL_CONFIRMATION}
             actions={[
-              'Отменить',
+              LABELS.CANCEL,
               {
                 key: 'done',
                 className: 'negative',
-                content: 'Удалить',
+                content: LABELS.DELETE,
                 onClick: event => this.deleteAnswer(event, answer.id)
               }
             ]}
@@ -115,14 +111,14 @@ class AnswerCard extends React.Component {
             <AudioPlayer id={answer.id} url={this.getAudioSrc(answer.id)} />
           </div>
           <Button primary size='tiny' basic onClick={this.onTrigerModal}>
-            Детали
+            {LABELS.DETAILS_BUTTON_LABEL}
           </Button>
           {isModalOpen && (
             <IntentModal
               key={answer.id}
               onTrigerModal={this.onTrigerModal}
               isModalOpen={isModalOpen}
-              modalTitle={titlesForModal[title]}
+              modalTitle={LABELS.TITLES_FOR_MODAL[title]}
               onSave={data => onUpdateAnswer(data, answer.id, index)}
               answer={answer}
               isShowExamples={isShowExamples}

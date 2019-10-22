@@ -12,6 +12,8 @@ import { getAllUsers, createUser, deleteUser } from '../../redux/actions/users';
 import { deletePrivilege, getPrivileges, createPrivilege } from '../../redux/actions/privileges';
 import { getPermissions } from '../../redux/actions/permissions';
 
+import { LABELS } from '../../constants/labels_en';
+
 import './Users.css';
 
 class Users extends React.Component {
@@ -26,22 +28,22 @@ class Users extends React.Component {
     const titles = [];
     if (user.permissions.ALLOWED_USERS_VIEWING) {
       titles.push({
-        name: 'Сотрудники',
+        name: LABELS.EMPLOYEES,
         key: 'users',
         requiredRoles: 'ALLOWED_USERS_VIEWING'
       });
       this.props.getAllUsers();
     }
-    if (user.permissions.ALLOWED_USERS_VIEWING && user.permissions.ALLOWED_ROLES_EDITING) {
+    // if (user.permissions.ALLOWED_USERS_VIEWING && user.permissions.ALLOWED_ROLES_EDITING) {
 
-      titles.push({
-        name: 'Редактор Ролей',
-        key: 'roles',
-        requiredRoles: 'ALLOWED_ROLES_EDITING'
-      });
-      this.props.getPrivileges();
-      this.props.getPermissions();
-    }
+    //   titles.push({
+    //     name: LABELS.ROLES_EDITING,
+    //     key: 'roles',
+    //     requiredRoles: 'ALLOWED_ROLES_EDITING'
+    //   });
+    //   this.props.getPrivileges();
+    //   this.props.getPermissions();
+    // }
     this.setState({ titles, activeTab: titles[0].key });
   }
 
@@ -117,12 +119,12 @@ class Users extends React.Component {
             </div>
           </div>
           <div className='users-menu-item'>
-            {user.permissions.ALLOWED_ROLES_CREATION && (<RoleModal
-              buttonText='Cоздать роль'
+            {/* {user.permissions.ALLOWED_ROLES_CREATION && (<RoleModal
+              buttonText={LABELS.CREATE_ROLE}
               onSave={(data) => this.onCreate('roles', data)}
-            />)}
+            />)} */}
             <UserModal
-              buttonText='Добавить сотрудника' roles={this.props.privileges.privileges}
+              buttonText={LABELS.ADD_EMPLOYEE} roles={this.props.privileges.privileges}
               onSave={user => {
                 this.props.createUser(user);
               }}

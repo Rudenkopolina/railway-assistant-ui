@@ -4,6 +4,7 @@ import { withRouter } from 'react-router-dom';
 import { Table } from 'semantic-ui-react';
 import FilterBar from '../FilterBar';
 import ConversationsTableRow from './ConversationsTableRow';
+import { LABELS } from '../../constants/labels_en';
 import './styles.css';
 
 class ConversationsTable extends React.Component {
@@ -48,7 +49,7 @@ class ConversationsTable extends React.Component {
                   onClick={onMoreClick}
                 >
                   <i className='right arrow icon' />
-                  Загрузить ещё
+                  {LABELS.LOAD_MORE}
                 </button>
               </div>
             </th>
@@ -86,7 +87,9 @@ class ConversationsTable extends React.Component {
     return (
       <div className='table-container'>
         <div className='table-container-flex'>
-          <div className='chat-history-title'>История разговоров</div>
+          <div className='chat-history-title'>
+            {LABELS.CONVERSATION_HISTORY}
+          </div>
           <FilterBar setNewFilterParameters={this.setNewFilterParameters} />
         </div>
         <Table sortable celled>
@@ -97,24 +100,24 @@ class ConversationsTable extends React.Component {
                 sorted={column === 'timestamp_start' ? direction : null}
                 onClick={this.handleSort('timestamp_start')}
               >
-                Дата начала
+                {LABELS.START_DATE}
               </Table.HeaderCell>
               <Table.HeaderCell
                 textAlign='center'
                 sorted={column === 'timestamp_end' ? direction : null}
                 onClick={this.handleSort('timestamp_end')}
               >
-                Дата конца
+                {LABELS.END_DATE}
               </Table.HeaderCell>
-              <Table.HeaderCell textAlign='center'>Сессия</Table.HeaderCell>
+              <Table.HeaderCell textAlign='center'>{LABELS.SESSION}</Table.HeaderCell>
               <Table.HeaderCell
                 textAlign='center'
                 sorted={column === 'iterations' ? direction : null}
                 onClick={this.handleSort('iterations')}
               >
-                Количество шагов
+                {LABELS.STEPS}
               </Table.HeaderCell>
-              <Table.HeaderCell textAlign='center'>Тип</Table.HeaderCell>
+              <Table.HeaderCell textAlign='center'>{LABELS.TYPE}</Table.HeaderCell>
             </Table.Row>
           </Table.Header>
           <Table.Body>

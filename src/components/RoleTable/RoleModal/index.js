@@ -2,14 +2,15 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Modal, Popup, Input, Button } from 'semantic-ui-react';
 import './styles.css';
+import { LABELS } from '../../../constants/labels_en';
 
 const permissions = [
-  { title: 'Просмотр и создание сотрудников', key: 'ALLOWED_USERS_CREATION' },
-  { title: 'Просмотр базы знаний', key: 'ALLOWED_KNOWLEDGEBASE_VIEWING' },
-  { title: 'Редактирование базы знаний', key: 'ALLOWED_KNOWLEDGEBASE_EDITING' },
-  { title: 'Просмотр базовых ответов', key: 'ALLOWED_ANSWERS_VIEWING' },
-  { title: 'Редактирование базовых ответов', key: 'ALLOWED_ANSWERS_EDITING' },
-  { title: 'Просмотр истории', key: 'ALLOWED_HISTORY_VIEWING' }
+  { title: LABELS.ALLOWED_USERS_CREATION, key: 'ALLOWED_USERS_CREATION' },
+  { title: LABELS.ALLOWED_KNOWLEDGEBASE_VIEWING, key: 'ALLOWED_KNOWLEDGEBASE_VIEWING' },
+  { title: LABELS.ALLOWED_KNOWLEDGEBASE_EDITING, key: 'ALLOWED_KNOWLEDGEBASE_EDITING' },
+  { title: LABELS.ALLOWED_ANSWERS_VIEWING, key: 'ALLOWED_ANSWERS_VIEWING' },
+  { title: LABELS.ALLOWED_ANSWERS_EDITING, key: 'ALLOWED_ANSWERS_EDITING' },
+  { title: LABELS.ALLOWED_HISTORY_VIEWING, key: 'ALLOWED_HISTORY_VIEWING' }
 ];
 
 class RoleModal extends React.Component {
@@ -69,16 +70,16 @@ class RoleModal extends React.Component {
         <div className='modal-header'>{this.props.modalTitle}</div>
         <div className='modal-content'>
           <div className='modal-formfield'>
-            <div className='modal-formfield-title'>Роль</div>
+            <div className='modal-formfield-title'>{LABELS.ROLE}</div>
             <Input
               onChange={e => this.onHandlerFormField(e, 'name')}
               value={data.name}
               className='modal-field'
-              placeholder='Администратор...'
+              placeholder=''
             />
           </div>
           <div className='modal-formfield'>
-            <div className='modal-formfield-title'>Права:</div>
+            <div className='modal-formfield-title'>{LABELS.PERMISSIONS}</div>
             {permissions.map((item, index) => (
               <div key={index} className='role-modal-labeld-checkbox'>
                 <input
@@ -97,19 +98,20 @@ class RoleModal extends React.Component {
             onClick={this.onTrigerModal}
             className='action-button grey-button'
           >
-            {' '}
-            Отменить
+            {LABELS.CANCEL}
           </div>
           {isDisabled ? (
             <Popup
-              content='Все данные должны быть заполнены'
+              content={LABELS.INPUTS_NOT_FILLED}
               position='right center'
               className='modal-hint'
-              trigger={<div className='action-button-disabled'>Сохранить</div>}
+              trigger={
+                <div className='action-button-disabled'>{LABELS.SAVE}</div>
+              }
             />
           ) : (
             <div onClick={this.onSendData} className='action-button'>
-              Сохранить
+              {LABELS.SAVE}
             </div>
           )}
         </div>
@@ -137,8 +139,8 @@ class RoleModal extends React.Component {
 }
 
 RoleModal.propTypes = {
-    buttonText: PropTypes.string.isRequired,
-    onSave: PropTypes.func.isRequired
-}
+  buttonText: PropTypes.string.isRequired,
+  onSave: PropTypes.func.isRequired
+};
 
 export default RoleModal;

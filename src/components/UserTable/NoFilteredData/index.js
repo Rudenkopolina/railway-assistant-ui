@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import './styles.css';
+import { LABELS } from '../../../constants/labels_en';
 
 class NoFilteredData extends React.Component {
   render() {
@@ -8,15 +9,15 @@ class NoFilteredData extends React.Component {
     if (filterString) {
       return (
         <div className='no-filer-container'>
-          <span>{'По запросу'}</span>
+          <span>{LABELS.NOTHING_FOUND_START}</span>
           <span className='filter-sring'>{filterString}</span>
-          <span>{'ничего не найдено.'}</span>
+          <span>{LABELS.NOTHING_FOUND_LEFT}</span>
         </div>
       );
     } else {
       return (
         <div className='no-filer-container'>
-          <span>{`В данной категории пока нет ответов`}</span>
+          <span>{LABELS.NO_ANSWERS}</span>
         </div>
       );
     }

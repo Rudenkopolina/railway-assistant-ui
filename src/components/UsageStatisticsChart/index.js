@@ -6,20 +6,17 @@ import { Chart } from 'react-charts';
 
 function UsageStatisticsChart(props) {
   let [statistic, getStatistic] = useState({
-    statistics: [{ date: '', records: 0 }]
+    statistics: []
   });
 
   useEffect(() => {
     if (props.stats) {
       getStatistic((statistic = props.stats));
     }
-  });
+  },[{ date: '', records: 0 }]);
 
   const computeChartValue = stats => {
-    const data = [];
-    stats.statistics.forEach(record => {
-      data.push([record.date, parseInt(record.records)]);
-    });
+    const data = stats.statistics.map(record => [record.date, parseInt(record.records)]);
     return data;
   };
   

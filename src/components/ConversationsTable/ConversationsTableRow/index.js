@@ -5,6 +5,7 @@ import { Icon, Table } from 'semantic-ui-react';
 import moment from 'moment';
 import ConversationModal from '../ConversationModal';
 import './styles.css';
+import { LABELS } from '../../../constants/labels_en';
 
 class ConversationsTableRow extends React.Component {
   constructor(props) {
@@ -20,35 +21,35 @@ class ConversationsTableRow extends React.Component {
         return (
           <div>
             <Icon name='microphone' size='small' />
-            Голос
+            {LABELS.VOICE}
           </div>
         );
       case 'TEXT':
         return (
           <div>
             <Icon name='align justify' size='small' />
-            Текст
+            {LABELS.TEXT}
           </div>
         );
       case 'MIXED':
         return (
           <div>
             <Icon name='sync' size='small' />
-            Смешанный
+            {LABELS.MIXED}
           </div>
         );
       case 'UNKN':
         return (
           <div>
             <Icon name='question circle' size='small' />
-            Неизвестен
+            {LABELS.UNKN}
           </div>
         );
       default:
         return (
           <div>
             <Icon name='question circle' size='small' />
-            Неизвестен
+            {LABELS.UNKN}
           </div>
         );
     }

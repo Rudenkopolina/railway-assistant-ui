@@ -4,6 +4,7 @@ import request from '../../../../../services/request';
 import Closeicon from '../Closeicon';
 import AddButton from '../AddButton';
 import { urls } from '../../../../../config';
+import { LABELS } from '../../../../../constants/labels_en';
 import './styles.css';
 
 class Keywords extends React.Component {
@@ -49,7 +50,7 @@ class Keywords extends React.Component {
 
     if (isDuplicate) {
       this.setState({
-        error: 'Такой ключ уже есть'
+        error: LABELS.EXISTING_KEY_ERROR
       });
       return;
     }
@@ -66,7 +67,7 @@ class Keywords extends React.Component {
           !(response.responses[0].id === answerId)
         ) {
           this.setState({
-            error: `Ключ уже используется в ${
+            error: `${LABELS.KEY_IS_ALREADY_USED_IN_ERROR} ${
               response.responses[0].responseDescription
             }`
           });
@@ -74,7 +75,7 @@ class Keywords extends React.Component {
         }
         if (response.isUsed && !response.responses) {
           this.setState({
-            error: `Ключ уже используется в системном ответе.`
+            error: LABELS.KEY_IS_ALREADY_USED_ERROR
           });
           return;
         }
@@ -84,7 +85,7 @@ class Keywords extends React.Component {
 
         if (isDuplicate) {
           this.setState({
-            error: 'Такой ключ уже есть'
+            error: LABELS.EXISTING_KEY_ERROR
           });
           return;
         }

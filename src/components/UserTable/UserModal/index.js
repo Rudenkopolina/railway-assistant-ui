@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Modal, Input, Dropdown, Button } from 'semantic-ui-react';
 import './styles.css';
+import { LABELS } from '../../../constants/labels_en';
 
 class UserModal extends React.Component {
   state = {
@@ -24,7 +25,7 @@ class UserModal extends React.Component {
 
   changeIntent = (event, value) => {
     const { data } = this.state;
-    this.setState({ data: {...data, privilegeId: value.value }});
+    this.setState({ data: { ...data, privilegeId: value.value } });
   };
 
   onTrigerModal = () => {
@@ -49,78 +50,137 @@ class UserModal extends React.Component {
     });
   };
 
-    generatePassword = () => {
-        const length = 12;
-        const charset =
-            'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
-        let password = '';
-        for (let i = 0, n = charset.length; i < length; ++i) {
-            password += charset.charAt(Math.floor(Math.random() * n));
-        }
-        this.setState({ data: { ...this.state.data, password } });
-    };
+  generatePassword = () => {
+    const length = 12;
+    const charset =
+      'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+    let password = '';
+    for (let i = 0, n = charset.length; i < length; ++i) {
+      password += charset.charAt(Math.floor(Math.random() * n));
+    }
+    this.setState({ data: { ...this.state.data, password } });
+  };
 
-    isDisabled = () => {
-        const { username, password, surname, patronymic, name } = this.state.data;
-        return !name || !username || !password || surname || patronymic;
-    };
+  isDisabled = () => {
+    const { username, password, surname, patronymic, name } = this.state.data;
+    return !name || !username || !password || surname || patronymic;
+  };
 
-    generateLetter = () => {
-        this.setState({ isShowUserMessage: true });
-    };
+  generateLetter = () => {
+    this.setState({ isShowUserMessage: true });
+  };
 
   renderContent = () => {
     // const isDisabled = this.isDisabled();
-    const options = this.props.roles.map(role => ({text: role.type, value: role.id}))
+    const options = this.props.roles.map(role => ({
+      text: role.type,
+      value: role.id
+    }));
     const { data, isShowUserMessage } = this.state;
-    const messageToUser = <span>
-        <div>Уважаемый {data.surname} {data.name} {data.patronymic}, вы были зарегистрированы в системе.</div>
-        <div>Ваш логин для входа: {data.username}</div>
-        <div>Ваш пароль для входа: {data.password}</div>
-    </span>
-    return (
-        <div className='modal-wrapper'>
-            <div className='new-user-modal-header'>{this.props.buttonText}</div>
-            <div className='personal-data'>
-                <div className='input-section'>
-                    <div className='input-title'>Фамилия:</div>
-                    <Input placeholder='Фамилия...' value={data.surname} onChange={e => this.onHandlerFormField(e, 'surname')} />
-                </div>
-                <div className='input-section'>
-                    <div className='input-title'>Имя:</div>
-                    <Input placeholder='Имя...' value={data.name} onChange={e => this.onHandlerFormField(e, 'name')} />
-                </div>
-                <div className='input-section'>
-                    <div className='input-title'>Отчество:</div>
-                    <Input placeholder='Отчество...' value={data.patronymic} onChange={e => this.onHandlerFormField(e, 'patronymic')} />
-                </div>
-                <div className='input-section'>
-                    <div className='input-title'>Логин или почта</div>
-                    <Input placeholder='example@gmail.com' value={data.username} onChange={e => this.onHandlerFormField(e, 'username')} />
-                </div>
-                <div className='input-section'>
-                    <div className='input-title'>Пароль</div>
-                    <Input placeholder='examplePassword123' value={data.password} onChange={e => this.onHandlerFormField(e, 'password')} />
-                </div>
-                <div className='input-section'>
-                <div className='input-title'>Сгенерировать пароль:</div>
-                <Button icon='shield' primary basic size='medium' onClick={this.generatePassword} />
-                </div>
-            </div>
-            <div className='new-user-section'>
-                <div className='input-title'>Роль</div>
-                <Dropdown fluid search selection options={options} value={data.privilegeId} onChange={this.changeIntent} />
-            </div>
-            <div className='new-user-section'>
-                <Button icon='envelope' primary basic size='medium' onClick={this.generateLetter} />
-                <span className='input-title'>Сгенерировать письмо для сотрудника</span>
-            </div>
-            {isShowUserMessage && (<div className='new-user-section message-to-user'>{messageToUser}</div>)}
-            <div className='new-user-modal-actions'>
-                <Button primary basic onClick={this.onTrigerModal}>Отменить</Button>
-                <Button primary basic onClick={this.onSendData}>Сохранить</Button>
-            </div>
+    const messageToUser = (
+      <span>
+        <div>
+          {data.surname} {data.name} {data.patronymic}{' '}
+          {LABELS.REREGISTRATION_NOTIFICATION}
         </div>
+        <div>
+          {LABELS.USER_LOGIN} {data.username}
+        </div>
+        <div>
+          {LABELS.USER_PASSWORD} {data.password}
+        </div>
+      </span>
+    );
+    return (
+      <div className='modal-wrapper'>
+        <div className='new-user-modal-header'>{this.props.buttonText}</div>
+        <div className='personal-data'>
+          <div className='input-section'>
+            <div className='input-title'>{LABELS.SURNAME}</div>
+            <Input
+              placeholder={LABELS.SURNAME}
+              value={data.surname}
+              onChange={e => this.onHandlerFormField(e, 'surname')}
+            />
+          </div>
+          <div className='input-section'>
+            <div className='input-title'>{LABELS.NAME}</div>
+            <Input
+              placeholder={LABELS.NAME}
+              value={data.name}
+              onChange={e => this.onHandlerFormField(e, 'name')}
+            />
+          </div>
+          <div className='input-section'>
+            <div className='input-title'>{LABELS.PATRONYMIC}</div>
+            <Input
+              placeholder={LABELS.PATRONYMIC}
+              value={data.patronymic}
+              onChange={e => this.onHandlerFormField(e, 'patronymic')}
+            />
+          </div>
+          <div className='input-section'>
+            <div className='input-title'>{LABELS.LOGIN_OR_MAIL}</div>
+            <Input
+              placeholder='example@gmail.com'
+              value={data.username}
+              onChange={e => this.onHandlerFormField(e, 'username')}
+            />
+          </div>
+          <div className='input-section'>
+            <div className='input-title'>{LABELS.PASS}</div>
+            <Input
+              placeholder='examplePassword123'
+              value={data.password}
+              onChange={e => this.onHandlerFormField(e, 'password')}
+            />
+          </div>
+          <div className='input-section'>
+            <div className='input-title'>{LABELS.GENERATE_PASS}</div>
+            <Button
+              icon='shield'
+              primary
+              basic
+              size='medium'
+              onClick={this.generatePassword}
+            />
+          </div>
+        </div>
+        <div className='new-user-section'>
+          {/* <div className='input-title'>{LABELS.ROLE}</div>
+          <Dropdown
+            fluid
+            search
+            selection
+            options={options}
+            value={data.privilegeId}
+            onChange={this.changeIntent}
+          /> */}
+        </div>
+        <div className='new-user-section'>
+          <Button
+            icon='envelope'
+            primary
+            basic
+            size='medium'
+            onClick={this.generateLetter}
+          />
+          <span className='input-title'>{LABELS.GENERATE_LETTER}</span>
+        </div>
+        {isShowUserMessage && (
+          <div className='new-user-section message-to-user'>
+            {messageToUser}
+          </div>
+        )}
+        <div className='new-user-modal-actions'>
+          <Button primary basic onClick={this.onTrigerModal}>
+            {LABELS.CANCEL}
+          </Button>
+          <Button primary basic onClick={this.onSendData}>
+            {LABELS.SAVE}
+          </Button>
+        </div>
+      </div>
     );
   };
 

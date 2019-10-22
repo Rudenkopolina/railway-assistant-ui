@@ -5,6 +5,7 @@ import { withRouter } from 'react-router-dom';
 import { Icon, Popup } from 'semantic-ui-react';
 
 import { stopAudio, playAudio } from '../../../../redux/actions/audios';
+import { LABELS } from '../../../../constants/labels_en';
 import './styles.css';
 
 class AudioPlayer extends React.Component {
@@ -14,7 +15,7 @@ class AudioPlayer extends React.Component {
       <Fragment>
         {audios.playedId === id ? (
           <Popup
-            content='Остановить воспроизведение'
+            content={LABELS.STOP}
             position='bottom center'
             trigger={
               <Icon
@@ -27,7 +28,7 @@ class AudioPlayer extends React.Component {
           />
         ) : (
           <Popup
-            content='Воспроизвести голосовой ответ'
+            content={LABELS.PLAY}
             position='bottom center'
             trigger={
               <Icon
