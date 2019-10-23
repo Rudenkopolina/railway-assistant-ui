@@ -1,4 +1,4 @@
-const baseUrl = process.env.REACT_APP_BASE_API_URL ? process.env.REACT_APP_BASE_API_URL : 'http://172.16.6.253:1000';
+const baseUrl = process.env.REACT_APP_BASE_API_URL ? process.env.REACT_APP_BASE_API_URL : 'http://172.16.6.253:10001';
 
 module.exports = {
 	urls: {
