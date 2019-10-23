@@ -107,9 +107,9 @@ export const LABELS = {
   TIME_INTERVALS: ['24 hours', '72 hours', '15 days', '30 days'],
   TIME_INTERVALS_STRING: ['oneDay', 'threeDays', 'fifteenDays', 'thirtyDays'],
   STATISTICS_HEADERS: [
-    'Total number of applications: ',
-    'Average number of steps in a application: ',
-    'Average duration of application (seconds): '
+    'Total number of conversations: ',
+    'Average number of steps in a conversation: ',
+    'Average duration of conversation (in seconds): '
   ],
   STATISTICS_HEADERS_STRING: [
     'distinctConversations',
