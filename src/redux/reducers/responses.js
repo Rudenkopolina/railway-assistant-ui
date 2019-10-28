@@ -24,6 +24,7 @@ import {
 } from '../actions/responses';
 
 import { LOGOUT } from '../actions/auth';
+import {NotificationManager} from "react-notifications";
 
 export default function (state = initialState, action) {
   switch (action.type) {
@@ -114,6 +115,7 @@ export default function (state = initialState, action) {
     };
 
   case RESPONSE_PING:
+    NotificationManager.info(`Начинается обработка ответа #${action.id}!`, "Информация");
     if (state.referenceResponses[state.referenceResponses.findIndex(value => value.id === action.id)]) {
       state.referenceResponses[state.referenceResponses.findIndex(value => value.id === action.id)].updating = true;
     }
@@ -123,6 +125,7 @@ export default function (state = initialState, action) {
       referenceResponses: state.referenceResponses
     };
   case RESPONSE_PING_SUCCESS:
+    NotificationManager.success(`Ответ #${action.id} успешно обработан!`, "Успешно");
     if (state.referenceResponses[state.referenceResponses.findIndex(value => value.id === action.id)]) {
       state.referenceResponses[state.referenceResponses.findIndex(value => value.id === action.id)].updating = false;
     }
@@ -132,6 +135,7 @@ export default function (state = initialState, action) {
       referenceResponses: state.referenceResponses
     };
   case RESPONSE_PING_FAIL:
+    NotificationManager.error(`Ошибка обработки ответа #${action.id}!`, "Ошибка");
     if (state.referenceResponses[state.referenceResponses.findIndex(value => value.id === action.id)]) {
       state.referenceResponses[state.referenceResponses.findIndex(value => value.id === action.id)].updating = false;
     }

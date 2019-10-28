@@ -5,7 +5,6 @@ import { withRouter } from 'react-router-dom';
 import AnswersSections from '../../components/AnswersSections';
 import Protected from '../../components/common/protected/container';
 import Filter from './../../components/Filter';
-import { NotificationManager } from 'react-notifications';
 import {
   getCommonResponses,
   getReferenceResponses,
@@ -58,10 +57,7 @@ class Answer extends React.Component {
   createResponse = async data => {
     this.props.createResponse(data).then(() => {
       let lastResponse = this.props.data.reference[this.props.data.reference.length - 1];
-      NotificationManager.info(`Начинается обработка ответа #${lastResponse.id}!`, "Информация");
-      this.props.responsePing(lastResponse.id).then(finished => {
-        NotificationManager.success(`Ответ #${lastResponse.id} успешно обработан!`, "Успешно");
-      });
+      this.props.responsePing(lastResponse.id);
     });
   };
 
